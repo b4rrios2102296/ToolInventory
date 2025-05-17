@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire; // <-- Agrega esta línea
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Livewire::component('auth.login', \App\Http\Livewire\Auth\Login::class);
+        Livewire::component('auth.register', \App\Http\Livewire\Auth\Register::class);
     }
 }
