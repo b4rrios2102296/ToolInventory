@@ -3,17 +3,17 @@ namespace App\Http\Livewire\Auth;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Usuario;
 
-class Login extends Component
-
-{
-    public $nombre_usuario;
+class Login extends Component{
+    public $email;
     public $password;
     public $remember = false;
 
     protected $rules = [
-        'nombre_usuario' => 'required',
-        'password' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8',
     ];
 
     public function render()
@@ -26,13 +26,17 @@ class Login extends Component
     {
         $this->validate();
 
-        if (Auth::attempt([
-            'nombre_usuario' => $this->nombre_usuario,
-            'password' => $this->password
-        ], $this->remember)) {
+        // Retrieve user by email
+        $user = Usuario::where('email', $this->email)->first();
+
+        if ($user && Hash::check($this->password, $user->contraseña_hash)) {
+            Auth::login($user, $this->remember);
             return redirect()->intended('/dashboard');
         }
-
-        $this->addError('nombre_usuario', 'Credenciales incorrectas');
+        $this->addError('email', 'Credenciales incorrectas.');
+    }public function logout()
+    {
+        Auth::logout();
+        return redirect('/login')->with('status', 'You have been successfully logged out.');
     }
 }
