@@ -9,10 +9,22 @@
     @livewireStyles
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
+<body>
 <div class="min-h-screen flex items-center justify-center p-4">
         {{ $slot }}
     </div>
     @livewireScripts
 </body>
 </html>
+<style>
+    body {
+  width: 100%;
+  height: 1080px;
+  background: rgba(0,0,0,1);
+  opacity: 1;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+    }
+</style>
