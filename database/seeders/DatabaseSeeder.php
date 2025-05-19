@@ -16,22 +16,28 @@ class DatabaseSeeder extends Seeder
         // Buscar el rol “God” por nombre
         $rolGod = Role::where('nombre', 'God')->first();
 
-        // Crear el usuario solo si el rol existe
+        // Verificar si el usuario ya existe antes de crearlo
         if ($rolGod) {
-            Usuario::create([
-                'numero_colaborador' => 1001,
-                'nombre' => 'Admin',
-                'apellidos' => 'Sistema',
-                'nombre_usuario' => 'admin',
-                'email' => 'admin@example.com',
-                'contraseña_hash' => bcrypt('password'),
-                'rol_id' => $rolGod->id,
-                'activo' => true
-            ]);
+            $existingUser = Usuario::where('nombre_usuario', 'God')->first();
+
+            if (!$existingUser) {
+                Usuario::create([
+                    'numero_colaborador' => 1001,
+                    'nombre' => 'Admin',
+                    'apellidos' => 'Sistemas',
+                    'nombre_usuario' => 'God',
+                    'email' => 'adminti@gmail.com',
+                    'password' => bcrypt('password'),
+                    'rol_id' => $rolGod->id,
+                    'activo' => true
+                ]);
+            } else {
+                \Log::info('El usuario "God" ya existe, no se creó nuevamente.');
+            }
         } else {
-            // Puedes lanzar una excepción o loggear si no se encuentra el rol
             \Log::error('El rol "God" no se encontró en la base de datos.');
         }
     }
 }
+
 

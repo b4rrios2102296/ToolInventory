@@ -6,43 +6,33 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
+
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Permission;
+use App\Models\Role;
 
 class UserRolePermissionSeeder extends Seeder
 {
-    // database/seeders/UserRolePermissionSeeder.php
-public function run()
-{
-     \DB::table('rol_permisos')->delete();
-    \DB::table('permisos')->delete();
-    \DB::table('roles')->delete();
-    // Usar firstOrCreate para evitar duplicados
-    $basicAccess = Permission::firstOrCreate(
-        ['clave' => 'basic_access'],
-        ['nombre' => 'Basic Access']
-    );
-    
-    $userAudit = Permission::firstOrCreate(
-        ['clave' => 'user_audit'],
-        ['nombre' => 'User Audit']
-    );
+    public function run()
+    {
+        // Buscar los roles
+        $normalRole = Role::where('nombre', 'Normal')->first();
+        $godRole = Role::where('nombre', 'God')->first();
 
-    // Crear roles si no existen
-    $normalRole = Role::firstOrCreate(
-        ['nombre' => 'Normal'],
-        ['descripcion' => 'Normal user']
-    );
-    
-    $godRole = Role::firstOrCreate(
-        ['nombre' => 'God'],
-        ['descripcion' => 'Super admin']
-    );
+        // Buscar los permisos
+        $basicAccess = Permission::where('clave', 'basic_access')->first();
+        $userAudit = Permission::where('clave', 'user_audit')->first();
 
-    // Sincronizar permisos (evita duplicados en la tabla pivote)
-    $normalRole->permisos()->syncWithoutDetaching([$basicAccess->id]);
-    $godRole->permisos()->syncWithoutDetaching(Permission::pluck('id')->toArray());
+        // Si existen los roles y permisos, asignar SOLO el permiso correspondiente a cada rol
+        if ($normalRole && $basicAccess) {
+            $normalRole->permisos()->sync([$basicAccess->id]); // Solo "basic_access" para "Normal"
+        }
 
-    // Crear usuarios solo si no existen
-
-}
+        if ($godRole && $userAudit) {
+            $godRole->permisos()->sync([$userAudit->id]); // Solo "user_audit" para "God"
+        }
+    }
 }
