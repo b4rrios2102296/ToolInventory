@@ -23,8 +23,8 @@ return new class extends Migration
             $table->boolean('activo')->nullable()->default(true)->comment('Indica si el usuario está activo o no');
             $table->timestamp('ultimo_acceso')->nullable()->comment('Fecha y hora del último inicio de sesión');
             $table->string('token_remember', 100)->nullable()->comment('Token para recordar sesión');
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 

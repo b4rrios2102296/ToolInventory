@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('herramientas', function (Blueprint $table) {
+        Schema::create('auditoria_herramientas', function (Blueprint $table) {
             $table->integer('id', true);
+            $table->integer('herramienta_id')->index('herramienta_id');
+            $table->string('accion', 20);
             $table->string('cantidad', 45);
             $table->string('articulo', 45);
-            $table->string('unidad', 45);
-            $table->string('modelo', 100)->nullable();
-            $table->string('num_serie', 100)->nullable();
-            $table->string('observaciones', 191)->nullable();
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->string('usuario', 100);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('herramientas');
+        Schema::dropIfExists('auditoria_herramientas');
     }
 };

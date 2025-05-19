@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('clave', 50)->unique('clave')->comment('Clave única del permiso (ej. gestionar_usuarios)');
             $table->string('nombre', 100)->comment('Nombre descriptivo del permiso');
             $table->string('descripcion')->nullable()->comment('Explicación detallada del permiso');
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 

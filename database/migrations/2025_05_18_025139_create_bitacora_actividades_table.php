@@ -21,7 +21,7 @@ return new class extends Migration
             $table->json('cambios_nuevos')->nullable()->comment('Valores después del cambio');
             $table->string('direccion_ip', 45)->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamp('creado_en')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

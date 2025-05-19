@@ -40,9 +40,8 @@ class Register extends Component
             'numero_colaborador' => $this->numero_colaborador,
             'nombre' => $this->nombre,
             'apellidos' => $this->apellidos,
-            'nombre_usuario' => $this->nombre_usuario,
             'email' => $this->email,
-            'contraseña_hash' => Hash::make($this->password),
+            'password' => Hash::make($this->password),
             'rol_id' => 2, // Rol por defecto (Normal)
             'activo' => true,
         ]);

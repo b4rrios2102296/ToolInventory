@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('id', true);
             $table->string('nombre', 50)->unique('nombre')->comment('Nombre del rol (SuperAdmin, Administrador, etc.)');
             $table->string('descripcion')->nullable()->comment('Descripción detallada del rol');
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 

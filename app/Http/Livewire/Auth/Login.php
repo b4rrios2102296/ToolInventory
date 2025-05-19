@@ -29,7 +29,7 @@ class Login extends Component{
         // Retrieve user by email
         $user = Usuario::where('email', $this->email)->first();
 
-        if ($user && Hash::check($this->password, $user->contraseña_hash)) {
+        if ($user && Hash::check($this->password, $user->password)) {
             Auth::login($user, $this->remember);
             return redirect()->intended('/dashboard');
         }

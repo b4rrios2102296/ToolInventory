@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('exito')->comment('Indica si el acceso fue exitoso');
             $table->string('direccion_ip', 45);
             $table->text('user_agent')->nullable()->comment('Navegador y sistema operativo usado');
-            $table->timestamp('creado_en')->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

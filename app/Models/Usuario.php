@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Permission;
+
+
 
 class Usuario extends Authenticatable
 {
@@ -11,19 +14,36 @@ class Usuario extends Authenticatable
 
     protected $table = 'usuarios';
 
-  protected $fillable = [
-    'nombre',
-    'apellidos',
-    'nombre_usuario',
-    'email',
-    'contraseña_hash',
-    'rol_id',
-    'numero_colaborador'
+    protected $fillable = [
+        'numero_colaborador',
+        'nombre',
+        'apellidos',
+        'nombre_usuario',
+        'email',
+        'password',
+        'rol_id',
+        'activo',
+    ];
+
+protected $hidden = [
+    'password',
+    'remember_token',
 ];
 
+    // In your User model (app/Models/User.php or app/Models/Usuario.php)
+public function hasPermission(string $clave): bool
+{
+    return $this->permissions()->where('clave', $clave)->exists();
+}
 
-    protected $hidden = [
-        'contraseña_hash',
-        'remember_token',
-    ];
+
+public function role()
+    {
+        return $this->belongsTo(Role::class, 'rol_id');
+    }
+
+    public function permissions()
+    {
+        return $this->role->permissions();
+    }
 }

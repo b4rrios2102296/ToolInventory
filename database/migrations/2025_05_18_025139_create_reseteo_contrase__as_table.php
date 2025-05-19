@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ambientes', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('nombre', 80);
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+        Schema::create('reseteo_contraseñas', function (Blueprint $table) {
+            $table->string('email', 100)->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ambientes');
+        Schema::dropIfExists('reseteo_contraseñas');
     }
 };

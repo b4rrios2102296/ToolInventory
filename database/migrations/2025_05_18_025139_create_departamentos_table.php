@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reseteo_contraseñas', function (Blueprint $table) {
-            $table->string('email', 100)->primary();
-            $table->string('token');
-            $table->timestamp('creado_en')->useCurrent();
+        Schema::create('departamentos', function (Blueprint $table) {
+            $table->integer('id', true);
+            $table->string('nombre', 80);
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reseteo_contraseñas');
+        Schema::dropIfExists('departamentos');
     }
 };

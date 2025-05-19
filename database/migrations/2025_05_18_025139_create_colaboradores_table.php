@@ -22,8 +22,8 @@ return new class extends Migration
             $table->integer('ambiente_id')->index('ambiente_id');
             $table->string('estatus', 50);
             $table->string('comentarios', 100)->nullable();
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 

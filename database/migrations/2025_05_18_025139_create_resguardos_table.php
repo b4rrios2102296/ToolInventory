@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('condiciones', 100)->nullable()->comment('Estado al entregar');
             $table->string('comentarios')->nullable()->comment('Observaciones');
             $table->string('evidencia_fotografica', 191)->nullable()->comment('URL de foto');
-            $table->timestamp('creado_en')->useCurrent();
-            $table->timestamp('actualizado_en')->useCurrentOnUpdate()->useCurrent();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });
     }
 

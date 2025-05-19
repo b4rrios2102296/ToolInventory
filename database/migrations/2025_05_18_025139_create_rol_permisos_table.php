@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rol_permisos', function (Blueprint $table) {
             $table->integer('rol_id');
             $table->integer('permiso_id')->index('permiso_id');
-            $table->timestamp('asignado_en')->useCurrent();
+            $table->timestamp('assigned_at')->useCurrent();
 
             $table->primary(['rol_id', 'permiso_id']);
         });

@@ -27,15 +27,6 @@
             <input wire:model="apellidos" type="text" id="apellidos" 
                    class="w-full px-3 py-2 border rounded-lg @error('apellidos') border-red-500 @enderror">
             @error('apellidos') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <div class="mb-4">
-            <label for="nombre_usuario" class="block text-gray-700 mb-2">Usuario</label>
-            <input wire:model="nombre_usuario" type="text" id="nombre_usuario" 
-                   class="w-full px-3 py-2 border rounded-lg @error('nombre_usuario') border-red-500 @enderror">
-            @error('nombre_usuario') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
         <div class="mb-4">
             <label for="email" class="block text-gray-700 mb-2">Email</label>
             <input wire:model="email" type="email" id="email" 
