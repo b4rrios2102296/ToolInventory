@@ -3,8 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
+use App\Http\Controllers\ColaboradorController;
 
 Route::get('/', fn () => view('welcome'))->name('home');
+
+// Rutas públicas (sin autenticación)
+
+Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
 
 // Rutas para invitados (no autenticados)
 Route::middleware('guest')->group(function () {
@@ -16,17 +21,15 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
-    
+
     // Rutas para usuarios normales
     Route::middleware('permission:basic_access')->group(function () {
-        Route::get('/tools', fn () => view('tools.index'))->name('tools.index');
-        // Add more normal user routes here
+        Route::get('/tools', fn () => view('herramientas'))->name('herramientas');
     });
-    
+
     // Rutas solo para usuarios God
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn () => view('audit.user'))->name('audit.user');
         Route::get('/activity-logs', fn () => view('audit.logs'))->name('audit.logs');
-        // Add more admin-only routes here
     });
 });

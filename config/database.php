@@ -29,7 +29,7 @@ return [
     |
     */
 
-'connections' => [
+    'connections' => [
         'toolinventory' => [
             'driver' => 'mysql',
             'url' => env('DB_URL'),
@@ -45,12 +45,28 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
+            'options' => extension_loaded('pdo_mysql') ? array_filter(array: [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
 
-    
+
+        'colaboradores' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_TOOL_HOST', '192.168.100.17'),
+            'port' => env('DB_TOOL_PORT', '1433'),
+            'database' => env('DB_TOOL_DATABASE', 'GrandVelas_RM_NOM'),
+            'username' => env('DB_TOOL_USERNAME', 'comedor'),
+            'password' => env('DB_TOOL_PASSWORD', 'C0m3d0r23RM!'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
+
+
     ],
 
     /*
@@ -64,7 +80,7 @@ return [
     |
     */
 
-'migrations' => [
+    'migrations' => [
         'table' => 'migrations',
         'update_date_on_publish' => true,
     ],

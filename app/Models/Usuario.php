@@ -41,8 +41,9 @@ public function role()
         return $this->belongsTo(Role::class, 'rol_id');
     }
 
-    public function permissions()
-    {
-        return $this->role->permissions();
-    }
+public function permissions()
+{
+    return $this->hasMany(Permission::class);
+}
+
 }
