@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Usuario;
 
-class Login extends Component{
-    public $email;
+class Login extends Component
+{
+    public $nombre_usuario;
     public $password;
     public $remember = false;
 
     protected $rules = [
-        'email' => 'required|email',
+        'nombre_usuario' => 'required|string',
         'password' => 'required|min:8',
     ];
 
@@ -26,17 +27,20 @@ class Login extends Component{
     {
         $this->validate();
 
-        // Retrieve user by email
-        $user = Usuario::where('email', $this->email)->first();
+        // Buscar usuario por nombre de usuario
+        $user = Usuario::where('nombre_usuario', $this->nombre_usuario)->first();
 
         if ($user && Hash::check($this->password, $user->password)) {
             Auth::login($user, $this->remember);
             return redirect()->intended('/dashboard');
         }
-        $this->addError('email', 'Credenciales incorrectas.');
-    }public function logout()
+
+        $this->addError('nombre_usuario', 'Credenciales incorrectas.');
+    }
+
+    public function logout()
     {
         Auth::logout();
-        return redirect('/login')->with('status', 'You have been successfully logged out.');
+        return redirect('/login')->with('status', 'Has cerrado sesión exitosamente.');
     }
 }

@@ -21,10 +21,7 @@ return new class extends Migration
             $table->timestamp('fecha_entrega')->nullable();
             $table->timestamp('fecha_devolucion')->nullable();
             $table->string('estatus', 45)->comment('Activo, Devuelto, Perdido, etc.');
-            $table->string('prioridad', 45)->nullable()->comment('Alta, Media, Baja');
-            $table->string('condiciones', 100)->nullable()->comment('Estado al entregar');
-            $table->string('comentarios')->nullable()->comment('Observaciones');
-            $table->string('evidencia_fotografica', 191)->nullable()->comment('URL de foto');
+            $table->string('observaciones')->nullable()->comment('Observaciones');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
         });

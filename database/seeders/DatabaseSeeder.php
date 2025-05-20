@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
                     'nombre' => 'Admin',
                     'apellidos' => 'Sistemas',
                     'nombre_usuario' => 'God',
-                    'email' => 'adminti@gmail.com',
                     'password' => bcrypt('password'),
                     'rol_id' => $rolGod->id,
                     'activo' => true
@@ -39,5 +38,3 @@ class DatabaseSeeder extends Seeder
         }
     }
 }
-
-

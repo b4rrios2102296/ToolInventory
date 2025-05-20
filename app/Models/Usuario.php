@@ -19,7 +19,6 @@ class Usuario extends Authenticatable
         'nombre',
         'apellidos',
         'nombre_usuario',
-        'email',
         'password',
         'rol_id',
         'activo',

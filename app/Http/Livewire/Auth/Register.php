@@ -12,7 +12,6 @@ class Register extends Component
     public $nombre;
     public $apellidos;
     public $nombre_usuario;
-    public $email;
     public $password;
     public $password_confirmation;
 
@@ -21,10 +20,8 @@ class Register extends Component
         'nombre' => 'required|string|max:50',
         'apellidos' => 'required|string|max:100',
         'nombre_usuario' => 'required|string|max:50|unique:usuarios',
-        'email' => 'required|email|unique:usuarios',
         'password' => 'required|string|min:8|confirmed',
     ];
-    
 
     public function render()
     {
@@ -40,14 +37,13 @@ class Register extends Component
             'numero_colaborador' => $this->numero_colaborador,
             'nombre' => $this->nombre,
             'apellidos' => $this->apellidos,
-            'nombre_usuario'=> $this->nombre_usuario,
-            'email' => $this->email,
+            'nombre_usuario' => $this->nombre_usuario,
             'password' => Hash::make($this->password),
             'rol_id' => 2, // Rol por defecto (Normal)
             'activo' => true,
         ]);
 
-        session()->flash('message', 'Registro exitoso! Por favor inicia sesión.');
+        session()->flash('message', 'Registro exitoso. Por favor inicia sesión.');
 
         return redirect()->to('/login');
     }
