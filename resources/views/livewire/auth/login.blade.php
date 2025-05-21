@@ -27,13 +27,11 @@
         </div>
 
         <div class="mb-6 flex items-center">
-            <input wire:model="remember" type="checkbox" id="remember" class="mr-2 accent-[#321F01]">
-            <label for="remember" class="text-[#321F01]">Recordar sesión</label>
         </div>
 
         <button type="submit"
             class="w-full bg-[#321F01] text-white py-2 px-4 rounded-lg hover:bg-brown transition">
-            Ingresar
+            Ingresar 
         </button>
     </form>
 

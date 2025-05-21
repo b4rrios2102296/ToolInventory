@@ -40,8 +40,8 @@
                     <td class="px-4 py-2 border">{{ $colaborador->claveColab }}</td>
                     <td class="px-4 py-2 border">{{ $colaborador->nombreCompleto }}</td>
                     <td class="px-4 py-2 border">{{ $colaborador->Puesto }}</td>
-                    <td class="px-4 py-2 border">{{ $colaborador->Area }}</td>
-                    <td class="px-4 py-2 border">{{ $colaborador->Sucursal }}</td>
+                    <td class="px-4 py-2 border">{{ $colaborador->area_limpia }}</td>
+                    <td class="px-4 py-2 border">{{ $colaborador->sucursal_limpia }}</td>
                 </tr>
                 @endforeach
             </tbody>
