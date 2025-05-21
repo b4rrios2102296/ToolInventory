@@ -10,6 +10,8 @@ Route::get('/', fn () => view('welcome'))->name('home');
 // Rutas públicas (sin autenticación)
 
 Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
+Route::get('/buscar-colaborador', [ColaboradorController::class, 'buscarColaborador']);
+Route::post('/guardar-resguardo', [ResguardoController::class, 'store']);
 
 // Rutas para invitados (no autenticados)
 Route::middleware('guest')->group(function () {
