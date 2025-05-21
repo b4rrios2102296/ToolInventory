@@ -51,7 +51,7 @@ return [
         ],
 
 
-        'colaboradores' => [
+        'sqlsrv' => [
             'driver' => 'sqlsrv',
             'host' => env('DB_TOOL_HOST', '192.168.100.17'),
             'port' => env('DB_TOOL_PORT', '1433'),
@@ -63,7 +63,14 @@ return [
             'prefix' => '',
             'strict' => false,
             'engine' => null,
+            'encrypt' => true, // Enable encryption
+            'trust_server_certificate' => true, // Trust the SSL certificate
+            'options' => [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                "TrustServerCertificate" => true, // Explicitly trust the certificate
+            ],
         ],
+
 
 
 
