@@ -10,19 +10,32 @@
             let rows = document.querySelectorAll("tbody tr");
 
             rows.forEach(row => {
-                let text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? "" : "none";
+                let numColab = row.querySelector("td:first-child").textContent.toLowerCase();
+                row.style.display = numColab.includes(input) ? "" : "none";
             });
         }
+
+        function ocultarInicialmente() {
+            let rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                row.style.display = "none"; // Oculta todas las filas al inicio
+            });
+        }
+
+        window.onload = ocultarInicialmente; // Ejecuta la función al cargar la página
     </script>
 </head>
 <body class="bg-gray-100">
     <div class="max-w-6xl mx-auto mt-10">
         <h1 class="text-2xl font-bold mb-4">Lista de Colaboradores</h1>
 
-        <!-- Filtro de búsqueda -->
-        <input type="text" id="search" onkeyup="filtrarColaboradores()" placeholder="Buscar colaborador..." 
-               class="w-full px-4 py-2 border rounded-md mb-4">
+        <!-- Filtro de búsqueda con botón -->
+        <div class="flex space-x-2 mb-4">
+            <input type="text" id="search" placeholder="Ingrese número de colaborador..." 
+                   class="w-full px-4 py-2 border rounded-md">
+            <button onclick="filtrarColaboradores()" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-md">Buscar</button>
+        </div>
 
         <table class="table-auto w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-200">
