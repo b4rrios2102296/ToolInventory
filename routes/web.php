@@ -11,7 +11,9 @@ Route::get('/', fn () => view('welcome'))->name('home');
 // Rutas públicas (sin autenticación)
 Route::middleware(['auth'])->group(function () {
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
-    Route::post('/resguardos', [ResguardoController::class, 'store'])->name('resguardos.store');
+Route::get('/resguardos', [ResguardoController::class, 'index'])->name('resguardos');
+Route::post('/resguardos', [ResguardoController::class, 'store'])->name('resguardos.store');
+
     Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador']);
 });
 Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');

@@ -2,30 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ResguardoController extends Controller
 {
-    public function buscarColaborador(Request $request)
-    {
-        $request->validate(['clave' => 'required|string']);
-
-        $colaborador = Colaborador::where('claveColab', $request->clave)
-            ->where('estado', '1')
-            ->firstOrFail();
-
-        return response()->json([
-            'claveColab' => $colaborador->claveColab,
-            'nombreCompleto' => $colaborador->nombreCompleto,
-            'Puesto' => $colaborador->Puesto,
-            'area_limpia' => $colaborador->area_limpia,
-            'sucursal_limpia' => $colaborador->sucursal_limpia
-        ]);
-    }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,54 +21,68 @@ class ResguardoController extends Controller
         ]);
 
         return DB::connection('toolinventory')->transaction(function () use ($request) {
-            // Verificar existencia del colaborador
-            $colaborador = Colaborador::where('claveColab', $request->claveColab)
+            // ✅ Validate collaborator in external `sqlsrv` connection
+            $colaborador = DB::connection('sqlsrv')
+                ->table('colaborador')
+                ->where('claveColab', $request->claveColab)
                 ->where('estado', '1')
-                ->firstOrFail();
+                ->first();
 
-            // Obtener usuario autenticado
+            if (!$colaborador) {
+                return back()->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.']);
+            }
+
+            // ✅ Get authenticated user
             $usuario = DB::connection('toolinventory')
                 ->table('usuarios')
                 ->where('id', auth()->id())
                 ->firstOrFail();
 
-            // Generar folio único
+            // ✅ Generate a numeric folio
             $folio = $this->generarFolio();
 
-            // Crear resguardo
+            // ✅ Insert without enforcing FK constraints
             DB::connection('toolinventory')->table('resguardos')->insert([
                 'folio' => $folio,
                 'estatus' => 'Activo',
                 'herramienta_id' => $request->herramienta_id,
-                'colaborador_num' => $colaborador->claveColab,
+                'colaborador_num' => $colaborador->claveColab, // ✅ Now validated manually
                 'usuario_registro_id' => $usuario->id,
                 'aperturo_users_id' => $usuario->id,
                 'asigno_users_id' => $usuario->id,
                 'cantidad' => $request->cantidad,
                 'fecha_entrega' => Carbon::parse($request->fecha_entrega),
-                'fecha_devolucion' => $request->fecha_devolucion 
-                    ? Carbon::parse($request->fecha_devolucion) 
-                    : null,
+                'fecha_devolucion' => $request->fecha_devolucion ? Carbon::parse($request->fecha_devolucion) : null,
                 'prioridad' => $request->prioridad,
                 'observaciones' => $request->observaciones,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
 
-            return redirect()->route('resguardos.index')
-                ->with('success', "Resguardo $folio creado exitosamente");
+            return redirect()->route('resguardos')->with('success', "Resguardo $folio creado exitosamente");
         });
     }
 
     protected function generarFolio()
     {
+        // ✅ Ensure we're using a numeric folio
         $ultimo = DB::connection('toolinventory')
             ->table('resguardos')
-            ->orderBy('id', 'desc')
+            ->orderBy('folio', 'desc') 
             ->first();
 
-        $numero = $ultimo ? intval(substr($ultimo->folio, 4)) + 1 : 1;
+        // If no previous folio exists, start from 1
+        $numero = $ultimo ? intval($ultimo->folio) + 1 : 1;
 
-        return 'RSG-' . str_pad($numero, 6, '0', STR_PAD_LEFT);
+        return $numero; // ✅ Returns a numeric folio instead of a string like "RSG-000001"
     }
+    public function index()
+{
+    $resguardos = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->get(); // Retrieve all resguardos
+
+    return view('resguardos', compact('resguardos'));
+}
+
 }

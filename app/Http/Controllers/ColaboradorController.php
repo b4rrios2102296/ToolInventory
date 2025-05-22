@@ -8,47 +8,46 @@ use Illuminate\Http\Request;
 class ColaboradorController extends Controller
 {
     public function buscarColaborador(Request $request)
-{
-    $clave = $request->query('clave');
-    
-    $colaborador = DB::connection('sqlsrv')
-        ->table('colaborador')
-        ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
-        ->selectRaw("
-            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
-            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
-        ")
-        ->where('claveColab', $clave)
-        ->where('estado', '1')
-        ->first();
+    {
+        $clave = $request->query('clave');
 
-    if (!$colaborador) {
-        return response()->json(['error' => 'No se encontró ningún colaborador con ese número']);
+        $colaborador = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
+            ->selectRaw("
+                LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+                LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+            ")
+            ->where('claveColab', $clave)
+            ->where('estado', '1')
+            ->first();
+
+        if (!$colaborador) {
+            return response()->json(['error' => 'No se encontró ningún colaborador con ese número']);
+        }
+
+        return response()->json($colaborador);
     }
 
-    return response()->json($colaborador);
-}
     public function index()
-{
-    $colaboradores = DB::connection('sqlsrv')
-        ->table('colaborador')
-        ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
-        ->where('estado', '=', '1')
-        ->orderBy('claveColab', 'asc')
-        ->selectRaw("
-            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
-            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
-        ")
-        ->get();
+    {
+        $colaboradores = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
+            ->where('estado', '=', '1')
+            ->orderBy('claveColab', 'asc')
+            ->selectRaw("
+                LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+                LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+            ")
+            ->get();
 
-    // ✅ Fetch herramientas
-    $herramientas = DB::connection('toolinventory')
-        ->table('herramientas') // Ensure this matches your actual table name
-        ->select('id', 'articulo', 'modelo')
-        ->get();
+        // ✅ Fetch herramientas
+        $herramientas = DB::connection('toolinventory')
+            ->table('herramientas') 
+            ->select('id', 'articulo', 'modelo')
+            ->get();
 
-    return view('colaboradores', compact('colaboradores', 'herramientas'));
+        return view('colaboradores', compact('colaboradores', 'herramientas'));
+    }
 }
-
-}
-

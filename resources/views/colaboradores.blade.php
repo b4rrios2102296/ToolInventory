@@ -1,6 +1,4 @@
-@extends('layouts.app')
 
-@section('content')
     <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">Registro de Resguardo</h1>
 
@@ -9,7 +7,10 @@
                 {{ session('success') }}
             </div>
         @endif
-
+        
+    @fluxAppearance
+    @livewireStyles
+    @fluxStyles
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="mb-6">
                 <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
@@ -38,7 +39,7 @@
                         <div>
                             <label class="block text-gray-700">Nombre</label>
                             <input type="text" id="nombreCompleto" class="w-full px-3 py-2 border rounded bg-gray-100"
-                                readonly>
+                                readonly>   
                         </div>
                         <div>
                             <label class="block text-gray-700">Puesto</label>
@@ -99,7 +100,8 @@
             </form>
         </div>
     </div>
-
+    @livewireScripts
+    @fluxScripts
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const buscarBtn = document.getElementById('buscar-btn');
@@ -134,5 +136,5 @@
                     });
             });
         });
+        
     </script>
-@endsection
