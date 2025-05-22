@@ -14,8 +14,7 @@ class ResguardoController extends Controller
             'claveColab' => 'required|string',
             'GVRMT' => 'required|integer|exists:toolinventory.herramientas,GVRMT',
             'cantidad' => 'required|integer|min:1',
-            'fecha_entrega' => 'required|date',
-            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_entrega',
+            'fecha_captura' => 'required|date',
             'prioridad' => 'required|in:Alta,Media,Baja',
             'observaciones' => 'nullable|string|max:500',
         ]);
