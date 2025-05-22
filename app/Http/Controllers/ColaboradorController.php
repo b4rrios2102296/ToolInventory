@@ -45,7 +45,7 @@ class ColaboradorController extends Controller
         // ✅ Fetch herramientas
         $herramientas = DB::connection('toolinventory')
             ->table('herramientas') 
-            ->select('id', 'articulo', 'modelo')
+            ->select('GVRMT', 'articulo', 'modelo')
             ->get();
 
         return view('colaboradores', compact('colaboradores', 'herramientas'));

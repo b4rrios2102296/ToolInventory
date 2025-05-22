@@ -56,9 +56,9 @@
                         <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                         <div>
                             <label class="block text-gray-700">Herramienta/Equipo</label>
-                            <select name="herramienta_id" class="w-full px-3 py-2 border rounded" required>
+                            <select name="GVRMT" class="w-full px-3 py-2 border rounded" required>
                                 @foreach ($herramientas as $herramienta)
-                                    <option value="{{ $herramienta->id }}">{{ $herramienta->articulo }}
+                                    <option value="{{ $herramienta->GVRMT }}">{{ $herramienta->articulo }}
                                         ({{ $herramienta->modelo }})</option>
                                 @endforeach
                             </select>
@@ -73,8 +73,8 @@
                             <input type="date" name="fecha_entrega" class="w-full px-3 py-2 border rounded" required>
                         </div>
                         <div>
-                            <label class="block text-gray-700">Fecha de Devolución (Opcional)</label>
-                            <input type="date" name="fecha_devolucion" class="w-full px-3 py-2 border rounded">
+                            <label class="block text-gray-700">Fecha de Captura</label>
+                            <input type="date" name="fecha_captura" class="w-full px-3 py-2 border rounded">
                         </div>
                         <div>
                             <label class="block text-gray-700">Prioridad</label>

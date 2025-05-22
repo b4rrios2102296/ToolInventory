@@ -12,7 +12,7 @@ class ResguardoController extends Controller
     {
         $validated = $request->validate([
             'claveColab' => 'required|string',
-            'herramienta_id' => 'required|integer|exists:toolinventory.herramientas,id',
+            'GVRMT' => 'required|integer|exists:toolinventory.herramientas,GVRMT',
             'cantidad' => 'required|integer|min:1',
             'fecha_entrega' => 'required|date',
             'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_entrega',
@@ -35,7 +35,7 @@ class ResguardoController extends Controller
             // ✅ Get authenticated user
             $usuario = DB::connection('toolinventory')
                 ->table('usuarios')
-                ->where('id', auth()->id())
+                ->where('GVRMT', auth()->id())
                 ->firstOrFail();
 
             // ✅ Generate a numeric folio
