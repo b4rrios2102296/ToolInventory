@@ -35,7 +35,7 @@ class ResguardoController extends Controller
             // ✅ Get authenticated user
             $usuario = DB::connection('toolinventory')
                 ->table('usuarios')
-                ->where('GVRMT', auth()->id())
+                ->where('id', auth()->id())
                 ->firstOrFail();
 
             // ✅ Generate a numeric folio
@@ -45,14 +45,13 @@ class ResguardoController extends Controller
             DB::connection('toolinventory')->table('resguardos')->insert([
                 'folio' => $folio,
                 'estatus' => 'Activo',
-                'herramienta_id' => $request->herramienta_id,
+                'herramienta_id' => $request->GVRMT,
                 'colaborador_num' => $colaborador->claveColab, // ✅ Now validated manually
                 'usuario_registro_id' => $usuario->id,
                 'aperturo_users_id' => $usuario->id,
                 'asigno_users_id' => $usuario->id,
                 'cantidad' => $request->cantidad,
-                'fecha_entrega' => Carbon::parse($request->fecha_entrega),
-                'fecha_devolucion' => $request->fecha_devolucion ? Carbon::parse($request->fecha_devolucion) : null,
+                'fecha_captura' => Carbon::parse($request->fecha_captura),
                 'prioridad' => $request->prioridad,
                 'observaciones' => $request->observaciones,
                 'created_at' => now(),
