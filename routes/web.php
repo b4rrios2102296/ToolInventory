@@ -4,11 +4,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Controllers\ColaboradorController;
+use App\Http\Controllers\ResguardoController;
 
 Route::get('/', fn () => view('welcome'))->name('home');
 
 // Rutas públicas (sin autenticación)
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
+    Route::post('/resguardos', [ResguardoController::class, 'store'])->name('resguardos.store');
+    Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador']);
+});
 Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
 Route::get('/buscar-colaborador', [ColaboradorController::class, 'buscarColaborador']);
 Route::post('/guardar-resguardo', [ResguardoController::class, 'store']);

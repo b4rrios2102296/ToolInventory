@@ -29,18 +29,26 @@ class ColaboradorController extends Controller
     return response()->json($colaborador);
 }
     public function index()
-    {
-        $colaboradores = DB::connection('sqlsrv')
-            ->table('colaborador')
-            ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
-            ->orderBy('claveColab', 'asc') 
-            ->where('estado', '=', '1')
-            ->selectRaw("
-                LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
-                LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
-            ")
-            ->get();
+{
+    $colaboradores = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->select('claveColab', 'nombreCompleto', 'Puesto', 'Area', 'Sucursal')
+        ->where('estado', '=', '1')
+        ->orderBy('claveColab', 'asc')
+        ->selectRaw("
+            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+        ")
+        ->get();
 
-        return view('colaboradores', compact('colaboradores'));
-    }
+    // ✅ Fetch herramientas
+    $herramientas = DB::connection('toolinventory')
+        ->table('herramientas') // Ensure this matches your actual table name
+        ->select('id', 'articulo', 'modelo')
+        ->get();
+
+    return view('colaboradores', compact('colaboradores', 'herramientas'));
 }
+
+}
+

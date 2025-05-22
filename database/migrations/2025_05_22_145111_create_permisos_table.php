@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('descripcion')->nullable()->comment('Explicación detallada del permiso');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
+            $table->integer('usuario_id')->nullable();
         });
     }
 

@@ -2,62 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ResguardoController extends Controller
 {
+    public function buscarColaborador(Request $request)
+    {
+        $request->validate(['clave' => 'required|string']);
+
+        $colaborador = Colaborador::where('claveColab', $request->clave)
+            ->where('estado', '1')
+            ->firstOrFail();
+
+        return response()->json([
+            'claveColab' => $colaborador->claveColab,
+            'nombreCompleto' => $colaborador->nombreCompleto,
+            'Puesto' => $colaborador->Puesto,
+            'area_limpia' => $colaborador->area_limpia,
+            'sucursal_limpia' => $colaborador->sucursal_limpia
+        ]);
+    }
+
     public function store(Request $request)
     {
-        // Validación de datos
         $validated = $request->validate([
-            'herramienta_id' => 'required|integer',
-            'colaborador_num' => 'required|string',
+            'claveColab' => 'required|string',
+            'herramienta_id' => 'required|integer|exists:toolinventory.herramientas,id',
             'cantidad' => 'required|integer|min:1',
             'fecha_entrega' => 'required|date',
+            'fecha_devolucion' => 'nullable|date|after_or_equal:fecha_entrega',
             'prioridad' => 'required|in:Alta,Media,Baja',
+            'observaciones' => 'nullable|string|max:500',
         ]);
 
-        try {
-            // Obtener datos del colaborador de la primera base de datos
-            $colaborador = DB::connection('sqlsrv')
-                ->table('colaborador')
-                ->where('claveColab', $request->colaborador_num)
+        return DB::connection('toolinventory')->transaction(function () use ($request) {
+            // Verificar existencia del colaborador
+            $colaborador = Colaborador::where('claveColab', $request->claveColab)
                 ->where('estado', '1')
-                ->first();
+                ->firstOrFail();
 
-            if (!$colaborador) {
-                return back()->withInput()->with('error', 'Colaborador no encontrado o inactivo');
-            }
-
-            // Obtener usuario_id de la segunda base de datos
+            // Obtener usuario autenticado
             $usuario = DB::connection('toolinventory')
                 ->table('usuarios')
-                ->where('identificador', auth()->user()->email) // Asumiendo autenticación
-                ->first();
+                ->where('id', auth()->id())
+                ->firstOrFail();
 
-            if (!$usuario) {
-                return back()->withInput()->with('error', 'Usuario no registrado en el sistema de autenticación');
-            }
+            // Generar folio único
+            $folio = $this->generarFolio();
 
-            // Generar folio consecutivo
-            $ultimoFolio = DB::connection('toolinventory')
-                ->table('resguardos')
-                ->max('folio');
-
-            $nuevoFolio = 'RSG-' . str_pad((intval(str_replace('RSG-', '', $ultimoFolio))) + 1, 6, '0', STR_PAD_LEFT);
-
-            // Insertar el resguardo
-            DB::connection('sqlsrv')->table('resguardos')->insert([
-                'folio' => $nuevoFolio,
+            // Crear resguardo
+            DB::connection('toolinventory')->table('resguardos')->insert([
+                'folio' => $folio,
                 'estatus' => 'Activo',
                 'herramienta_id' => $request->herramienta_id,
-                'colaborador_num' => $request->colaborador_num,
+                'colaborador_num' => $colaborador->claveColab,
                 'usuario_registro_id' => $usuario->id,
+                'aperturo_users_id' => $usuario->id,
+                'asigno_users_id' => $usuario->id,
                 'cantidad' => $request->cantidad,
                 'fecha_entrega' => Carbon::parse($request->fecha_entrega),
-                'fecha_devolucion' => $request->fecha_devolucion ? Carbon::parse($request->fecha_devolucion) : null,
+                'fecha_devolucion' => $request->fecha_devolucion 
+                    ? Carbon::parse($request->fecha_devolucion) 
+                    : null,
                 'prioridad' => $request->prioridad,
                 'observaciones' => $request->observaciones,
                 'created_at' => now(),
@@ -65,11 +74,19 @@ class ResguardoController extends Controller
             ]);
 
             return redirect()->route('resguardos.index')
-                ->with('success', 'Resguardo '.$nuevoFolio.' creado exitosamente');
-            
-        } catch (\Exception $e) {
-            return back()->withInput()
-                ->with('error', 'Error al registrar el resguardo: '.$e->getMessage());
-        }
+                ->with('success', "Resguardo $folio creado exitosamente");
+        });
+    }
+
+    protected function generarFolio()
+    {
+        $ultimo = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $numero = $ultimo ? intval(substr($ultimo->folio, 4)) + 1 : 1;
+
+        return 'RSG-' . str_pad($numero, 6, '0', STR_PAD_LEFT);
     }
 }
