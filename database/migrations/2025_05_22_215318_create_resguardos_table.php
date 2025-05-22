@@ -22,7 +22,6 @@ return new class extends Migration
             $table->integer('cantidad')->comment('Cantidad resguardada');
             $table->string('prioridad', 45)->nullable();
             $table->string('observaciones')->nullable()->comment('Observaciones');
-            $table->timestamp('fecha_entrega')->nullable();
             $table->timestamp('fecha_captura')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
