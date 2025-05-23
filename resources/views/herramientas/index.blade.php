@@ -2,7 +2,7 @@
 <table class="min-w-full table-auto border-collapse border border-gray-300">
     <thead>
         <tr>
-            <th class="px-4 py-2 border">GVRMT</th>
+            <th class="px-4 py-2 border">id</th>
             <th class="px-4 py-2 border">Cantidad</th>
             <th class="px-4 py-2 border">Artículo</th>
             <th class="px-4 py-2 border">Unidad</th>
@@ -15,7 +15,7 @@
     <tbody>
         @forelse($herramientas as $herramienta)
             <tr>
-                <td class="px-4 py-2 border">{{ $herramienta->GVRMT }}</td>
+                <td class="px-4 py-2 border">{{ $herramienta->id }}</td>
                 <td class="px-4 py-2 border">{{ $herramienta->cantidad }}</td>
                 <td class="px-4 py-2 border">{{ $herramienta->articulo }}</td>
                 <td class="px-4 py-2 border">{{ $herramienta->unidad }}</td>

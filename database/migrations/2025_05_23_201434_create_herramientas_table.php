@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('herramientas', function (Blueprint $table) {
-            $table->integer('GVRMT', true);
+            $table->string('id', 25)->primary();
             $table->string('cantidad', 45);
             $table->string('articulo', 45);
             $table->string('unidad', 45);

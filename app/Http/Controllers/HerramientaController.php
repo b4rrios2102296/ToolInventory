@@ -27,7 +27,7 @@ class HerramientaController extends Controller
 
         // Insertar los valores en la base de datos
         DB::connection('toolinventory')->table('herramientas')->insert([
-            // GVRMT es AI PK, no se incluye aquí para que lo genere la BD
+            // id es AI PK, no se incluye aquí para que lo genere la BD
             'cantidad'      => $validated['cantidad'],
             'articulo'      => $validated['articulo'],
             'unidad'        => $validated['unidad'],
@@ -37,6 +37,7 @@ class HerramientaController extends Controller
             'created_at'    => Carbon::now(),
             'updated_at'    => Carbon::now(),
         ]);
+        
 
         // Redirigir con mensaje de éxito
         return redirect()->route('herramientas')->with('success', 'Herramienta creada exitosamente.');

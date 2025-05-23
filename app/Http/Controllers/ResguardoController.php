@@ -10,9 +10,10 @@ class ResguardoController extends Controller
 {
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        // Cambia 'id' por 'herramienta_id' en todo el flujo para mayor claridad y consistencia
+        $request->validate([
             'claveColab' => 'required|string',
-            'GVRMT' => 'required|integer|exists:toolinventory.herramientas,GVRMT',
+            'herramienta_id' => 'required|integer|exists:toolinventory.herramientas,id',
             'cantidad' => 'required|integer|min:1',
             'fecha_captura' => 'required|date',
             'prioridad' => 'required|in:Alta,Media,Baja',
@@ -20,7 +21,7 @@ class ResguardoController extends Controller
         ]);
 
         return DB::connection('toolinventory')->transaction(function () use ($request) {
-            // ✅ Validate collaborator in external `sqlsrv` connection
+            // Validar colaborador en la base externa
             $colaborador = DB::connection('sqlsrv')
                 ->table('colaborador')
                 ->where('claveColab', $request->claveColab)
@@ -28,24 +29,24 @@ class ResguardoController extends Controller
                 ->first();
 
             if (!$colaborador) {
-                return back()->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.']);
+                return back()->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.'])->withInput();
             }
 
-            // ✅ Get authenticated user
+            // Obtener usuario autenticado
             $usuario = DB::connection('toolinventory')
                 ->table('usuarios')
                 ->where('id', auth()->id())
                 ->firstOrFail();
 
-            // ✅ Generate a numeric folio
+            // Generar folio
             $folio = $this->generarFolio();
 
-            // ✅ Insert without enforcing FK constraints
+            // Insertar resguardo
             DB::connection('toolinventory')->table('resguardos')->insert([
                 'folio' => $folio,
                 'estatus' => 'Activo',
-                'herramienta_id' => $request->GVRMT,
-                'colaborador_num' => $colaborador->claveColab, // ✅ Now validated manually
+                'herramienta_id' => $request->herramienta_id,
+                'colaborador_num' => $colaborador->claveColab,
                 'usuario_registro_id' => $usuario->id,
                 'aperturo_users_id' => $usuario->id,
                 'asigno_users_id' => $usuario->id,
@@ -63,33 +64,27 @@ class ResguardoController extends Controller
 
     protected function generarFolio()
     {
-        // ✅ Ensure we're using a numeric folio
         $ultimo = DB::connection('toolinventory')
             ->table('resguardos')
-            ->orderBy('folio', 'desc') 
+            ->orderBy('folio', 'desc')
             ->first();
 
-        // If no previous folio exists, start from 1
         $numero = $ultimo ? intval($ultimo->folio) + 1 : 1;
-
-        return $numero; // ✅ Returns a numeric folio instead of a string like "RSG-000001"
+        return $numero;
     }
+
     public function index()
-{
-    $resguardos = DB::connection('toolinventory')
-        ->table('resguardos')
-        ->get(); // Retrieve all resguardos
+    {
+        $resguardos = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->get();
 
-    return view('resguardos.index', compact('resguardos'));
-}
+        return view('resguardos.index', compact('resguardos'));
+    }
 
-public function create()
-{
-    // Obtén las herramientas para el formulario
-    $herramientas = \DB::connection('toolinventory')->table(table: 'herramientas')->get();
-
-    // Retorna la vista del formulario de resguardo
-    return view('resguardos.create', compact('herramientas'));
-}
-
+    public function create()
+    {
+        $herramientas = \DB::connection('toolinventory')->table('herramientas')->get();
+        return view('resguardos.create', compact('herramientas'));
+    }
 }
