@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ambientes', function (Blueprint $table) {
+        Schema::create('permisos', function (Blueprint $table) {
             $table->integer('id', true);
-            $table->string('nombre', 80);
+            $table->string('clave', 50)->unique('clave')->comment('Clave única del permiso (ej. gestionar_usuarios)');
+            $table->string('nombre', 100)->comment('Nombre descriptivo del permiso');
+            $table->string('descripcion')->nullable()->comment('Explicación detallada del permiso');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
+            $table->integer('usuario_id')->nullable();
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ambientes');
+        Schema::dropIfExists('permisos');
     }
 };
