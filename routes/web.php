@@ -5,40 +5,43 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ResguardoController;
+use App\Http\Controllers\HerramientaController;
+use Illuminate\Contracts\View\View;
 
-Route::get('/', fn () => view('welcome'))->name('home');
+Route::get('/', fn(): View => view('welcome'))->name('home');
 
 // Rutas públicas (sin autenticación)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
-Route::get('/resguardos', [ResguardoController::class, 'index'])->name('resguardos');
-Route::post('/resguardos', [ResguardoController::class, 'store'])->name('resguardos.store');
-
-    Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador']);
-});
-Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
-Route::get('/buscar-colaborador', [ColaboradorController::class, 'buscarColaborador']);
-Route::post('/guardar-resguardo', [ResguardoController::class, 'store']);
-
-// Rutas para invitados (no autenticados)
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
-    Route::get('/register', Register::class)->name('register');
 });
 
 // Rutas protegidas (requieren autenticación)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
+    // Herramientas (accesibles para todos los autenticados)
+    Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas');
+    Route::get('/herramientas/crear', [HerramientaController::class, 'create'])->name('herramientas.create');
+    Route::post('/herramientas', [HerramientaController::class, 'store'])->name('herramientas.store');
+
+    // Resguardos (accesibles para todos los autenticados)
+    Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
+    Route::get('/resguardos', [ResguardoController::class, 'index'])->name('resguardos');
+    Route::post('/resguardos', [ResguardoController::class, 'store'])->name('resguardos.store');
+    Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador']);
+
+    // Colaboradores
+    Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
+    Route::get('/buscar-colaborador', [ColaboradorController::class, 'buscarColaborador']);
+    Route::post('/guardar-resguardo', [ResguardoController::class, 'store']);
+
+    // Dashboard y logout
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
-    // Rutas para usuarios normales
-    Route::middleware('permission:basic_access')->group(function () {
-        Route::get('/tools', fn () => view('herramientas'))->name('herramientas');
-    });
-
-    // Rutas solo para usuarios God
+    // Rutas solo para usuarios admin (God)
     Route::middleware('permission:user_audit')->group(function () {
-        Route::get('/user-audit', fn () => view('audit.user'))->name('audit.user');
-        Route::get('/activity-logs', fn () => view('audit.logs'))->name('audit.logs');
+        Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
+        Route::get('/activity-logs', fn() => view('audit.logs'))->name('audit.logs');
+        Route::get('/register', action: Register::class)->name('register');
+
     });
 });

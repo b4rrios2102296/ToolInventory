@@ -23,9 +23,9 @@
     
         <flux:navlist variant="outline">
             <flux:navlist.item icon="home" href="#" current>Dashboard</flux:navlist.item>
-            <flux:navlist.item icon="inbox" badge="12" href="#">Resguardos</flux:navlist.item>
+            <flux:navlist.item href="{{ route('resguardos.create') }}">Resguardos</flux:navlist.item>
             <flux:navlist.group  heading="Inventario">
-            <flux:navlist.item href="{{ route('herramientas') }}">Herramientas</flux:navlist.item>
+            <flux:navlist.item href="{{ route('herramientas.create') }}">Herramientas</flux:navlist.item>
             <flux:navlist.item icon="calendar" href="#">Calendar</flux:navlist.item>
             </flux:navlist.group>
             <flux:navlist.group>

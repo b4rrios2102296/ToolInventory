@@ -34,8 +34,5 @@
             Ingresar 
         </button>
     </form>
-
-    <div class="mt-4 text-center">
-        <a href="{{ route('register') }}" class="text-[#321F01] hover:underline">¿No tienes cuenta? Regístrate</a>
-    </div>
+    
 </div>
