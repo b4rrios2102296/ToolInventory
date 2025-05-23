@@ -48,6 +48,6 @@ class ColaboradorController extends Controller
             ->select('GVRMT', 'articulo', 'modelo')
             ->get();
 
-        return view('colaboradores', compact('colaboradores', 'herramientas'));
+        return view('resguardos.index', compact('resguardos'));
     }
 }

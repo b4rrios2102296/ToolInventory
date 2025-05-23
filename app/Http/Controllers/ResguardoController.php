@@ -80,7 +80,16 @@ class ResguardoController extends Controller
         ->table('resguardos')
         ->get(); // Retrieve all resguardos
 
-    return view('resguardos', compact('resguardos'));
+    return view('resguardos.index', compact('resguardos'));
+}
+
+public function create()
+{
+    // Obtén las herramientas para el formulario
+    $herramientas = \DB::connection('toolinventory')->table('herramientas')->get();
+
+    // Retorna la vista del formulario de resguardo
+    return view('resguardos.create', compact('herramientas'));
 }
 
 }
