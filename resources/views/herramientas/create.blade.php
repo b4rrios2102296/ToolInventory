@@ -18,7 +18,7 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('herramientas.create') }}" method="POST" class="bg-white rounded shadow p-6 space-y-4">
+        <form action="{{ route('herramientas.store') }}" method="POST" class="bg-white rounded shadow p-6 space-y-4">
             @csrf
             <div>
                 <label class="block text-gray-700 mb-1">Nombre/Artículo</label>
@@ -29,12 +29,20 @@
                 <input type="text" name="modelo" class="w-full px-3 py-2 border rounded" required>
             </div>
             <div>
-                <label class="block text-gray-700 mb-1">Descripción</label>
-                <textarea name="descripcion" rows="3" class="w-full px-3 py-2 border rounded"></textarea>
+                <label class="block text-gray-700 mb-1">Unidad</label>
+                <input type="text" name="unidad" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-1">Número de Serie</label>
+                <input type="text" name="num_serie" class="w-full px-3 py-2 border rounded" required>
             </div>
             <div>
                 <label class="block text-gray-700 mb-1">Cantidad Disponible</label>
-                <input type="number" name="cantidad" min="1" class="w-full px-3 py-2 border rounded" required>
+                <input type="text" name="cantidad" class="w-full px-3 py-2 border rounded" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 mb-1">Observaciones</label>
+                <textarea name="observaciones" rows="3" class="w-full px-3 py-2 border rounded"></textarea>
             </div>
             <div class="flex justify-end">
                 <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">

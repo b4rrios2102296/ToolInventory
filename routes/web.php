@@ -19,8 +19,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // Herramientas (accesibles para todos los autenticados)
     Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas');
-    Route::get('/herramientas/crear', [HerramientaController::class, 'create'])->name('herramientas.create');
     Route::post('/herramientas', [HerramientaController::class, 'store'])->name('herramientas.store');
+    Route::get('/herramientas/crear', [HerramientaController::class, 'create'])->name('herramientas.create');
 
     // Resguardos (accesibles para todos los autenticados)
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');

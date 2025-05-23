@@ -86,7 +86,7 @@ class ResguardoController extends Controller
 public function create()
 {
     // Obtén las herramientas para el formulario
-    $herramientas = \DB::connection('toolinventory')->table('herramientas')->get();
+    $herramientas = \DB::connection('toolinventory')->table(table: 'herramientas')->get();
 
     // Retorna la vista del formulario de resguardo
     return view('resguardos.create', compact('herramientas'));

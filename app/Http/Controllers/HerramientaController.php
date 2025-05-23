@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class HerramientaController extends Controller
 {
@@ -14,18 +15,33 @@ class HerramientaController extends Controller
 
     public function store(Request $request)
     {
-        // Validate the request data
+        // Validar los datos recibidos
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            // Add other fields and validation rules as needed
+            'cantidad'      => 'required|string|max:45',
+            'articulo'      => 'required|string|max:45',
+            'unidad'        => 'required|string|max:45',
+            'modelo'        => 'required|string|max:100',
+            'num_serie'     => 'required|string|max:100',
+            'observaciones' => 'nullable|string|max:191',
         ]);
 
-        // Insert the new herramienta into the database
-        DB::connection('toolinventory')->table('herramientas')->insert($validated);
+        // Insertar los valores en la base de datos
+        DB::connection('toolinventory')->table('herramientas')->insert([
+            // GVRMT es AI PK, no se incluye aquí para que lo genere la BD
+            'cantidad'      => $validated['cantidad'],
+            'articulo'      => $validated['articulo'],
+            'unidad'        => $validated['unidad'],
+            'modelo'        => $validated['modelo'],
+            'num_serie'     => $validated['num_serie'],
+            'observaciones' => $validated['observaciones'] ?? null,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now(),
+        ]);
 
-        // Redirect back with success message
+        // Redirigir con mensaje de éxito
         return redirect()->route('herramientas')->with('success', 'Herramienta creada exitosamente.');
     }
+
     public function create()
     {
         // Retorna la vista del formulario para crear una herramienta
