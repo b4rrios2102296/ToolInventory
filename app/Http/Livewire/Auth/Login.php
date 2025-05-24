@@ -41,6 +41,6 @@ class Login extends Component
     public function logout()
     {
         Auth::logout();
-        return redirect('/login')->with('status', 'Has cerrado sesión exitosamente.');
+        return redirect('/')->with('status', 'Has cerrado sesión exitosamente.');
     }
 }
