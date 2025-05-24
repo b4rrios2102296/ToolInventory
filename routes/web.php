@@ -8,11 +8,14 @@ use App\Http\Controllers\ResguardoController;
 use App\Http\Controllers\HerramientaController;
 use Illuminate\Contracts\View\View;
 
-Route::get('/', fn(): View => view('welcome'))->name('home');
+Route::get('/', fn(): View => view('welcome'))->name(name: 'home');
+Route::get('/test', fn(): View => view('livewire.test'))->name(name: 'test');
+
 
 // Rutas públicas (sin autenticación)
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
+
 
 
 });
