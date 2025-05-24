@@ -45,7 +45,7 @@ class ColaboradorController extends Controller
         // ✅ Fetch herramientas
         $herramientas = DB::connection('toolinventory')
             ->table('herramientas') 
-            ->select('GVRMT', 'articulo', 'modelo')
+            ->select('id', 'articulo', 'modelo')
             ->get();
 
         return view('resguardos.index', compact('resguardos'));
