@@ -40,7 +40,7 @@ class HerramientaController extends Controller
         
 
         // Redirigir con mensaje de éxito
-        return redirect()->route('herramientas')->with('success', 'Herramienta creada exitosamente.');
+        return redirect()->route('herramientas.index')->with('success', 'Herramienta creada exitosamente.');
     }
 
     public function create()
