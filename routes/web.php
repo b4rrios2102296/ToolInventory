@@ -13,6 +13,8 @@ Route::get('/', fn(): View => view('welcome'))->name('home');
 // Rutas públicas (sin autenticación)
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
+
+
 });
 
 // Rutas protegidas (requieren autenticación)
@@ -42,7 +44,8 @@ Route::middleware('auth')->group(function () {
     // Rutas solo para usuarios admin
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
-        Route::get('/activity-logs', fn() => view('audit.logs'))->name('audit.logs');
         Route::get('/register', Register::class)->name('register');
+
+
     });
 });

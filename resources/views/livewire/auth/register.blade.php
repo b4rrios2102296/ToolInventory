@@ -56,6 +56,6 @@
     </form>
 
     <div class="mt-4 text-center">
-        <a href="{{ route('login') }}" class="text-blue-500 hover:underline">¿Ya tienes cuenta? Inicia sesión</a>
+        <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">Regresar </a>
     </div>
 </div>

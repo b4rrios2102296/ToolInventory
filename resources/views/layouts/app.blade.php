@@ -18,7 +18,8 @@
 <body class="min-h-screen bg-white dark:bg-zinc-800">
 
     <!-- HEADER con usuario a la derecha -->
-    <flux:header class="sticky top-0 flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
+    <flux:header
+        class="sticky top-0 flex justify-between items-center p-4 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-700">
         <img src="{{ asset('Images/Simplification.png') }}" alt="Logo" class="w-32 mb-4" />
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
         <div class="flex items-center justify-end w-full">
@@ -47,7 +48,11 @@
             <flux:navlist.item href="{{ route('herramientas.create') }}">Herramientas</flux:navlist.item>
             <flux:navlist.item href="{{ route('resguardos.index') }}">Lista de Resguardos</flux:navlist.item>
             <flux:navlist.item href="{{ route('herramientas.index') }}">Lista de Herramientas</flux:navlist.item>
-        </flux:navlist>
+
+            @if(Auth::user()->hasPermission('user_audit'))
+                <flux:navlist.item href="{{ route('register') }}">Crear Usuario</flux:navlist.item>
+            @endif
+            </flux:navlist>
     </flux:sidebar>
 
     <main class="py-6 px-4 sm:px-6 lg:px-8">

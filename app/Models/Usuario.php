@@ -30,20 +30,24 @@ protected $hidden = [
 ];
 
     // In your User model (app/Models/User.php or app/Models/Usuario.php)
-public function hasPermission(string $clave): bool
-{
-    return $this->permissions()->where('clave', $clave)->exists();
-}
+
 
 
 public function role()
-    {
-        return $this->belongsTo(Role::class, 'rol_id');
-    }
+{
+    return $this->belongsTo(Role::class, 'rol_id');
+}
 
 public function permissions()
 {
-    return $this->hasMany(Permission::class);
+    // Relación a través del rol
+    return $this->role ? $this->role->permisos() : collect();
+}
+
+public function hasPermission(string $clave): bool
+{
+    // Busca el permiso por clave en los permisos del rol
+    return $this->role && $this->role->permisos->where('clave', $clave)->isNotEmpty();
 }
 
 }
