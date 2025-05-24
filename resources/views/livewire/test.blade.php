@@ -108,7 +108,6 @@
                 <flux:navlist.item href="#">Brand guidelines</flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>
-
         <flux:spacer />
 
         <flux:navlist variant="outline">
@@ -160,6 +159,7 @@
 
         <flux:separator variant="subtle" />
     </flux:main>
+    
 
     @fluxScripts
 </body>
