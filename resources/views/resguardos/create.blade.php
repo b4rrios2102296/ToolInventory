@@ -7,6 +7,22 @@
         </div>
     @endif
 
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     @fluxAppearance
     @livewireStyles
     @fluxStyles
@@ -16,7 +32,7 @@
             <div class="flex gap-2">
                 <input type="text" id="colaborador-search" placeholder="Número o nombre"
                     class="flex-1 px-4 py-2 border rounded-md">
-                <button id="buscar-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md">
+                <button id="buscar-btn" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                     Buscar
                 </button>
             </div>
@@ -34,7 +50,7 @@
                         <label class="block text-gray-700">Número</label>
                         <input type="text" name="claveColab" id="claveColab"
                             class="w-full px-3 py-2 border rounded bg-gray-100"
-                            value="{{ old('claveColab') }}" readonly>
+                            value="{{ old('claveColab') }}" readonly required>
                     </div>
                     <div>
                         <label class="block text-gray-700">Nombre</label>
@@ -57,7 +73,7 @@
                 <div class="space-y-4 border p-4 rounded-md">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div>
-                        <label class="block text-gray-700">Herramienta</label>
+                        <label class="block text-gray-700">Herramienta <span class="text-red-500">*</span></label>
                         <select name="herramienta_id" class="w-full px-3 py-2 border rounded" required>
                             <option value="">Seleccione una herramienta</option>
                             @foreach ($herramientas as $herramienta)
@@ -68,17 +84,17 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Cantidad</label>
+                        <label class="block text-gray-700">Cantidad <span class="text-red-500">*</span></label>
                         <input type="number" name="cantidad" min="1" class="w-full px-3 py-2 border rounded"
-                            value="{{ old('cantidad') }}" required>
+                            value="{{ old('cantidad', 1) }}" required>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Fecha de Resguardo</label>
+                        <label class="block text-gray-700">Fecha de Resguardo <span class="text-red-500">*</span></label>
                         <input type="date" name="fecha_captura" class="w-full px-3 py-2 border rounded"
-                            value="{{ old('fecha_captura') }}">
+                            value="{{ old('fecha_captura', date('Y-m-d')) }}" required>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Prioridad</label>
+                        <label class="block text-gray-700">Prioridad <span class="text-red-500">*</span></label>
                         <select name="prioridad" class="w-full px-3 py-2 border rounded" required>
                             <option value="Alta" {{ old('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
                             <option value="Media" {{ old('prioridad', 'Media') == 'Media' ? 'selected' : '' }}>Media</option>
@@ -93,7 +109,10 @@
                 <textarea name="observaciones" rows="3" class="w-full px-3 py-2 border rounded">{{ old('observaciones') }}</textarea>
             </div>
 
-            <div class="flex justify-end">
+            <div class="flex justify-end gap-4">
+                <a href="{{ route('resguardos.index') }}" class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                    Cancelar
+                </a>
                 <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                     Guardar Resguardo
                 </button>
@@ -108,6 +127,7 @@
         const buscarBtn = document.getElementById('buscar-btn');
         const searchInput = document.getElementById('colaborador-search');
         const errorDiv = document.getElementById('colaborador-error');
+        const claveColabInput = document.getElementById('claveColab');
 
         buscarBtn.addEventListener('click', function (e) {
             e.preventDefault();
@@ -121,20 +141,28 @@
 
             errorDiv.classList.add('hidden');
 
-            fetch(`/buscar-colaborador?clave=${encodeURIComponent(searchValue)}`)
+            fetch(`{{ route('resguardos.buscar') }}?clave=${encodeURIComponent(searchValue)}`)
                 .then(response => {
                     if (!response.ok) throw new Error('Error en la búsqueda');
                     return response.json();
                 })
                 .then(data => {
-                    document.getElementById('claveColab').value = data.claveColab;
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    
+                    claveColabInput.value = data.claveColab;
                     document.getElementById('nombreCompleto').value = data.nombreCompleto;
-                    document.getElementById('puesto').value = data.Puesto;
-                    document.getElementById('area').value = data.area_limpia;
+                    document.getElementById('puesto').value = data.Puesto || 'No especificado';
+                    document.getElementById('area').value = data.area_limpia || 'No especificada';
                 })
                 .catch(error => {
                     errorDiv.textContent = error.message;
                     errorDiv.classList.remove('hidden');
+                    claveColabInput.value = '';
+                    document.getElementById('nombreCompleto').value = '';
+                    document.getElementById('puesto').value = '';
+                    document.getElementById('area').value = '';
                 });
         });
     });
