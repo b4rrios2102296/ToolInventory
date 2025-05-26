@@ -94,13 +94,9 @@
 
         <flux:navlist variant="outline">
                 <flux:navlist.item icon="cog" href="{{ route('dashboard') }}"> Dashboard</flux:navlist.item>
-            <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid">
-                <flux:navlist.item href="{{ route('herramientas.create') }}">Herramientas</flux:navlist.item>
-                <flux:navlist.item href="{{ route('herramientas.index') }}">Lista de Herramientas</flux:navlist.item>
-            </flux:navlist.group>
-            <flux:navlist.group expandable :expanded="false" heading="Resguardos" class="hidden lg:grid">
-                <flux:navlist.item href="{{ route('resguardos.create') }}">Resguardos</flux:navlist.item>
-                <flux:navlist.item href="{{ route('resguardos.index') }}">Lista de Resguardos</flux:navlist.item>
+                <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">Resguardos</flux:navlist.item>
+                            <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid">
+                <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas</flux:navlist.item>
             </flux:navlist.group>
             @if(Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin" class="hidden lg:grid">
@@ -173,5 +169,6 @@
 
     @livewireScripts
     @fluxScripts
+    
 </body>
 </html>
