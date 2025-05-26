@@ -1,34 +1,35 @@
 {{-- filepath: resources/views/herramientas/index.blade.php --}}
-<table class="min-w-full table-auto border-collapse border border-gray-300">
-    <thead>
-        <tr>
-            <th class="px-4 py-2 border">id</th>
-            <th class="px-4 py-2 border">Cantidad</th>
-            <th class="px-4 py-2 border">Artículo</th>
-            <th class="px-4 py-2 border">Unidad</th>
-            <th class="px-4 py-2 border">Modelo</th>
-            <th class="px-4 py-2 border">Num Serie</th>
-            <th class="px-4 py-2 border">Observaciones</th>
+@extends('layouts.app')
 
-        </tr>
-    </thead>
-    <tbody>
-        @forelse($herramientas as $herramienta)
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-blue-200 bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 rounded-xl shadow-xl transition-all duration-300">
+        <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
             <tr>
-                <td class="px-4 py-2 border">{{ $herramienta->id }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->cantidad }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->articulo }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->unidad }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->modelo }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->num_serie }}</td>
-                <td class="px-4 py-2 border">{{ $herramienta->observaciones }}</td>
-
-                
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider rounded-tl-xl">ID</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Cantidad</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Artículo</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Unidad</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Modelo</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Num Serie</th>
+                <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider rounded-tr-xl">Observaciones</th>
             </tr>
-        @empty
-            <tr>
-                <td colspan="5" class="text-center py-4 border">No hay herramientas registradas.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @forelse($herramientas as $herramienta)
+                <tr class="hover:bg-blue-200/60 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->id }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->cantidad }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->articulo }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->unidad }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->modelo }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->num_serie }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-900">{{ $herramienta->observaciones }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="7" class="px-6 py-4 text-center text-blue-400">No hay herramientas registradas.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+</div>
