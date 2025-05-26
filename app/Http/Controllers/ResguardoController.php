@@ -83,10 +83,18 @@ class ResguardoController extends Controller
 
     public function index()
     {
+        // Obtener los resguardos junto con los datos del usuario que aperturó el resguardo
         $resguardos = DB::connection('toolinventory')
             ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.*',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos'
+            )
             ->get();
 
+        // Pasar los datos al view
         return view('resguardos.index', compact('resguardos'));
     }
 

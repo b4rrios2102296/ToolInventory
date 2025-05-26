@@ -38,11 +38,13 @@
                 @forelse($resguardos as $resguardo)
                     <tr class="border-t">
                         <td class="px-4 py-2">{{ $resguardo->folio }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
                         <td class="px-4 py-2">{{ $resguardo->prioridad }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->aperturo_users_id }}</td>
+                        <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
+                        <td class="px-4 py-2">
+                            {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
+                        </td>
                         <td class="px-4 py-2">{{ $resguardo->asigno_users_id }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->colaborador_num}}</td>
+                        <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
                         <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
                     </tr>
                 @empty
