@@ -50,12 +50,9 @@ class ResguardoController extends Controller
                 DB::connection('toolinventory')->table('resguardos')->insert([
                     'folio' => $folio,
                     'estatus' => 'Activo',
-                    'herramienta_id' => $request->herramienta_id,
                     'colaborador_num' => $colaborador->claveColab,
-                    'usuario_registro_id' => $usuario->id,
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
-                    'cantidad' => $request->cantidad,
                     'fecha_captura' => Carbon::parse($request->fecha_captura),
                     'prioridad' => $request->prioridad,
                     'observaciones' => $request->observaciones,
@@ -106,8 +103,17 @@ class ResguardoController extends Controller
     {
         $colaborador = DB::connection('sqlsrv')
             ->table('colaborador')
-            ->where('claveColab', 'like', '%'.$request->clave.'%')
-            ->orWhere('nombreCompleto', 'like', '%'.$request->clave.'%')
+            ->select(
+                '*'
+            )
+            ->selectRaw("
+                LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+                LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+            ")
+            ->where(function ($query) use ($request) {
+                $query->where('claveColab', 'like', '%'.$request->clave.'%')
+                      ->orWhere('nombreCompleto', 'like', '%'.$request->clave.'%');
+            })
             ->where('estado', '1')
             ->first();
 

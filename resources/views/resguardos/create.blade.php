@@ -28,97 +28,107 @@
         </div>
     @endif
     <div class="rounded-lg shadow-md p-6">
-        <div class="mb-6">
-            <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
-            <div class="flex gap-2">
-                <input type="text" id="colaborador-search" placeholder="Número o nombre"
-                    class="flex-1 px-4 py-2 border rounded-md">
-                    <flux:button icon="magnifying-glass" id="buscar-btn">
-                    Buscar
-                    </flux:button>
-                    </div>
-                    <div id="colaborador-error" class="text-red-500 mt-2 hidden"></div>
-        </div>
-
         <form id="resguardo-form" method="POST" action="{{ route('resguardos.store') }}">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <!-- Datos del Colaborador -->
-                <div class="space-y-4 border p-4 rounded-md">
-                    <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
+                <!-- Card: Buscar y Datos del Colaborador -->
+                <div class=" border rounded-lg shadow p-4 space-y-6">
+                    <!-- Buscar Colaborador -->
                     <div>
-                        <label class="block text-gray-700">Número</label>
-                        <input type="text" name="claveColab" id="claveColab"
-                            class="w-full px-3 py-2 border rounded bg-gray-100" value="{{ old('claveColab') }}" readonly
-                            required>
+                        <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
+                        <div class="flex gap-2">
+                            <flux:input type="text" id="colaborador-search" placeholder="Número o nombre"
+                                class="flex-1 px-4 py-2 rounded-md"></flux:input>
+                            <flux:button icon="magnifying-glass" id="buscar-btn">
+                                Buscar
+                            </flux:button>
+                        </div>
+                        <div id="colaborador-error" class="text-red-500 mt-2 hidden"></div>
                     </div>
-                    <div>
-                        <label class="block text-gray-700">Nombre</label>
-                        <input type="text" id="nombreCompleto" class="w-full px-3 py-2 border rounded bg-gray-100"
-                            value="{{ old('nombreCompleto') }}" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700">Puesto</label>
-                        <input type="text" id="puesto" class="w-full px-3 py-2 border rounded bg-gray-100"
-                            value="{{ old('puesto') }}" readonly>
-                    </div>
-                    <div>
-                        <label class="block text-gray-700">Área</label>
-                        <input type="text" id="area" class="w-full px-3 py-2 border rounded bg-gray-100"
-                            value="{{ old('area') }}" readonly>
+                    <!-- Datos del Colaborador -->
+                    <div class="space-y-4">
+                        <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
+                        <div>
+                            <label class="block text-gray-700">Número</label>
+                            <flux:input type="text" name="claveColab" id="claveColab"
+                                class="w-full px-3 py-2 rounded bg-gray-100" value="{{ old('claveColab') }}" readonly
+                                required></flux:input>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Nombre</label>
+                            <flux:input type="text" id="nombreCompleto" class="w-full px-3 py-2 rounded bg-gray-100"
+                                value="{{ old('nombreCompleto') }}" readonly></flux:input>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Puesto</label>
+                            <flux:input type="text" id="Puesto" class="w-full px-3 py-2 rounded bg-gray-100"
+                                value="{{ old('Puesto') }}" readonly></flux:input>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Departamento</label>
+                            <flux:input type="text" id="area_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                                value="{{ old('area_limpia') }}" readonly></flux:input>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700">Ambiente</label>
+                            <flux:input type="text" id="sucursal_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                                value="{{ old('sucursal_limpia') }}" readonly></flux:input>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Datos del Resguardo -->
-                <div class="space-y-4 border p-4 rounded-md">
+                <!-- Card: Detalles del Resguardo -->
+                <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div>
                         <label class="block text-gray-700">Herramienta <span class="text-red-500">*</span></label>
-                        <select name="herramienta_id" class="w-full px-3 py-2 border rounded" required>
+                        <flux:select name="herramienta_id" class="w-full px-3 py-2 rounded" required>
                             <option value="">Seleccione una herramienta</option>
                             @foreach ($herramientas as $herramienta)
                                 <option value="{{ $herramienta->id }}" {{ old('herramienta_id') == $herramienta->id ? 'selected' : '' }}>
                                     {{ $herramienta->articulo }} ({{ $herramienta->modelo }})
                                 </option>
                             @endforeach
-                        </select>
+                        </flux:select>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Cantidad <span class="text-red-500">*</span></label>
-                        <input type="number" name="cantidad" min="1" class="w-full px-3 py-2 border rounded"
-                            value="{{ old('cantidad', 1) }}" required>
+                        <label class="block text-gray-700">Detalle del Resguardo<span
+                                class="text-red-500">*</span></label>
+                        <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
+                            value="{{ old('cantidad', 1) }}" required></flux:input>
                     </div>
                     <div>
                         <label class="block text-gray-700">Fecha de Resguardo <span
                                 class="text-red-500">*</span></label>
-                        <input type="date" name="fecha_captura" class="w-full px-3 py-2 border rounded"
-                            value="{{ old('fecha_captura', date('Y-m-d')) }}" required>
+                        <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
+                            value="{{ old('fecha_captura', date('Y-m-d')) }}" required></flux:input>
                     </div>
                     <div>
                         <label class="block text-gray-700">Prioridad <span class="text-red-500">*</span></label>
-                        <select name="prioridad" class="w-full px-3 py-2 border rounded" required>
+                        <flux:select name="prioridad" class="w-full px-3 py-2 rounded" required>
                             <option value="Alta" {{ old('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
                             <option value="Media" {{ old('prioridad', 'Media') == 'Media' ? 'selected' : '' }}>Media
                             </option>
                             <option value="Baja" {{ old('prioridad') == 'Baja' ? 'selected' : '' }}>Baja</option>
-                        </select>
+                        </flux:select>
                     </div>
                 </div>
             </div>
 
             <div class="mb-6">
                 <label class="block text-gray-700">Observaciones</label>
-                <textarea name="observaciones" rows="3"
-                    class="w-full px-3 py-2 border rounded">{{ old('observaciones') }}</textarea>
+                <flux:textarea is="textarea" name="observaciones" rows="3" class="w-full px-3 py-2 rounded">
+                    {{ old('observaciones') }}</flux:textarea>
             </div>
 
             <div class="flex justify-end gap-4">
-                <flux:button icon="x-circle" href="{{ route('resguardos.index') }}"
+                <flux:button href="{{ route('resguardos.index') }}" icon="x-mark"
                     class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                     Cancelar
-            </flux:button>
-                <flux:button icon="document-plus" type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                </flux:button>
+                <flux:button icon="document-plus" type="submit"
+                    class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                     Guardar Resguardo
                 </flux:button>
             </div>
@@ -156,16 +166,20 @@
 
                     claveColabInput.value = data.claveColab;
                     document.getElementById('nombreCompleto').value = data.nombreCompleto;
-                    document.getElementById('puesto').value = data.Puesto || 'No especificado';
-                    document.getElementById('area').value = data.area_limpia || 'No especificada';
+                    document.getElementById('Puesto').value = data.Puesto || 'No especificado';
+                    document.getElementById('sucursal_limpia').value = data.sucursal_limpia || 'No especificada';
+                    document.getElementById('area_limpia').value = data.area_limpia || 'No especificada';
+
                 })
                 .catch(error => {
                     errorDiv.textContent = error.message;
                     errorDiv.classList.remove('hidden');
                     claveColabInput.value = '';
                     document.getElementById('nombreCompleto').value = '';
-                    document.getElementById('puesto').value = '';
-                    document.getElementById('area').value = '';
+                    document.getElementById('Puesto').value = '';
+                    document.getElementById('sucursal_limpia').value = '';
+                    document.getElementById('area_limpia').value = '';
+
                 });
         });
     });

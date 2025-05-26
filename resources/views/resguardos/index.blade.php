@@ -25,12 +25,13 @@
             <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
                 <tr>
                     <th class="px-4 py-2">Folio</th>
-                    <th class="px-4 py-2">Estatus</th>
-                    <th class="px-4 py-2">Herramienta</th>
-                    <th class="px-4 py-2">Colaborador</th>
-                    <th class="px-4 py-2">Cantidad</th>
-                    <th class="px-4 py-2">Fecha de Resguardo</th>
                     <th class="px-4 py-2">Prioridad</th>
+                    <th class="px-4 py-2">Estatus</th>
+                    <th class="px-4 py-2">Realizó Resguardo</th>
+                    <th class="px-4 py-2">Asignado a </th>
+                    <th class="px-4 py-2">Colaborador</th>
+                    <th class="px-4 py-2">Fecha de Resguardo</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -38,11 +39,11 @@
                     <tr class="border-t">
                         <td class="px-4 py-2">{{ $resguardo->folio }}</td>
                         <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->herramienta_id }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->cantidad }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
                         <td class="px-4 py-2">{{ $resguardo->prioridad }}</td>
+                        <td class="px-4 py-2">{{ $resguardo->aperturo_users_id }}</td>
+                        <td class="px-4 py-2">{{ $resguardo->asigno_users_id }}</td>
+                        <td class="px-4 py-2">{{ $resguardo->colaborador_num}}</td>
+                        <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
                     </tr>
                 @empty
                     <tr>
