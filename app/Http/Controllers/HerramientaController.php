@@ -48,4 +48,31 @@ class HerramientaController extends Controller
         // Retorna la vista del formulario para crear una herramienta
         return view('herramientas.create');
     }
+
+    public function buscarHerramienta(Request $request)
+{
+    $filtro = $request->query('filtro', 'id'); // default to id
+    $valor = $request->query('valor');
+
+    $query = DB::connection('toolinventory')->table('herramientas');
+
+    if ($filtro === 'id') {
+        $query->where('id', $valor);
+    } elseif ($filtro === 'modelo') {
+        $query->where('modelo', 'like', "%$valor%");
+    } elseif ($filtro === 'num_serie') {
+        $query->where('num_serie', 'like', "%$valor%");
+    } else {
+        return response()->json(['error' => 'Filtro no válido']);
+    }
+
+    $herramienta = $query->first();
+
+    if (!$herramienta) {
+        return response()->json(['error' => 'No se encontró ninguna herramienta con ese filtro']);
+    }
+
+    return response()->json($herramienta);
+}
+    
 }

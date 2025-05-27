@@ -81,20 +81,21 @@
                 <!-- Card: Detalles del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
-                    <div>
-                        <label class="block text-gray-700">Herramienta <span class="text-red-500">*</span></label>
-                        <flux:select name="herramienta_id" class="w-full px-3 py-2 rounded" required>
-                            <option value="">Seleccione una herramienta</option>
-                            @foreach ($herramientas as $herramienta)
-                                <option value="{{ $herramienta->id }}" {{ old('herramienta_id') == $herramienta->id ? 'selected' : '' }}>
-                                    {{ $herramienta->articulo }} ({{ $herramienta->modelo }})
-                                </option>
-                            @endforeach
+                    <div class="mb-4 flex gap-2">
+                        <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md">
+                            <option value="id">ID</option>
+                            <option value="modelo">Modelo</option>
+                            <option value="num_serie">Número de Serie</option>
                         </flux:select>
+                        <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta..."
+                            class="flex-1 px-4 py-2 rounded-md"></flux:input>
+                        <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
                     </div>
+                    <div id="herramienta-error" class="text-red-500 mt-2 hidden"></div>
+                    <!-- Aquí puedes mostrar los datos de la herramienta encontrada -->
+                    <div id="herramienta-result" class="mt-4"></div>
                     <div>
-                        <label class="block text-gray-700">Cantidad<span
-                                class="text-red-500">*</span></label>
+                        <label class="block text-gray-700">Cantidad<span class="text-red-500">*</span></label>
                         <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
                             value="{{ old('cantidad', 1) }}" required></flux:input>
                     </div>
@@ -119,7 +120,8 @@
             <div class="mb-6">
                 <label class="block text-gray-700">Observaciones</label>
                 <flux:textarea is="textarea" name="observaciones" rows="3" class="w-full px-3 py-2 rounded">
-                    {{ old('observaciones') }}</flux:textarea>
+                    {{ old('observaciones') }}
+                </flux:textarea>
             </div>
 
             <div class="flex justify-end gap-4">
@@ -183,4 +185,50 @@
                 });
         });
     });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const buscarHerramientaBtn = document.getElementById('buscar-herramienta-btn');
+    const filtroSelect = document.getElementById('herramienta-filtro');
+    const searchInput = document.getElementById('herramienta-search');
+    const errorDiv = document.getElementById('herramienta-error');
+    const resultDiv = document.getElementById('herramienta-result');
+
+    buscarHerramientaBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const filtro = filtroSelect.value;
+        const valor = searchInput.value.trim();
+
+        if (!valor) {
+            errorDiv.textContent = 'Ingrese un valor para buscar';
+            errorDiv.classList.remove('hidden');
+            return;
+        }
+
+        errorDiv.classList.add('hidden');
+        resultDiv.innerHTML = '';
+
+        fetch(`{{ route('herramientas.buscar') }}?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                // Muestra los datos de la herramienta encontrada
+                resultDiv.innerHTML = `
+                    <div class="p-4 border rounded bg-gray-50">
+                        <strong>ID:</strong> ${data.id}<br>
+                        <strong>Modelo:</strong> ${data.modelo}<br>
+                        <strong>Número de Serie:</strong> ${data.num_serie}<br>
+                        <strong>Artículo:</strong> ${data.articulo}<br>
+                        <strong>Cantidad:</strong> ${data.cantidad}
+                    </div>
+                `;
+            })
+            .catch(error => {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.remove('hidden');
+            });
+    });
+});
 </script>

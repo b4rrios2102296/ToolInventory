@@ -48,7 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
-
-
+        Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
     });
 });
