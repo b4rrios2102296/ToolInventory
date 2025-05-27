@@ -94,6 +94,7 @@
                     <div id="herramienta-error" class="text-red-500 mt-2 hidden"></div>
                     <!-- Aquí puedes mostrar los datos de la herramienta encontrada -->
                     <div id="herramienta-result" class="mt-4"></div>
+                    <input type="hidden" name="herramienta_id" id="herramienta_id" value="">
                     <div>
                         <label class="block text-gray-700">Cantidad<span class="text-red-500">*</span></label>
                         <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
@@ -187,48 +188,50 @@
     });
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const buscarHerramientaBtn = document.getElementById('buscar-herramienta-btn');
-    const filtroSelect = document.getElementById('herramienta-filtro');
-    const searchInput = document.getElementById('herramienta-search');
-    const errorDiv = document.getElementById('herramienta-error');
-    const resultDiv = document.getElementById('herramienta-result');
+    document.addEventListener('DOMContentLoaded', function () {
+        const buscarHerramientaBtn = document.getElementById('buscar-herramienta-btn');
+        const filtroSelect = document.getElementById('herramienta-filtro');
+        const searchInput = document.getElementById('herramienta-search');
+        const errorDiv = document.getElementById('herramienta-error');
+        const resultDiv = document.getElementById('herramienta-result');
 
-    buscarHerramientaBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        const filtro = filtroSelect.value;
-        const valor = searchInput.value.trim();
+        buscarHerramientaBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            const filtro = filtroSelect.value;
+            const valor = searchInput.value.trim();
 
-        if (!valor) {
-            errorDiv.textContent = 'Ingrese un valor para buscar';
-            errorDiv.classList.remove('hidden');
-            return;
-        }
-
-        errorDiv.classList.add('hidden');
-        resultDiv.innerHTML = '';
-
-        fetch(`{{ route('herramientas.buscar') }}?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                // Muestra los datos de la herramienta encontrada
-                resultDiv.innerHTML = `
-                    <div class="p-4 border rounded bg-gray-50">
-                        <strong>ID:</strong> ${data.id}<br>
-                        <strong>Modelo:</strong> ${data.modelo}<br>
-                        <strong>Número de Serie:</strong> ${data.num_serie}<br>
-                        <strong>Artículo:</strong> ${data.articulo}<br>
-                        <strong>Cantidad:</strong> ${data.cantidad}
-                    </div>
-                `;
-            })
-            .catch(error => {
-                errorDiv.textContent = error.message;
+            if (!valor) {
+                errorDiv.textContent = 'Ingrese un valor para buscar';
                 errorDiv.classList.remove('hidden');
-            });
+                return;
+            }
+
+            errorDiv.classList.add('hidden');
+            resultDiv.innerHTML = '';
+
+            fetch(`{{ route('herramientas.buscar') }}?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
+                    // Muestra los datos de la herramienta encontrada
+                    resultDiv.innerHTML = `
+        <div class="p-4 border rounded bg-gray-50">
+            <strong>ID:</strong> ${data.id}<br>
+            <strong>Modelo:</strong> ${data.modelo}<br>
+            <strong>Número de Serie:</strong> ${data.num_serie}<br>
+            <strong>Artículo:</strong> ${data.articulo}<br>
+            <strong>Cantidad:</strong> ${data.cantidad}
+        </div>
+    `;
+                    // Asigna el id al input oculto
+                    document.getElementById('herramienta_id').value = data.id;
+                })
+                .catch(error => {
+                    errorDiv.textContent = error.message;
+                    errorDiv.classList.remove('hidden');
+                });
+        });
     });
-});
 </script>
