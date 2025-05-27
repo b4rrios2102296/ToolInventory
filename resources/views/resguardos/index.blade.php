@@ -37,7 +37,7 @@
             </thead>
             <tbody>
                 @forelse($resguardos as $resguardo)
-                    <tr class="border-t">
+                    <tr class="border-t text-center">
                         <td class="px-4 py-2">{{ $resguardo->folio }}</td>
                         <td class="px-4 py-2">{{ $resguardo->prioridad }}</td>
                         <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
@@ -46,7 +46,9 @@
                         </td>
                         <td class="px-4 py-2">{{ $resguardo->colaborador_nombre ?? '' }}</td>
                         <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
+                        <td class="px-4 py-2">
+                            {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}
+                        </td>
                         <td class="px-4 py-2">
                             @php
                                 $detalles = json_decode($resguardo->detalles_resguardo ?? '[]');
