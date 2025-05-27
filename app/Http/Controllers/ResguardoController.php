@@ -12,7 +12,7 @@ class ResguardoController extends Controller
     public function store(Request $request)
     {
         Log::debug('Resguardo store method called', $request->all());
-        
+
         $validated = $request->validate([
             'claveColab' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
@@ -22,8 +22,19 @@ class ResguardoController extends Controller
             'observaciones' => 'nullable|string|max:500',
         ]);
 
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $request->herramienta_id)
+            ->first();
+
+        if (!$herramienta) {
+            return redirect()->back()
+                ->withErrors(['herramienta_id' => 'La herramienta seleccionada no existe'])
+                ->withInput();
+        }
+
         try {
-            return DB::connection('toolinventory')->transaction(function () use ($request) {
+            return DB::connection('toolinventory')->transaction(function () use ($request, $herramienta) {
                 // Validar colaborador
                 $colaborador = DB::connection('sqlsrv')
                     ->table('colaborador')
@@ -46,6 +57,15 @@ class ResguardoController extends Controller
                 // Generar folio
                 $folio = $this->generarFolio();
 
+                // Definir detalles_resguardo dentro del closure
+                $detalles_resguardo = json_encode([
+                    'id' => $herramienta->id,
+                    'articulo' => $herramienta->articulo,
+                    'modelo' => $herramienta->modelo,
+                    'num_serie' => $herramienta->num_serie,
+                    'cantidad' => $request->cantidad,
+                ]);
+
                 // Insertar resguardo
                 DB::connection('toolinventory')->table('resguardos')->insert([
                     'folio' => $folio,
@@ -56,10 +76,10 @@ class ResguardoController extends Controller
                     'fecha_captura' => Carbon::parse($request->fecha_captura),
                     'prioridad' => $request->prioridad,
                     'observaciones' => $request->observaciones,
+                    'detalles_resguardo' => $detalles_resguardo, // <-- aquí
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-
                 return redirect()->route('resguardos.index')
                     ->with('success', "Resguardo $folio creado exitosamente");
             });
@@ -91,15 +111,15 @@ class ResguardoController extends Controller
                 'resguardos.*',
                 'aperturo.nombre as aperturo_nombre',
                 'aperturo.apellidos as aperturo_apellidos'
-                
-        )
+
+            )
             ->get();
 
         $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
         $colaboradores = DB::connection('sqlsrv')
-        ->table('colaborador')
-        ->whereIn('claveColab', $colaborador_nums)
-        ->pluck('nombreCompleto', 'claveColab');
+            ->table('colaborador')
+            ->whereIn('claveColab', $colaborador_nums)
+            ->pluck('nombreCompleto', 'claveColab');
 
         foreach ($resguardos as $resguardo) {
             $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
@@ -130,8 +150,8 @@ class ResguardoController extends Controller
                 LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
             ")
             ->where(function ($query) use ($request) {
-                $query->where('claveColab', 'like', '%'.$request->clave.'%')
-                      ->orWhere('nombreCompleto', 'like', '%'.$request->clave.'%');
+                $query->where('claveColab', 'like', '%' . $request->clave . '%')
+                    ->orWhere('nombreCompleto', 'like', '%' . $request->clave . '%');
             })
             ->where('estado', '1')
             ->first();

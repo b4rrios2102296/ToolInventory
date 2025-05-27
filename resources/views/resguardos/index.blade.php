@@ -31,6 +31,7 @@
                     <th class="px-4 py-2">Asignado a </th>
                     <th class="px-4 py-2">Colaborador</th>
                     <th class="px-4 py-2">Fecha de Resguardo</th>
+                    <th class="px-4 py-2">Detalle de Resguardo</th>
 
                 </tr>
             </thead>
@@ -46,6 +47,23 @@
                         <td class="px-4 py-2">{{ $resguardo->colaborador_nombre ?? '' }}</td>
                         <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
                         <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
+                        <td class="px-4 py-2">
+                            @php
+                                $detalles = json_decode($resguardo->detalles_resguardo ?? '[]');
+                                if (is_object($detalles)) $detalles = [$detalles];
+                            @endphp
+                            @if(!empty($detalles))
+                                <ul class="space-y-2 text-center">
+                                    @foreach($detalles as $detalle)
+                                            <div><span class="font-semibold">ID:</span> {{ $detalle->id ?? '' }}</div>
+                                            <div><span class="font-semibold">Articulo:</span> {{ $detalle->articulo ?? '' }}</div>
+                                            <div><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</div>
+                                            <div><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</div>
+                                            <div><span class="font-semibold">Cantidad:</span> {{ $detalle->cantidad ?? '' }}</div>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr>
