@@ -69,7 +69,7 @@ class ResguardoController extends Controller
                 // Insertar resguardo
                 DB::connection('toolinventory')->table('resguardos')->insert([
                     'folio' => $folio,
-                    'estatus' => 'Activo',
+                    'estatus' => $request->estatus,
                     'colaborador_num' => $colaborador->claveColab,
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,

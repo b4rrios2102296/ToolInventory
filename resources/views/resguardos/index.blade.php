@@ -21,7 +21,8 @@
         </div>
         <br>
         <table
-            class="min-w-full divide-y divide-blue-200 bg-gradient-to-br from-blue-100 via-blue-50 to-blue-200 rounded-xl shadow-xl transition-all duration-300">
+            class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl"
+            style="background-color: #FFF9F2; color: #321F01; border: 5px solid #321F01; border-radius: 1rem; overflow: hidden;">
             <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
                 <tr>
                     <th class="px-4 py-2">Folio</th>
