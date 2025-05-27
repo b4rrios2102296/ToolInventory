@@ -93,7 +93,7 @@
                         </flux:select>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Detalle del Resguardo<span
+                        <label class="block text-gray-700">Cantidad<span
                                 class="text-red-500">*</span></label>
                         <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
                             value="{{ old('cantidad', 1) }}" required></flux:input>

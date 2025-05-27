@@ -5,7 +5,7 @@
     <div class="container mx-auto px-4 py-8">
         <div>
             <h1 class="text-2xl font-bold mb-6 text-center">Listado de Resguardos</h1>
-            <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">Nuevo Resguardo</flux:button>
+            <flux:button icon="plus-circle" href="{{ route(name: 'resguardos.create') }}">Nuevo Resguardo</flux:button>
         </div>
         <br>
         <flux:separator />
