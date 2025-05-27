@@ -19,30 +19,35 @@
     <form action="{{ route('herramientas.store') }}" method="POST" class="rounded shadow p-6 space-y-4">
         @csrf
         <div>
-            <label class="block text-gray-700 mb-1">Nombre/Artículo</label>
-            <input type="text" name="articulo" class="w-full px-3 py-2 border rounded" required>
+            <flux:label for="articulo">Nombre/Artículo</flux:label>
+            <flux:input id="articulo" name="articulo" required />
         </div>
         <div>
-            <label class="block text-gray-700 mb-1">Modelo</label>
-            <input type="text" name="modelo" class="w-full px-3 py-2 border rounded" required>
+            <flux:label for="modelo">Modelo</flux:label>
+            <flux:input id="modelo" name="modelo" required />
         </div>
         <div>
-            <label class="block text-gray-700 mb-1">Unidad</label>
-            <input type="text" name="unidad" class="w-full px-3 py-2 border rounded" required>
+            <flux:label for="unidad">Unidad</flux:label>
+            <flux:input id="unidad" name="unidad" required />
         </div>
         <div>
-            <label class="block text-gray-700 mb-1">Número de Serie</label>
-            <input type="text" name="num_serie" class="w-full px-3 py-2 border rounded" required>
+            <flux:label for="num_serie">Número de Serie</flux:label>
+            <flux:input id="num_serie" name="num_serie" required />
         </div>
         <div>
-            <label class="block text-gray-700 mb-1">Cantidad Disponible</label>
-            <input type="text" name="cantidad" class="w-full px-3 py-2 border rounded" required>
+            <flux:label for="cantidad">Cantidad Disponible</flux:label>
+            <flux:input id="cantidad" name="cantidad" required />
         </div>
         <div>
-            <label class="block text-gray-700 mb-1">Observaciones</label>
-            <textarea name="observaciones" rows="3" class="w-full px-3 py-2 border rounded"></textarea>
+            <flux:label for="observaciones">Observaciones</flux:label>
+            <flux:textarea id="observaciones" name="observaciones" rows="3"></flux:textarea>
         </div>
-        <div class="flex justify-end">
+
+        <div class="flex justify-end gap-4">
+            <flux:button href="{{ route('herramientas.index') }}" icon="x-mark"
+                class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                Cancelar
+            </flux:button>
             <flux:button icon="document-plus" type="submit"
                 class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                 Guardar Herramienta
@@ -50,6 +55,3 @@
         </div>
     </form>
 </div>
-</body>
-
-</html>
