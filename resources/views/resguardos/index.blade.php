@@ -43,7 +43,7 @@
                         <td class="px-4 py-2">
                             {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                         </td>
-                        <td class="px-4 py-2">{{ $resguardo->asigno_users_id }}</td>
+                        <td class="px-4 py-2">{{ $resguardo->colaborador_nombre ?? '' }}</td>
                         <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
                         <td class="px-4 py-2">{{ $resguardo->fecha_captura }}</td>
                     </tr>

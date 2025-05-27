@@ -91,8 +91,19 @@ class ResguardoController extends Controller
                 'resguardos.*',
                 'aperturo.nombre as aperturo_nombre',
                 'aperturo.apellidos as aperturo_apellidos'
-            )
+                
+        )
             ->get();
+
+        $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
+        $colaboradores = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->whereIn('claveColab', $colaborador_nums)
+        ->pluck('nombreCompleto', 'claveColab');
+
+        foreach ($resguardos as $resguardo) {
+            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
+        }
 
         // Pasar los datos al view
         return view('resguardos.index', compact('resguardos'));
