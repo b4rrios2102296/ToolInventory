@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
     // Delete
     Route::delete('/resguardos/{resguardo}', [ResguardoController::class, 'destroy'])->name('resguardos.destroy');
+    Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
 
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])

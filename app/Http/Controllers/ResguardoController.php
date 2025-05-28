@@ -188,4 +188,37 @@ class ResguardoController extends Controller
         DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->delete();
         return redirect()->route('resguardos.index')->with('success', 'Resguardo eliminado');
     }
+
+    public function show($folio)
+    {
+        $resguardo = DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->first();
+        if (!$resguardo) {
+            return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
+        }
+
+        $detalles = json_decode($resguardo->detalles_resguardo, true);
+        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $detalles['id'])->first();
+                $resguardos = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.*',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos'
+
+            )
+            ->get();
+
+        $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
+        $colaboradores = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->whereIn('claveColab', $colaborador_nums)
+            ->pluck('nombreCompleto', 'claveColab');
+
+        foreach ($resguardos as $resguardo) {
+            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
+        }
+        return view('resguardos.show', compact('resguardo', 'herramienta'));
+    }
+
 }

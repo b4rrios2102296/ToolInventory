@@ -72,6 +72,9 @@
                             <flux:dropdown>
                                 <flux:button icon:trailing="chevron-down">Acciones</flux:button>
                                 <flux:menu>
+                                    <flux:menu.item icon="eye" kbd="⌘V">
+                                        <a href="{{ route('resguardos.show', $resguardo->folio) }}">Ver</a>
+                                    </flux:menu.item>
                                     <flux:menu.item icon="pencil-square" kbd="⌘E">
                                         <a href="{{ route('resguardos.edit', $resguardo->folio) }}">Editar</a>
                                     </flux:menu.item>
