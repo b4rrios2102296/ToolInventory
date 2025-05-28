@@ -194,7 +194,7 @@ class ResguardoController extends Controller
 public function update(Request $request, $folio)
 {
     $validated = $request->validate([
-        'estatus' => 'required|in:completo,en proceso,pendiente',
+        'estatus' => 'required|in:Resguardo, Cancelado',
         'colaborador_num' => 'required|string',
         'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
         'fecha_captura' => 'required|date',
