@@ -18,6 +18,7 @@ class HerramientaController extends Controller
         // Validar los datos recibidos
         $validated = $request->validate([
             'cantidad'      => 'required|string|max:45',
+            'estatus'       => 'required|string|max:50',
             'articulo'      => 'required|string|max:45',
             'unidad'        => 'required|string|max:45',
             'modelo'        => 'required|string|max:100',
@@ -29,6 +30,7 @@ class HerramientaController extends Controller
         DB::connection('toolinventory')->table('herramientas')->insert([
             // id es AI PK, no se incluye aquí para que lo genere la BD
             'cantidad'      => $validated['cantidad'],
+            'estatus'       => $validated['estatus'],
             'articulo'      => $validated['articulo'],
             'unidad'        => $validated['unidad'],
             'modelo'        => $validated['modelo'],
@@ -47,6 +49,7 @@ class HerramientaController extends Controller
     {
         // Retorna la vista del formulario para crear una herramienta
         return view('herramientas.create');
+        
     }
 
     public function buscarHerramienta(Request $request)

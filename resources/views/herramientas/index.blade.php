@@ -26,6 +26,7 @@
                     <tr>
                         <th class="px-4 py-2">ID</th>
                         <th class="px-4 py-2">Cantidad</th>
+                        <th class="px-4 py-2">Estatus</th>
                         <th class="px-4 py-2">Artículo</th>
                         <th class="px-4 py-2">Unidad</th>
                         <th class="px-4 py-2">Modelo</th>
@@ -41,6 +42,7 @@
                                                 {{ $herramienta->id }}
                                             </td>
                                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->cantidad }}</td>
+                                            <td class="px-4 py-2">{{ $herramienta->estatus }}</td>
                                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->articulo }}</td>
                                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->unidad }}</td>
                                             <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
@@ -56,11 +58,6 @@
                                                     <span class=" border-blue-300 h-6 mx-1"></span>
                                                     <flux:button icon="trash" size="sm" />
                                                 </div>
-
-
-
-
-
                                         </tr>
                     @empty
                         <tr>
