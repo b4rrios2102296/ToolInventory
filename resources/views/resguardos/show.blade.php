@@ -1,4 +1,3 @@
-
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-6 text-center">Información de Resguardo</h1>
     <div class="bg-white shadow-md rounded-lg p-6">
@@ -11,13 +10,15 @@
         <div class="mb-4">
             <strong>Estatus:</strong> {{ $resguardo->estatus }}
         </div>
+        <div class="mb-4">
+            <strong>Realizó Resguardo:</strong> {{ $resguardo->aperturo_nombre ?? '' }}
+            {{ $resguardo->aperturo_apellidos ?? '' }}
+        </div>
+        <div class="mb-4">
+            <strong>Asignado a:</strong> {{ $resguardo->asignado_nombre ?? 'No asignado' }}
+        </div>
 
         <div class="mb-4">
-            <strong>Realizó Resguardo:</strong>
-            {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
-        <div class="mb-4">
-            <strong>Asignado a:</strong> {{ $resguardo->colaborador_nombre ?? '' }}
-        </div>
             <strong>Colaborador:</strong> {{ $resguardo->colaborador_num }}
         </div>
         <div class="mb-4">

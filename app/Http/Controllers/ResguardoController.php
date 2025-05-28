@@ -189,36 +189,36 @@ class ResguardoController extends Controller
         return redirect()->route('resguardos.index')->with('success', 'Resguardo eliminado');
     }
 
-    public function show($folio)
-    {
-        $resguardo = DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->first();
-        if (!$resguardo) {
-            return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
-        }
+public function show($folio)
+{
+    // Fetch the resguardo details along with "aperturo" user info
+    $resguardo = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+        ->select(
+            'resguardos.*',
+            'aperturo.nombre as aperturo_nombre',
+            'aperturo.apellidos as aperturo_apellidos'
+        )
+        ->where('folio', $folio)
+        ->first();
 
-        $detalles = json_decode($resguardo->detalles_resguardo, true);
-        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $detalles['id'])->first();
-                $resguardos = DB::connection('toolinventory')
-            ->table('resguardos')
-            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
-            ->select(
-                'resguardos.*',
-                'aperturo.nombre as aperturo_nombre',
-                'aperturo.apellidos as aperturo_apellidos'
-
-            )
-            ->get();
-
-        $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
-        $colaboradores = DB::connection('sqlsrv')
-            ->table('colaborador')
-            ->whereIn('claveColab', $colaborador_nums)
-            ->pluck('nombreCompleto', 'claveColab');
-
-        foreach ($resguardos as $resguardo) {
-            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
-        }
-        return view('resguardos.show', compact('resguardo', 'herramienta'));
+    if (!$resguardo) {
+        return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
     }
 
+    // Retrieve "Asignado a" name based on asigno_users_id in SQL Server
+    $asignado_nombre = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->where('claveColab', $resguardo->colaborador_num) // Assuming asigno_users_id is actually colaborador_num
+        ->pluck('nombreCompleto', 'claveColab');
+
+    $resguardo->asignado_nombre = $asignado_nombre[$resguardo->colaborador_num] ?? 'No asignado';
+
+    // Decode detalles_resguardo properly
+    $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+    $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $detalles['id'] ?? null)->first();
+
+    return view('resguardos.show', compact('resguardo', 'herramienta'));
+}
 }
