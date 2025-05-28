@@ -25,7 +25,6 @@
             <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
                 <tr>
                     <th class="px-4 py-2">Folio</th>
-                    <th class="px-4 py-2">Prioridad</th>
                     <th class="px-4 py-2">Estatus</th>
                     <th class="px-4 py-2">Realizó Resguardo</th>
                     <th class="px-4 py-2">Asignado a </th>
@@ -40,7 +39,6 @@
                 @forelse($resguardos as $resguardo)
                     <tr class="border-t text-center">
                         <td class="px-4 py-2">{{ $resguardo->folio }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->prioridad }}</td>
                         <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
                         <td class="px-4 py-2">
                             {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
@@ -63,7 +61,6 @@
                                         <div><span class="font-semibold">Articulo:</span> {{ $detalle->articulo ?? '' }}</div>
                                         <div><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</div>
                                         <div><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</div>
-                                        <div><span class="font-semibold">Cantidad:</span> {{ $detalle->cantidad ?? '' }}</div>
                                     @endforeach
                                 </ul>
                             @endif

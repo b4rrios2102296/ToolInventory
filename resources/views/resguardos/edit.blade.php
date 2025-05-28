@@ -106,7 +106,6 @@
                         <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
                         <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
                         <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
-                        <strong>Cantidad:</strong> {{ $detalles['cantidad'] ?? 1 }}
                     </div>
                     @else
                     <div id="herramienta-result" class="mt-4"></div>
@@ -114,27 +113,13 @@
 
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="{{ $herramienta->id ?? '' }}">
 
-                    <div>
-                        <label class="block text-gray-700">Cantidad<span class="text-red-500">*</span></label>
-                        <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
-                            value="{{ $detalles['cantidad'] ?? 1 }}" required></flux:input>
-                    </div>
+
 
                     <div>
                         <label class="block text-gray-700">Fecha de Resguardo <span class="text-red-500">*</span></label>
                         <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
                             value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required></flux:input>
                     </div>
-
-                    <div>
-                        <label class="block text-gray-700">Prioridad <span class="text-red-500">*</span></label>
-                        <flux:select name="prioridad" class="w-full px-3 py-2 rounded" required>
-                            <option value="Alta" {{ $resguardo->prioridad == 'Alta' ? 'selected' : '' }}>Alta</option>
-                            <option value="Media" {{ $resguardo->prioridad == 'Media' ? 'selected' : '' }}>Media</option>
-                            <option value="Baja" {{ $resguardo->prioridad == 'Baja' ? 'selected' : '' }}>Baja</option>
-                        </flux:select>
-                    </div>
-
                     <div>
                         <label class="block text-gray-700">Estatus <span class="text-red-500">*</span></label>
                         <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
@@ -250,7 +235,6 @@
                             <strong>Modelo:</strong> ${data.modelo}<br>
                             <strong>Número de Serie:</strong> ${data.num_serie}<br>
                             <strong>Artículo:</strong> ${data.articulo}<br>
-                            <strong>Cantidad:</strong> ${data.cantidad}
                         </div>
                     `;
                     

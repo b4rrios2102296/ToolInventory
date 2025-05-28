@@ -16,9 +16,7 @@ class ResguardoController extends Controller
         $validated = $request->validate([
             'claveColab' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
-            'cantidad' => 'required|integer|min:1',
             'fecha_captura' => 'required|date',
-            'prioridad' => 'required|in:Alta,Media,Baja',
             'observaciones' => 'nullable|string|max:500',
         ]);
 
@@ -63,7 +61,6 @@ class ResguardoController extends Controller
                     'articulo' => $herramienta->articulo,
                     'modelo' => $herramienta->modelo,
                     'num_serie' => $herramienta->num_serie,
-                    'cantidad' => $request->cantidad,
                 ]);
 
                 // Insertar resguardo
@@ -74,7 +71,6 @@ class ResguardoController extends Controller
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
                     'fecha_captura' => Carbon::parse($request->fecha_captura),
-                    'prioridad' => $request->prioridad,
                     'observaciones' => $request->observaciones,
                     'detalles_resguardo' => $detalles_resguardo, // <-- aquí
                     'created_at' => now(),
@@ -201,9 +197,7 @@ public function update(Request $request, $folio)
         'estatus' => 'required|in:completo,en proceso,pendiente',
         'colaborador_num' => 'required|string',
         'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
-        'cantidad' => 'required|integer|min:1',
         'fecha_captura' => 'required|date',
-        'prioridad' => 'required|in:Alta,Media,Baja',
         'observaciones' => 'nullable|string|max:500',
     ]);
 
@@ -225,14 +219,12 @@ public function update(Request $request, $folio)
         'articulo' => $herramienta->articulo,
         'modelo' => $herramienta->modelo,
         'num_serie' => $herramienta->num_serie,
-        'cantidad' => $request->cantidad,
     ]);
 
     DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->update([
         'estatus' => $request->estatus,
         'colaborador_num' => $request->colaborador_num,
         'fecha_captura' => Carbon::parse($request->fecha_captura),
-        'prioridad' => $request->prioridad,
         'observaciones' => $request->observaciones,
         'detalles_resguardo' => $detalles_resguardo,
         'updated_at' => now(),

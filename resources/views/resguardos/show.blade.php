@@ -5,9 +5,6 @@
             <strong>Folio:</strong> {{ $resguardo->folio }}
         </div>
         <div class="mb-4">
-            <strong>Prioridad:</strong> {{ $resguardo->prioridad }}
-        </div>
-        <div class="mb-4">
             <strong>Estatus:</strong> {{ $resguardo->estatus }}
         </div>
         <div class="mb-4">

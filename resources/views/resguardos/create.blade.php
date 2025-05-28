@@ -96,24 +96,12 @@
                     <div id="herramienta-result" class="mt-4"></div>
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="">
                     <div>
-                        <label class="block text-gray-700">Cantidad<span class="text-red-500">*</span></label>
-                        <flux:input type="number" name="cantidad" min="1" class="w-full px-3 py-2 rounded"
-                            value="{{ old('cantidad', 1) }}" required></flux:input>
-                    </div>
-                    <div>
                         <label class="block text-gray-700">Fecha de Resguardo <span
                                 class="text-red-500">*</span></label>
                         <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
                             value="{{ old('fecha_captura', date('Y-m-d')) }}" required></flux:input>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Prioridad <span class="text-red-500">*</span></label>
-                        <flux:select name="prioridad" class="w-full px-3 py-2 rounded" required>
-                            <option value="Alta" {{ old('prioridad') == 'Alta' ? 'selected' : '' }}>Alta</option>
-                            <option value="Media" {{ old('prioridad', 'Media') == 'Media' ? 'selected' : '' }}>Media
-                            </option>
-                            <option value="Baja" {{ old('prioridad') == 'Baja' ? 'selected' : '' }}>Baja</option>
-                        </flux:select>
                         <div>
                             <label class="block text-gray-700">Estatus <span class="text-red-500">*</span></label>
                             <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
@@ -234,7 +222,6 @@
             <strong>Modelo:</strong> ${data.modelo}<br>
             <strong>Número de Serie:</strong> ${data.num_serie}<br>
             <strong>Artículo:</strong> ${data.articulo}<br>
-            <strong>Cantidad:</strong> ${data.cantidad}
         </div>
     `;
                     // Asigna el id al input oculto

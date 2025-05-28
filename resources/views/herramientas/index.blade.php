@@ -25,7 +25,6 @@
                 <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
                     <tr>
                         <th class="px-4 py-2">ID</th>
-                        <th class="px-4 py-2">Cantidad</th>
                         <th class="px-4 py-2">Estatus</th>
                         <th class="px-4 py-2">Artículo</th>
                         <th class="px-4 py-2">Unidad</th>
@@ -41,7 +40,6 @@
                                             <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
                                                 {{ $herramienta->id }}
                                             </td>
-                                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->cantidad }}</td>
                                             <td class="px-4 py-2">{{ $herramienta->estatus }}</td>
                                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->articulo }}</td>
                                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->unidad }}</td>

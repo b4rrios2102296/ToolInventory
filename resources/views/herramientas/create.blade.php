@@ -47,10 +47,6 @@
             <flux:input id="num_serie" name="num_serie" required />
         </div>
         <div>
-            <flux:label for="cantidad">Cantidad Disponible</flux:label>
-            <flux:input id="cantidad" name="cantidad" required />
-        </div>
-        <div>
             <flux:label for="observaciones">Observaciones</flux:label>
             <flux:textarea id="observaciones" name="observaciones" rows="3"></flux:textarea>
         </div>
