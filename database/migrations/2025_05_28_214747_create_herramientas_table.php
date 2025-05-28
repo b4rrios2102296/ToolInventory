@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('herramientas', function (Blueprint $table) {
             $table->string('id', 25)->primary();
-            $table->string('cantidad', 45);
             $table->string('articulo', 45);
             $table->string('unidad', 45);
             $table->string('modelo', 100)->nullable();
             $table->string('num_serie', 100)->nullable();
+            $table->string('estatus', 50)->nullable()->default('Disponible');
             $table->string('observaciones', 191)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
+            $table->decimal('costos', 25, 0);
         });
     }
 

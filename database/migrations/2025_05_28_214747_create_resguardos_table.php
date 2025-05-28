@@ -17,7 +17,6 @@ return new class extends Migration
             $table->binary('detalles_resguardo')->nullable();
             $table->string('observaciones', 45)->nullable()->comment('Observaciones');
             $table->integer('aperturo_users_id');
-            $table->string('prioridad', 45)->nullable();
             $table->integer('asigno_users_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
