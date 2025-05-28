@@ -39,13 +39,17 @@
             <flux:input id="modelo" name="modelo" required />
         </div>
         <div>
-            <flux:label for="unidad">Unidad</flux:label>
-            <flux:input id="unidad" name="unidad" required />
+            <label class="block text-gray-700">Unidad <span class="text-red-500">*</span></label>
+            <flux:select name="unidad" class="w-full px-3 py-2 rounded" required>
+                <option value="completo" {{ old('unidad') == 'pieza' ? 'selected' : '' }}>Pieza
+                </option>
+            </flux:select>
         </div>
         <div>
             <flux:label for="num_serie">Número de Serie</flux:label>
             <flux:input id="num_serie" name="num_serie" required />
         </div>
+
         <div>
             <flux:label for="observaciones">Observaciones</flux:label>
             <flux:textarea id="observaciones" name="observaciones" rows="3"></flux:textarea>
