@@ -20,8 +20,7 @@
             </flux:tooltip>
         </div>
         <br>
-        <table
-            class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl"
+        <table class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl"
             style="background-color: #FFF9F2; color: #321F01; border: 5px solid #321F01; border-radius: 1rem; overflow: hidden;">
             <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
                 <tr>
@@ -71,11 +70,19 @@
                         </td>
                         <td class="px-4 py-2">
                             <flux:dropdown>
-                                <flux:button icon:trailing="chevron-down" >Acciones</flux:button>
+                                <flux:button icon:trailing="chevron-down">Acciones</flux:button>
                                 <flux:menu>
-                                    <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
-                                    <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
-                                    <flux:menu.item icon="trash" variant="danger" kbd="⌘⌫">Cancelar</flux:menu.item>
+                                    <flux:menu.item icon="pencil-square" kbd="⌘E">
+                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}">Editar</a>
+                                    </flux:menu.item>
+                                    <flux:menu.item icon="trash" variant="danger" kbd="⌘⌫">
+                                        <form action="{{ route('resguardos.destroy', $resguardo->folio) }}" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas eliminar este resguardo?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600">Eliminar</button>
+                                        </form>
+                                    </flux:menu.item>
                                 </flux:menu>
                             </flux:dropdown>
                     </tr>

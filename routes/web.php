@@ -35,6 +35,11 @@ Route::middleware('auth')->group(function () {
         ->name('resguardos.store');
     Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador'])
         ->name('resguardos.buscar');
+        Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
+    // Update
+    Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
+    // Delete
+    Route::delete('/resguardos/{resguardo}', [ResguardoController::class, 'destroy'])->name('resguardos.destroy');
 
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])

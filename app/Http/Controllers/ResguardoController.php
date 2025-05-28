@@ -158,4 +158,34 @@ class ResguardoController extends Controller
 
         return response()->json($colaborador ?? ['error' => 'No se encontró el colaborador']);
     }
+
+
+    public function edit($folio)
+    {
+        $resguardo = DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->first();
+        $herramientas = DB::connection('toolinventory')->table('herramientas')->get();
+        return view('resguardos.edit', compact('resguardo', 'herramientas'));
+    }
+
+    // Update action
+    public function update(Request $request, $folio)
+    {
+        $validated = $request->validate([
+            'estatus' => 'required|in:completo,en proceso,pendiente',
+            // ...otros campos a validar
+        ]);
+        DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->update([
+            'estatus' => $request->estatus,
+            // ...otros campos a actualizar
+            'updated_at' => now(),
+        ]);
+        return redirect()->route('resguardos.index')->with('success', 'Resguardo actualizado');
+    }
+
+    // Delete action
+    public function destroy($folio)
+    {
+        DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->delete();
+        return redirect()->route('resguardos.index')->with('success', 'Resguardo eliminado');
+    }
 }
