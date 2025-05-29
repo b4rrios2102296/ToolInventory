@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
@@ -25,7 +26,7 @@
                     <th class="px-4 py-2">Folio</th>
                     <th class="px-4 py-2">Estatus</th>
                     <th class="px-4 py-2">Realizó Resguardo</th>
-                    <th class="px-4 py-2">Asignado a </th>
+                    <th class="px-4 py-2">Asignado a</th>
                     <th class="px-4 py-2">Colaborador</th>
                     <th class="px-4 py-2">Fecha de Resguardo</th>
                     <th class="px-4 py-2">Detalle de Resguardo</th>
@@ -34,23 +35,51 @@
             </thead>
             <tbody>
                 @forelse($resguardos as $resguardo)
-                    <tr
-                        class="border-t text-center 
-                            {{ $resguardo->estatus == 'Cancelado' ? 'bg-red-100 text-red-600 font-bold' : 'bg-white text-black' }}">
-                        <td class="px-4 py-2">{{ $resguardo->folio }}</td>
+                    <tr class="border-t text-center 
+                        {{ $resguardo->estatus == 'Cancelado' ? 'bg-gray-100 text-gray-500' : 'bg-white text-black' }}">
                         <td class="px-4 py-2">
-                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}">
-                                {{ $resguardo->estatus }}
+                            @if($resguardo->estatus == 'Cancelado')
+                                <s>{{ $resguardo->folio }}</s>
+                            @else
+                                {{ $resguardo->folio }}
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}" class="text-white">
+                                @if($resguardo->estatus == 'Cancelado')
+                                    <s>{{ $resguardo->estatus }}</s>
+                                @else
+                                    {{ $resguardo->estatus }}
+                                @endif
                             </flux:badge>
                         </td>
-
                         <td class="px-4 py-2">
-                            {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
+                            @if($resguardo->estatus == 'Cancelado')
+                                <s>{{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}</s>
+                            @else
+                                {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
+                            @endif
                         </td>
-                        <td class="px-4 py-2">{{ $resguardo->colaborador_nombre ?? '' }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->colaborador_num }}</td>
                         <td class="px-4 py-2">
-                            {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}
+                            @if($resguardo->estatus == 'Cancelado')
+                                <s>{{ $resguardo->colaborador_nombre ?? '' }}</s>
+                            @else
+                                {{ $resguardo->colaborador_nombre ?? '' }}
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            @if($resguardo->estatus == 'Cancelado')
+                                <s>{{ $resguardo->colaborador_num }}</s>
+                            @else
+                                {{ $resguardo->colaborador_num }}
+                            @endif
+                        </td>
+                        <td class="px-4 py-2">
+                            @if($resguardo->estatus == 'Cancelado')
+                                <s>{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</s>
+                            @else
+                                {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}
+                            @endif
                         </td>
                         <td class="px-4 py-2">
                             @php
@@ -62,12 +91,43 @@
                             @if(!empty($detalles))
                                 <ul class="space-y-2 text-center">
                                     @foreach($detalles as $detalle)
-                                        <div><span class="font-semibold">ID:</span> {{ $detalle->id ?? '' }}</div>
-                                        <div><span class="font-semibold">Articulo:</span> {{ $detalle->articulo ?? '' }}</div>
-                                        <div><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</div>
-                                        <div><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</div>
-                                        <div><span class="font-semibold">Costo:</span>
-                                            {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</div>
+                                        <div>
+                                            @if($resguardo->estatus == 'Cancelado')
+                                                <s><span class="font-semibold">ID:</span> {{ $detalle->id ?? '' }}</s>
+                                            @else
+                                                <span class="font-semibold">ID:</span> {{ $detalle->id ?? '' }}
+                                            @endif
+                                        </div>
+                                        <div>
+                                            @if($resguardo->estatus == 'Cancelado')
+                                                <s><span class="font-semibold">Artículo:</span> {{ $detalle->articulo ?? '' }}</s>
+                                            @else
+                                                <span class="font-semibold">Artículo:</span> {{ $detalle->articulo ?? '' }}
+                                            @endif
+                                        </div>
+                                        <div>
+                                            @if($resguardo->estatus == 'Cancelado')
+                                                <s><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</s>
+                                            @else
+                                                <span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}
+                                            @endif
+                                        </div>
+                                        <div>
+                                            @if($resguardo->estatus == 'Cancelado')
+                                                <s><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</s>
+                                            @else
+                                                <span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}
+                                            @endif
+                                        </div>
+                                        <div>
+                                            @if($resguardo->estatus == 'Cancelado')
+                                                <s><span class="font-semibold">Costo:</span>
+                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</s>
+                                            @else
+                                                <span class="font-semibold">Costo:</span>
+                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}
+                                            @endif
+                                        </div>
                                     @endforeach
                                 </ul>
                             @endif
@@ -109,10 +169,11 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="7" class="text-center py-4">No hay resguardos registrados.</td>
+                        <td colspan="8" class="text-center py-4">No hay resguardos registrados.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
+<style
