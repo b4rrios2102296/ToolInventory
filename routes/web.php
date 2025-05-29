@@ -38,8 +38,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
     // Update
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
-    // Delete
-    Route::delete('/resguardos/{resguardo}', [ResguardoController::class, 'destroy'])->name('resguardos.destroy');
+    // cancelar resguardo
+    Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
 
     // Colaboradores

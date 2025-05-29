@@ -61,7 +61,8 @@
                                         <div><span class="font-semibold">Articulo:</span> {{ $detalle->articulo ?? '' }}</div>
                                         <div><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</div>
                                         <div><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</div>
-                                        <div><span class="font-semibold">Costo:</span> {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</div>
+                                        <div><span class="font-semibold">Costo:</span>
+                                            {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</div>
                                     @endforeach
                                 </ul>
                             @endif
@@ -77,12 +78,14 @@
                                         <a href="{{ route('resguardos.edit', $resguardo->folio) }}">Editar</a>
                                     </flux:menu.item>
                                     <flux:menu.item icon="trash" variant="danger" kbd="⌘⌫">
-                                        <form action="{{ route('resguardos.destroy', $resguardo->folio) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas eliminar este resguardo?');">
+                                        <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600">Eliminar</button>
+                                            @method('PUT') <!-- ✅ Ensure this matches your route definition -->
+                                            <input type="hidden" name="estatus" value="Cancelado">
+                                            <button type="submit" class="text-red-600">Marcar como Cancelado</button>
                                         </form>
+                                        >
                                     </flux:menu.item>
                                 </flux:menu>
                             </flux:dropdown>
