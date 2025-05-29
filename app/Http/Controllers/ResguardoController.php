@@ -200,13 +200,16 @@ class ResguardoController extends Controller
 
     public function update(Request $request, $folio)
     {
+
         $validated = $request->validate([
-            'estatus' => 'required|in:Resguardo,Cancelado',
+            'estatus' => 'required|string|in:Resguardo,Cancelado',
             'colaborador_num' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
             'observaciones' => 'nullable|string|max:500',
         ]);
+
+
 
         // Get the tool details
         $herramienta = DB::connection('toolinventory')
@@ -243,20 +246,21 @@ class ResguardoController extends Controller
     }
 
     // Delete action
-public function cancel(Request $request, $folio)
-{
-    // ✅ Validate incoming request to ensure "estatus" is "Cancelado"
-    $request->validate([
-        'estatus' => 'required|in:Cancelado',
-    ]);
+    public function cancel(Request $request, $folio)
+    {
+        // ✅ Validate incoming request to ensure "estatus" is "Cancelado"
+        $request->validate([
+            'estatus' => 'required|in:Resguardo,Cancelado', // ✅ Allow both statuses
+        ]);
 
-    // ✅ Update the status instead of deleting the record
-    DB::connection('toolinventory')->table('resguardos')
-        ->where('folio', $folio)
-        ->update(['estatus' => 'Cancelado', 'updated_at' => now()]);
 
-    return redirect()->route('resguardos.index')->with('success', 'Resguardo marcado como Cancelado.');
-}
+        // ✅ Update the status instead of deleting the record
+        DB::connection('toolinventory')->table('resguardos')
+            ->where('folio', $folio)
+            ->update(['estatus' => 'Cancelado', 'updated_at' => now()]);
+
+        return redirect()->route('resguardos.index')->with('success', 'Resguardo marcado como Cancelado.');
+    }
 
 
 

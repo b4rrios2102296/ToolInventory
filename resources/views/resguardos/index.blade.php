@@ -68,33 +68,40 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <flux:dropdown>
-                                <flux:button icon:trailing="chevron-down">Acciones</flux:button>
-                                <flux:menu>
-                                    <flux:menu.item icon="eye" kbd="⌘V">
-                                        <a href="{{ route('resguardos.show', $resguardo->folio) }}">Ver</a>
+                            <flux:dropdown class="relative">
+                                <flux:button icon:trailing="chevron-down"
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all">
+                                    Acciones</flux:button>
+                                <flux:menu
+                                    class="absolute right-0 w-48 bg-white shadow-lg rounded-md py-2 z-10 border border-gray-300">
+                                    <flux:menu.item icon="eye" kbd="⌘V" class="px-4 py-2 hover:bg-gray-100 transition-all">
+                                        <a href="{{ route('resguardos.show', $resguardo->folio) }}"
+                                            class="block text-gray-700">Ver</a>
                                     </flux:menu.item>
-                                    <flux:menu.item icon="pencil-square" kbd="⌘E">
-                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}">Editar</a>
+                                    <flux:menu.item icon="pencil-square" kbd="⌘E"
+                                        class="px-4 py-2 hover:bg-gray-100 transition-all">
+                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}"
+                                            class="block text-gray-700">Editar</a>
                                     </flux:menu.item>
-                                    <flux:menu.item icon="trash" variant="danger" kbd="⌘⌫">
+                                    <div class>
                                         <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
                                             onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
                                             @csrf
-                                            @method('PUT') <!-- ✅ Ensure this matches your route definition -->
+                                            @method('PATCH') <!-- ✅ Correctly sends a PUT request -->
                                             <input type="hidden" name="estatus" value="Cancelado">
-                                            <button type="submit" class="text-red-600">Marcar como Cancelado</button>
+                                            <flux:menu.item type="submit" icon="x-circle" kbd="⌘⌫"
+                                                class="px-4 py-2 hover:bg-red-100 transition-all" variant="danger">Cancelar
+                                            </flux:menu.item>
                                         </form>
-                                        >
-                                    </flux:menu.item>
+                                    </div>
                                 </flux:menu>
                             </flux:dropdown>
-                    </tr>
+
                 @empty
-                    <tr>
-                        <td colspan="7" class="text-center py-4">No hay resguardos registrados.</td>
-                    </tr>
-                @endforelse
+                            <tr>
+                                <td colspan="7" class="text-center py-4">No hay resguardos registrados.</td>
+                            </tr>
+                        @endforelse
             </tbody>
         </table>
     </div>

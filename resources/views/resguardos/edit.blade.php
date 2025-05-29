@@ -122,13 +122,13 @@
                         </flux:input>
                     </div>
                     <div>
-                        <label class="block text-gray-700">Estatus del Resguardo</label>
-                        <flux:select name="estatus" class="w-full px-3 py-2 rounded">
-                            <option value="Resguardo" {{ $resguardo->estatus == 'Resguardo' ? 'selected' : '' }}>Resguardo
-                            </option>
-                            <option value="Cancelado" {{ $resguardo->estatus == 'Cancelado' ? 'selected' : '' }}>Cancelado
-                            </option>
-                        </flux:select>
+                        @if(isset($resguardo) && $resguardo->estatus == 'Cancelado')
+                            <label class="block text-gray-700">Estatus del Resguardo</label>
+                            <flux:select name="estatus" class="w-full px-3 py-2 rounded">
+                                <option value="Cancelado" selected>Cancelado</option>
+                                <option value="Resguardo">Resguardo</option>
+                            </flux:select>
+                        @endif
                     </div>
                 </div>
             </div>

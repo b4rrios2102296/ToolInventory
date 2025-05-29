@@ -35,11 +35,11 @@ Route::middleware('auth')->group(function () {
         ->name('resguardos.store');
     Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador'])
         ->name('resguardos.buscar');
-        Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
+    Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
     // Update
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
     // cancelar resguardo
-    Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
+    Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
 
     // Colaboradores
