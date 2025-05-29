@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('observaciones', 191)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrentOnUpdate()->useCurrent();
-            $table->decimal('costo', 25, 0);
+            $table->double('costo');
         });
     }
 
