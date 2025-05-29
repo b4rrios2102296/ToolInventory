@@ -121,7 +121,15 @@
                             value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required>
                         </flux:input>
                     </div>
-
+                    <div>
+                        <label class="block text-gray-700">Estatus del Resguardo</label>
+                        <flux:select name="estatus" class="w-full px-3 py-2 rounded">
+                            <option value="Resguardo" {{ $resguardo->estatus == 'Resguardo' ? 'selected' : '' }}>Resguardo
+                            </option>
+                            <option value="Cancelado" {{ $resguardo->estatus == 'Cancelado' ? 'selected' : '' }}>Cancelado
+                            </option>
+                        </flux:select>
+                    </div>
                 </div>
             </div>
 
