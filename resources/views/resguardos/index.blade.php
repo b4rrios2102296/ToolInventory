@@ -1,11 +1,9 @@
-{{-- filepath: resources/views/resguardos/index.blade.php --}}
-
 @extends('layouts.app')
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
             <h1 class="text-2xl font-bold mb-6 text-center">Listado de Resguardos</h1>
-            <flux:button icon="plus-circle" href="{{ route(name: 'resguardos.create') }}">Nuevo Resguardo</flux:button>
+            <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">Nuevo Resguardo</flux:button>
         </div>
         <br>
         <flux:separator />
@@ -32,14 +30,20 @@
                     <th class="px-4 py-2">Fecha de Resguardo</th>
                     <th class="px-4 py-2">Detalle de Resguardo</th>
                     <th class="px-4 py-2">Opciones</th>
-
                 </tr>
             </thead>
             <tbody>
                 @forelse($resguardos as $resguardo)
-                    <tr class="border-t text-center">
+                    <tr
+                        class="border-t text-center 
+                            {{ $resguardo->estatus == 'Cancelado' ? 'bg-red-100 text-red-600 font-bold' : 'bg-white text-black' }}">
                         <td class="px-4 py-2">{{ $resguardo->folio }}</td>
-                        <td class="px-4 py-2">{{ $resguardo->estatus }}</td>
+                        <td class="px-4 py-2">
+                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}">
+                                {{ $resguardo->estatus }}
+                            </flux:badge>
+                        </td>
+
                         <td class="px-4 py-2">
                             {{ $resguardo->aperturo_nombre ?? '' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                         </td>
@@ -51,8 +55,9 @@
                         <td class="px-4 py-2">
                             @php
                                 $detalles = json_decode($resguardo->detalles_resguardo ?? '[]');
-                                if (is_object($detalles))
+                                if (is_object($detalles)) {
                                     $detalles = [$detalles];
+                                }
                             @endphp
                             @if(!empty($detalles))
                                 <ul class="space-y-2 text-center">
@@ -71,7 +76,8 @@
                             <flux:dropdown class="relative">
                                 <flux:button icon:trailing="chevron-down"
                                     class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all">
-                                    Acciones</flux:button>
+                                    Acciones
+                                </flux:button>
                                 <flux:menu
                                     class="absolute right-0 w-48 bg-white shadow-lg rounded-md py-2 z-10 border border-gray-300">
                                     <flux:menu.item icon="eye" kbd="⌘V" class="px-4 py-2 hover:bg-gray-100 transition-all">
@@ -83,27 +89,30 @@
                                         <a href="{{ route('resguardos.edit', $resguardo->folio) }}"
                                             class="block text-gray-700">Editar</a>
                                     </flux:menu.item>
-                                    <div class>
-                                        <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
-                                            @csrf
-                                            @method('PATCH') <!-- ✅ Correctly sends a PUT request -->
-                                            <input type="hidden" name="estatus" value="Cancelado">
-                                            <flux:menu.item type="submit" icon="x-circle" kbd="⌘⌫"
-                                                class="px-4 py-2 hover:bg-red-100 transition-all" variant="danger">Cancelar
-                                            </flux:menu.item>
-                                        </form>
-                                    </div>
+                                    @if($resguardo->estatus == 'Resguardo')
+                                        <div>
+                                            <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
+                                                onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="estatus" value="Cancelado">
+                                                <flux:menu.item type="submit" icon="x-circle" kbd="⌘⌫"
+                                                    class="px-4 py-2 hover:bg-red-100 transition-all" variant="danger">
+                                                    Cancelar
+                                                </flux:menu.item>
+                                            </form>
+                                        </div>
+                                    @endif
                                 </flux:menu>
                             </flux:dropdown>
-
+                        </td>
+                    </tr>
                 @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-4">No hay resguardos registrados.</td>
-                            </tr>
-                        @endforelse
+                    <tr>
+                        <td colspan="7" class="text-center py-4">No hay resguardos registrados.</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
 </div>
-</body>
