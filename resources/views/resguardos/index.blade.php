@@ -61,6 +61,7 @@
                                         <div><span class="font-semibold">Articulo:</span> {{ $detalle->articulo ?? '' }}</div>
                                         <div><span class="font-semibold">Modelo:</span> {{ $detalle->modelo ?? '' }}</div>
                                         <div><span class="font-semibold">Núm. Serie:</span> {{ $detalle->num_serie ?? '' }}</div>
+                                        <div><span class="font-semibold">Costo:</span> {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</div>
                                     @endforeach
                                 </ul>
                             @endif

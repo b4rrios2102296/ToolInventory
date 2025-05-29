@@ -43,7 +43,8 @@
                         <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
                         <div class="flex gap-2">
                             <flux:input type="text" id="colaborador-search" placeholder="Número o nombre"
-                                class="flex-1 px-4 py-2 rounded-md" value="{{ $resguardo->colaborador_num }}"></flux:input>
+                                class="flex-1 px-4 py-2 rounded-md" value="{{ $resguardo->colaborador_num }}">
+                            </flux:input>
                             <flux:button icon="magnifying-glass" id="buscar-btn">
                                 Buscar
                             </flux:button>
@@ -57,8 +58,8 @@
                         <div>
                             <label class="block text-gray-700">Número</label>
                             <flux:input type="text" name="colaborador_num" id="claveColab"
-                                class="w-full px-3 py-2 rounded bg-gray-100" value="{{ $resguardo->colaborador_num }}" readonly
-                                required></flux:input>
+                                class="w-full px-3 py-2 rounded bg-gray-100" value="{{ $resguardo->colaborador_num }}"
+                                readonly required></flux:input>
                         </div>
                         <div>
                             <label class="block text-gray-700">Nombre</label>
@@ -86,7 +87,7 @@
                 <!-- Card: Detalles del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
-                    
+
                     <div class="mb-4 flex gap-2">
                         <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md">
                             <option value="id">ID</option>
@@ -101,14 +102,15 @@
 
                     <!-- Display current tool information -->
                     @if(isset($herramienta))
-                    <div id="herramienta-result" class="mt-4 p-4 border rounded bg-gray-50">
-                        <strong>ID:</strong> {{ $herramienta->id }}<br>
-                        <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
-                        <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
-                        <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
-                    </div>
+                        <div id="herramienta-result" class="mt-4 p-4 border rounded bg-gray-50">
+                            <strong>ID:</strong> {{ $herramienta->id }}<br>
+                            <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
+                            <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
+                            <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
+                            <strong>Costo:</strong> {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}<br>
+                        </div>
                     @else
-                    <div id="herramienta-result" class="mt-4"></div>
+                        <div id="herramienta-result" class="mt-4"></div>
                     @endif
 
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="{{ $herramienta->id ?? '' }}">
@@ -116,16 +118,21 @@
 
 
                     <div>
-                        <label class="block text-gray-700">Fecha de Resguardo <span class="text-red-500">*</span></label>
+                        <label class="block text-gray-700">Fecha de Resguardo <span
+                                class="text-red-500">*</span></label>
                         <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
-                            value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required></flux:input>
+                            value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required>
+                        </flux:input>
                     </div>
                     <div>
                         <label class="block text-gray-700">Estatus <span class="text-red-500">*</span></label>
                         <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
-                            <option value="completo" {{ $resguardo->estatus == 'completo' ? 'selected' : '' }}>Completo</option>
-                            <option value="en proceso" {{ $resguardo->estatus == 'en proceso' ? 'selected' : '' }}>En proceso</option>
-                            <option value="pendiente" {{ $resguardo->estatus == 'pendiente' ? 'selected' : '' }}>Pendiente</option>
+                            <option value="completo" {{ $resguardo->estatus == 'completo' ? 'selected' : '' }}>Completo
+                            </option>
+                            <option value="en proceso" {{ $resguardo->estatus == 'en proceso' ? 'selected' : '' }}>En
+                                proceso</option>
+                            <option value="pendiente" {{ $resguardo->estatus == 'pendiente' ? 'selected' : '' }}>Pendiente
+                            </option>
                         </flux:select>
                     </div>
                 </div>
@@ -228,16 +235,17 @@
                     if (data.error) {
                         throw new Error(data.error);
                     }
-                    
+
                     resultDiv.innerHTML = `
                         <div class="p-4 border rounded bg-gray-50">
                             <strong>ID:</strong> ${data.id}<br>
                             <strong>Modelo:</strong> ${data.modelo}<br>
                             <strong>Número de Serie:</strong> ${data.num_serie}<br>
                             <strong>Artículo:</strong> ${data.articulo}<br>
+                            <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) : 'N/A'}<br>
                         </div>
                     `;
-                    
+
                     document.getElementById('herramienta_id').value = data.id;
                 })
                 .catch(error => {

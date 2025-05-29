@@ -107,7 +107,8 @@
                             <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
                                 <option value="Resguardo" {{ old('estatus') == 'Resguardo' ? 'selected' : '' }}>Resguardo
                                 </option>
-                                <option value="Cancelado" {{ old('estatus') == 'Cancelado' ? 'selected' : '' }}> Cancelado</option>>
+                                <option value="Cancelado" {{ old('estatus') == 'Cancelado' ? 'selected' : '' }}> Cancelado
+                                </option>>
                             </flux:select>
                         </div>
 
@@ -214,13 +215,15 @@
                     }
                     // Muestra los datos de la herramienta encontrada
                     resultDiv.innerHTML = `
-        <div class="p-4 border rounded bg-gray-50">
-            <strong>ID:</strong> ${data.id}<br>
-            <strong>Modelo:</strong> ${data.modelo}<br>
-            <strong>Número de Serie:</strong> ${data.num_serie}<br>
-            <strong>Artículo:</strong> ${data.articulo}<br>
-        </div>
-    `;
+    <div class="p-4 border rounded bg-gray-50">
+        <strong>ID:</strong> ${data.id}<br>
+        <strong>Modelo:</strong> ${data.modelo}<br>
+        <strong>Número de Serie:</strong> ${data.num_serie}<br>
+        <strong>Artículo:</strong> ${data.articulo}<br>
+        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) : 'N/A'}<br>
+    </div>
+`;
+
                     // Asigna el id al input oculto
                     document.getElementById('herramienta_id').value = data.id;
                 })

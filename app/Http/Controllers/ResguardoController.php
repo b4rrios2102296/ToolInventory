@@ -61,6 +61,11 @@ class ResguardoController extends Controller
                     'articulo' => $herramienta->articulo,
                     'modelo' => $herramienta->modelo,
                     'num_serie' => $herramienta->num_serie,
+                    'unidad' => $herramienta->unidad,
+                    'costo' => $herramienta->costo ?? 0,
+
+
+
                 ]);
 
                 // Insertar resguardo
@@ -180,11 +185,13 @@ class ResguardoController extends Controller
         ->where('claveColab', $resguardo->colaborador_num)
         ->value('nombreCompleto');
 
+
     return view('resguardos.edit', [
         'resguardo' => $resguardo,
         'herramienta' => $herramienta,
         'detalles' => $detalles,
-        'colaborador_nombre' => $colaborador_nombre
+        'colaborador_nombre' => $colaborador_nombre,
+        'costo' => $herramienta->costo ?? 0
     ]);
 }
 
@@ -219,6 +226,8 @@ public function update(Request $request, $folio)
         'articulo' => $herramienta->articulo,
         'modelo' => $herramienta->modelo,
         'num_serie' => $herramienta->num_serie,
+        'unidad' => $herramienta->unidad,
+        'costo' => $herramienta->costo ?? 0,
     ]);
 
     DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->update([

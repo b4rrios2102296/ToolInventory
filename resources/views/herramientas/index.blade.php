@@ -30,33 +30,38 @@
                         <th class="px-4 py-2">Unidad</th>
                         <th class="px-4 py-2">Modelo</th>
                         <th class="px-4 py-2">Num Serie</th>
+                        <th class="px-4 py-2">Costo</th>
                         <th class="px-4 py-2">Observaciones</th>
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse($herramientas as $herramienta)
-                                        <tr class="border-t">
-                                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
-                                                {{ $herramienta->id }}
-                                            </td>
-                                            <td class="px-4 py-2">{{ $herramienta->estatus }}</td>
-                                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->articulo }}</td>
-                                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->unidad }}</td>
-                                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
-                                                {{ $herramienta->modelo }}
-                                            </td>
-                                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->num_serie }}</td>
-                                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->observaciones }}</td>
-                                            <td class="px-4 py-2 text-center align-middle">
-                                                <div class="flex justify-center items-center space-x-4">
-                                                    <flux:button icon="eye" size="sm" />
-                                                    <span class="border-blue-300 h-6 mx-1"></span>
-                                                    <flux:button icon="pencil-square" size="sm" />
-                                                    <span class=" border-blue-300 h-6 mx-1"></span>
-                                                    <flux:button icon="trash" size="sm" />
-                                                </div>
-                                        </tr>
+                        <tr class="border-t">
+                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
+                                {{ $herramienta->id }}
+                            </td>
+                            <td class="px-4 py-2">{{ $herramienta->estatus }}</td>
+                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->articulo }}</td>
+                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->unidad }}</td>
+                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
+                                {{ $herramienta->modelo }}
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->num_serie }}</td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->observaciones }}</td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                <div class="flex justify-center items-center space-x-4">
+                                    <flux:button icon="eye" size="sm" />
+                                    <span class="border-blue-300 h-6 mx-1"></span>
+                                    <flux:button icon="pencil-square" size="sm" />
+                                    <span class=" border-blue-300 h-6 mx-1"></span>
+                                    <flux:button icon="trash" size="sm" />
+                                </div>
+                        </tr>
                     @empty
                         <tr>
                             <td colspan="7" class="px-6 py-4 text-center text-blue-400">No hay herramientas registradas.</td>

@@ -42,6 +42,11 @@
             </flux:select>
         </div>
         <div>
+            <flux:label for="costo">Costo</flux:label>
+            <flux:input id="costo" name="costo" type="number" min="0" step="0.01" required />
+        </div>
+
+        <div>
             <flux:label for="num_serie">Número de Serie</flux:label>
             <flux:input id="num_serie" name="num_serie" required />
         </div>
