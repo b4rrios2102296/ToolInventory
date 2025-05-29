@@ -82,12 +82,10 @@
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div class="mb-4 flex gap-2">
-                        <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md">
+                        <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md" label="Buscar por ID">
                             <option value="id">ID</option>
-                            <option value="modelo">Modelo</option>
-                            <option value="num_serie">Número de Serie</option>
                         </flux:select>
-                        <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta..."
+                        <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta...(GVRMT-ID)"
                             class="flex-1 px-4 py-2 rounded-md"></flux:input>
                         <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
                     </div>
@@ -102,16 +100,6 @@
                             value="{{ old('fecha_captura', date('Y-m-d')) }}" required></flux:input>
                     </div>
                     <div>
-                        <div>
-                            <label class="block text-gray-700">Estatus <span class="text-red-500">*</span></label>
-                            <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
-                                <option value="Resguardo" {{ old('estatus') == 'Resguardo' ? 'selected' : '' }}>Resguardo
-                                </option>
-                                <option value="Cancelado" {{ old('estatus') == 'Cancelado' ? 'selected' : '' }}> Cancelado
-                                </option>>
-                            </flux:select>
-                        </div>
-
                     </div>
                 </div>
             </div>

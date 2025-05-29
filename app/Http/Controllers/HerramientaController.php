@@ -17,8 +17,7 @@ class HerramientaController extends Controller
     {
         // Validar los datos recibidos
         $validated = $request->validate([
-            'estatus' => 'required|string|max:50',
-            'articulo' => 'required|string|max:45',
+            'estatus' => 'nullable|string|in:Resguardo,Baja',
             'unidad' => 'required|string|max:45',
             'modelo' => 'required|string|max:100',
             'num_serie' => 'required|string|max:100',
@@ -26,6 +25,7 @@ class HerramientaController extends Controller
             'costo' => 'required|numeric|min:0|max:100000',
 
         ]);
+            $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
 
         // Insertar los valores en la base de datos
         DB::connection('toolinventory')->table('herramientas')->insert([
