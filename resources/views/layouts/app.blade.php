@@ -3,121 +3,62 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ config('app.name') }} - Dashboard</title>
 
     <!-- Fuentes y estilos -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
-    <link rel="icon" href="/faviconcircle16x16.png" type="image/png" sizes="16x16">
-    <link rel="icon" href="/faviconcircle32x32.png" type="image/png" sizes="32x32">
-    <link rel="apple-touch-icon" href="/apple-touch-icon-circle.png" sizes="180x180">
+    <link rel="icon" href="/faviconcircle16x16.png" type="image/png" sizes="16x16" />
+    <link rel="icon" href="/faviconcircle32x32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-circle.png" sizes="180x180" />
     <meta name="algolia-site-verification" content="A39CBDEB76ED91E0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
-    <meta name="title" content="Flux · Livewire UI kit" />
-    <meta name="description" content="The official Livewire component library. Built by the folks behind Livewire and Alpine." />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="og:title" content="Flux · Livewire UI kit" />
-    <meta name="og:description" content="The official Livewire component library. Built by the folks behind Livewire and Alpine." />
-    <meta name="og:image" content="https://fluxui.dev/img/og_image.jpg" />
-
-    @fluxAppearance
     @livewireStyles
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        @font-face {
-            font-family: 'Monolisa';
-            src: url('/fonts/MonoLisa-Regular.woff2') format('woff2'),
-                url('/fonts/MonoLisa-Regular.woff') format('woff');
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        @font-face {
-            font-family: 'Monolisa';
-            src: url('/fonts/MonoLisa-Medium.woff2') format('woff2'),
-                url('/fonts/MonoLisa-Medium.woff') format('woff');
-            font-weight: 500;
-            font-style: normal;
-        }
-
-        :root.dark {
-            color-scheme: dark;
-        }
-
-        flux\\:sidebar {
-            background-color: #321F01 !important;
-            color: #FFF5E6 !important;
-        }
-
-        flux\\:sidebar *,
-        flux\\:sidebar .icon,
-        flux\\:sidebar svg,
-        flux\\:sidebar [class^="icon-"] {
-            color: #FFF5E6 !important;
-            fill: #FFF5E6 !important;
-        }
-
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
-
     <link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" />
     <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" />
 
-    <script>
-        window.Flux = {
-            applyAppearance(appearance) {
-                let applyDark = () => document.documentElement.classList.add('dark')
-                let applyLight = () => document.documentElement.classList.remove('dark')
-                if (appearance === 'system') {
-                    let media = window.matchMedia('(prefers-color-scheme: dark)')
-                    window.localStorage.removeItem('flux.appearance')
-                    media.matches ? applyDark() : applyLight()
-                } else if (appearance === 'dark') {
-                    window.localStorage.setItem('flux.appearance', 'dark')
-                    applyDark()
-                } else if (appearance === 'light') {
-                    window.localStorage.setItem('flux.appearance', 'light')
-                    applyLight()
-                }
-            }
-        }
-        window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
-    </script>
-
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      document.body.style.backgroundColor = '#FFF5E6';
+      document.body.style.color = '#321F01';
+      document.documentElement.style.backgroundColor = '#FFF5E6';
+      document.documentElement.style.color = '#321F01';
+    
+  });
+</script>
     <style>
-        [wire\:loading], [wire\:loading.delay], [wire\:loading.inline-block],
-        [wire\:loading.inline], [wire\:loading.block], [wire\:loading.flex],
-        [wire\:loading.table], [wire\:loading.grid], [wire\:loading.inline-flex],
-        [wire\:loading.delay.none], [wire\:loading.delay.shortest],
-        [wire\:loading.delay.shorter], [wire\:loading.delay.short],
-        [wire\:loading.delay.default], [wire\:loading.delay.long],
-        [wire\:loading.delay.longer], [wire\:loading.delay.longest],
-        [wire\:offline], [wire\:dirty]:not(textarea):not(input):not(select) {
+        [wire\:loading],
+        [wire\:loading.delay],
+        [wire\:loading.inline-block],
+        [wire\:loading.inline],
+        [wire\:loading.block],
+        [wire\:loading.flex],
+        [wire\:loading.table],
+        [wire\:loading.grid],
+        [wire\:loading.inline-flex],
+        [wire\:loading.delay.none],
+        [wire\:loading.delay.shortest],
+        [wire\:loading.delay.shorter],
+        [wire\:loading.delay.short],
+        [wire\:loading.delay.default],
+        [wire\:loading.delay.long],
+        [wire\:loading.delay.longer],
+        [wire\:loading.delay.longest],
+        [wire\:offline],
+        [wire\:dirty]:not(textarea):not(input):not(select) {
             display: none;
-        }
-
-        :root {
-            --livewire-progress-bar-color: #2299dd;
         }
     </style>
 </head>
 
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="min-h-screen bg-[#FFF5E6] text-[#321F01]">
 
     <!-- Sidebar -->
-    <flux:sidebar sticky stashable
-        class="bg-zinc-50 dark:bg-zinc-900 border-r rtl:border-r-0 rtl:border-l border-zinc-200 dark:border-zinc-700"
-        style="background-color: #321F01 !important; color: #FFF5E6 !important;">
-        
+    <flux:sidebar sticky stashable style="background-color: #321F01 !important; color: #FFF5E6 !important;">
+
         <!-- Toggle (mobile) -->
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
@@ -135,7 +76,7 @@
 
         <!-- Navigation -->
         <flux:navlist variant="outline">
-            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}">Dashboard</flux:navlist.item>
+            <flux:navlist.item icon="cog" href="{{ route('dashboard') }} " class>Dashboard</flux:navlist.item>
             <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">Resguardos</flux:navlist.item>
 
             <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid">
@@ -158,7 +99,7 @@
         </flux:navlist>
 
         <!-- Profile dropdown -->
-        <flux:dropdown position="top" align="start" class="max-lg:hidden">
+        <flux:dropdown position="top" allign="start" class="max-lg:hidden">
             <flux:profile avatar="" name="{{ Auth::user()->nombre ?? 'Usuario' }}" />
             <flux:menu>
                 <flux:menu.radio.group>
@@ -183,7 +124,7 @@
         <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left" />
         <flux:spacer />
         @if(Auth::check())
-        <flux:dropdown position="top" align="start">
+        <flux:dropdown position="top" allign="start">
             <flux:profile avatar="" name="{{ Auth::user()->nombre }}" />
             <flux:menu>
                 <flux:menu.radio.group>
