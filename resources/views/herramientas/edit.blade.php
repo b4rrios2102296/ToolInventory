@@ -1,0 +1,73 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container mx-auto px-4 py-8">
+    <div class="flex items-center mb-4">
+        <div class="ml-4 mt-2">
+            <flux:button icon="arrow-left" href="{{ route('herramientas.index') }}">Volver </flux:button>
+        </div>
+        <h1 class="text-2xl font-bold flex-1 text-center">Editar Herramienta #{{ $herramienta->id }}</h1>
+    </div>
+
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="rounded-lg shadow-md p-6">
+        <form method="POST" action="{{ route('herramientas.update', $herramienta->id) }}">
+            @csrf
+            @method('PUT')
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Card: Datos de la Herramienta -->
+                <div class="border rounded-lg shadow p-4 space-y-6" style="background-color: #FFF9F2; color: #321F01;">
+                    <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
+                    <flux:input label="Estatus" name="estatus" :value="$herramienta->estatus" class="w-full" />
+                    <flux:input label="Artículo" name="articulo" :value="$herramienta->articulo" class="w-full" />
+                    <flux:input label="Unidad" name="unidad" :value="$herramienta->unidad" class="w-full" />
+                    <flux:input label="Modelo" name="modelo" :value="$herramienta->modelo" class="w-full" />
+                    <flux:input label="Número de Serie" name="num_serie" :value="$herramienta->num_serie" class="w-full" />
+                    <flux:input label="Costo" name="costo" type="number" :value="$herramienta->costo" class="w-full" />
+                </div>
+
+                <!-- Card: Observaciones -->
+                <div class="border rounded-lg shadow p-4 space-y-4" style="background-color: #FFF9F2; color: #321F01;">
+                    <h2 class="text-lg font-semibold">Observaciones</h2>
+                    <flux:textarea name="observaciones" rows="4" class="w-full">
+                        {{ $herramienta->observaciones }}
+                    </flux:textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-4">
+                <flux:button href="{{ route('herramientas.index') }}" icon="x-mark"
+                    class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                    Cancelar
+                </flux:button>
+                <flux:button icon="document-plus" type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Guardar Cambios
+                </flux:button>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
