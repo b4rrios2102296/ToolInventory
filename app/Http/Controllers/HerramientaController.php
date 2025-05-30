@@ -17,7 +17,8 @@ class HerramientaController extends Controller
     {
         // Validar los datos recibidos
         $validated = $request->validate([
-            'estatus' => 'nullable|string|in:Resguardo,Baja',
+            'articulo' => 'required|string|max:255', // Añadir esta validación
+            'estatus' => 'nullable|string|in:Disponible,Baja',
             'unidad' => 'required|string|max:45',
             'modelo' => 'required|string|max:100',
             'num_serie' => 'required|string|max:100',
