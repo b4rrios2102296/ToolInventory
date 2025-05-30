@@ -20,15 +20,6 @@
     <link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" />
     <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" />
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-      document.body.style.backgroundColor = '#FFF5E6';
-      document.body.style.color = '#321F01';
-      document.documentElement.style.backgroundColor = '#FFF5E6';
-      document.documentElement.style.color = '#321F01';
-    
-  });
-</script>
     <style>
         [wire\:loading],
         [wire\:loading.delay],
@@ -56,7 +47,7 @@
     
 </head>
 
-<body class="min-h-screen bg-[#FFF5E6] text-[#321F01] hover:bg-gradient-to-r hover:from-[#FFD700] hover:to-[#FFA500] hover:text-[#321F01] hover:shadow-2xl transition-all duration-300">
+<body class="min-h-screen bg #FFF5E6 text-color  #321F01">
 
     <!-- Sidebar -->
     <flux:sidebar sticky stashable style="background-color: #321F01 !important; color: #FFF5E6 !important;">
