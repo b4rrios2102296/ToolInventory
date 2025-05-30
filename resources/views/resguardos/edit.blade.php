@@ -37,7 +37,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Card: Buscar y Datos del Colaborador -->
-                <div class="border rounded-lg shadow p-4 space-y-6" style="background-color: #FFF9F2; color: #321F01; border: 1px solid #321F01; border-radius: 1rem; overflow: hidden;">
+                <div class="border rounded-lg shadow p-4 space-y-6">
                     <!-- Buscar Colaborador -->
                     <div>
                         <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
@@ -85,7 +85,7 @@
                 </div>
 
                 <!-- Card: Detalles del Resguardo -->
-                <div class="border rounded-lg shadow p-4 space-y-4" style="background-color: #FFF9F2; color: #321F01; border: 1px solid #321F01; border-radius: 1rem; overflow: hidden;">
+                <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div class="mb-4 flex gap-2">
                         <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md" label="Buscar por ID">

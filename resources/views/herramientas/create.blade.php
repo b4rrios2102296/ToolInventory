@@ -16,7 +16,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('herramientas.store') }}" method="POST" class="rounded shadow p-6 space-y-4 "style="background-color: #FFF9F2; color: #321F01; border: 1px solid #321F01; border-radius: 1rem; overflow: hidden;"">
+    <form action="{{ route('herramientas.store') }}" method="POST" class="rounded shadow p-6 space-y-4">
         @csrf
         <div>
             <flux:label for="articulo">Nombre/Artículo</flux:label>

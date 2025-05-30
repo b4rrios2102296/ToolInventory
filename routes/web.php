@@ -35,19 +35,6 @@ Route::middleware('auth')->group(function () {
         ->name('resguardos.store');
     Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador'])
         ->name('resguardos.buscar');
-
-    // Update Herramientas
-    Route::get('/herramientas/{id}/edit', [HerramientaController::class, 'edit'])->name('herramientas.edit');
-    Route::put('/herramientas/{id}', [HerramientaController::class, 'update'])->name('herramientas.update');
-    //Get Herramientas
-    Route::get('/herramientas/{id}', [HerramientaController::class, 'show'])->name('herramientas.show');
-    //Path Herramientas
-    Route::patch('/herramientas/{id}/baja', [ResguardoController::class, 'baja'])->name('herramientas.baja');
-
-    
-
-
-
     Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
     // Update
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
