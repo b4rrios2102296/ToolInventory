@@ -28,14 +28,14 @@
         </div>
     @endif
     <div class="rounded-lg shadow-md p-6">
-        <form id="resguardo-form" method="POST" action="{{ route('resguardos.store') }}">
+        <form id="resguardo-form" method="POST" action="{{ route('resguardos.store') }}" >
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Card: Buscar y Datos del Colaborador -->
-                <div class=" border rounded-lg shadow p-4 space-y-6">
+                <div class=" border rounded-lg shadow p-4 space-y-6" style="background-color: #FFF9F2; color: #321F01; border: 1px solid #321F01; border-radius: 1rem; overflow: hidden;">
                     <!-- Buscar Colaborador -->
-                    <div>
+                    <div >
                         <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
                         <div class="flex gap-2">
                             <flux:input type="text" id="colaborador-search" placeholder="Número o nombre"
@@ -47,7 +47,7 @@
                         <div id="colaborador-error" class="text-red-500 mt-2 hidden"></div>
                     </div>
                     <!-- Datos del Colaborador -->
-                    <div class="space-y-4">
+                    <div class="space-y-4" >
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
                             <label class="block text-gray-700">Número</label>
@@ -79,7 +79,7 @@
                 </div>
 
                 <!-- Card: Detalles del Resguardo -->
-                <div class="border rounded-lg shadow p-4 space-y-4">
+                <div class="border rounded-lg shadow p-4 space-y-4" style="background-color: #FFF9F2; color: #321F01; border: 1px solid #321F01; border-radius: 1rem; overflow: hidden;">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div class="mb-4 flex gap-2">
                         <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md" label="Buscar por ID">
