@@ -23,14 +23,6 @@
             <flux:input id="articulo" name="articulo" required />
         </div>
         <div>
-            <label class="block text-gray-700">Estatus <span class="text-red-500">*</span></label>
-            <flux:select name="estatus" class="w-full px-3 py-2 rounded" required>
-                <option value="Disponible" {{ old('estatus') == 'Disponible' ? 'selected' : '' }}>Disponible
-                </option>
-                <option value="Baja" {{ old('estatus') == 'Baja' ? 'selected' : '' }}> Baja</option>
-            </flux:select>
-        </div>
-        <div>
             <flux:label for="modelo">Modelo</flux:label>
             <flux:input id="modelo" name="modelo" required />
         </div>
