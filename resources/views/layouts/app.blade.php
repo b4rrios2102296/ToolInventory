@@ -51,10 +51,12 @@
         [wire\:dirty]:not(textarea):not(input):not(select) {
             display: none;
         }
+        
     </style>
+    
 </head>
 
-<body class="min-h-screen bg-[#FFF5E6] text-[#321F01]">
+<body class="min-h-screen bg-[#FFF5E6] text-[#321F01] hover:bg-gradient-to-r hover:from-[#FFD700] hover:to-[#FFA500] hover:text-[#321F01] hover:shadow-2xl transition-all duration-300">
 
     <!-- Sidebar -->
     <flux:sidebar sticky stashable style="background-color: #321F01 !important; color: #FFF5E6 !important;">
@@ -75,8 +77,8 @@
         </div>
 
         <!-- Navigation -->
-        <flux:navlist variant="outline">
-            <flux:navlist.item icon="cog" href="{{ route('dashboard') }} " class>Dashboard</flux:navlist.item>
+        <flux:navlist>
+            <flux:navlist.item icon="cog" href="{{ route('dashboard') }} ">Dashboard</flux:navlist.item>
             <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">Resguardos</flux:navlist.item>
 
             <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid">

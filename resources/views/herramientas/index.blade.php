@@ -31,6 +31,7 @@
                     <th class="px-4 py-2">Modelo</th>
                     <th class="px-4 py-2">Número de Serie</th>
                     <th class="px-4 py-2">Costo</th>
+                    <th class="px-4 py-2">Acciones </th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +49,14 @@
                             <td class="px-4 py-2 text-center align-middle">{{ $herramienta->num_serie }}</td>
                             <td class="px-4 py-2 text-center align-middle">
                             {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                            <td class="px-4 py-2 text-center align-middle">
+                                                <div class="flex justify-center items-center space-x-4">
+                                                    <flux:button icon="eye" size="sm" />
+                                                    <span class="border-blue-300 h-6 mx-1"></span>
+                                                    <flux:button icon="pencil-square" size="sm" />
+                                                    <span class=" border-blue-300 h-6 mx-1"></span>
+                                                    <flux:button icon="trash" size="sm" />
+                                                </div>
                         </td>
                     </tr>
                 @empty
