@@ -128,8 +128,12 @@
                                 <option value="Cancelado" selected>Cancelado</option>
                                 <option value="Resguardo">Resguardo</option>
                             </flux:select>
+                        @else
+                            {{-- Hidden input to ensure "estatus" is always sent --}}
+                            <input type="hidden" name="estatus" value="Resguardo">
                         @endif
                     </div>
+
                 </div>
             </div>
 
