@@ -201,16 +201,16 @@
                     if (data.error) {
                         throw new Error(data.error);
                     }
-                    // Muestra los datos de la herramienta encontrada
+                    // Muestra los datos de la herramienta encontrada, incluyendo costo
                     resultDiv.innerHTML = `
     <div class="p-4 border rounded bg-gray-50">
         <strong>ID:</strong> ${data.id}<br>
         <strong>Modelo:</strong> ${data.modelo}<br>
         <strong>Número de Serie:</strong> ${data.num_serie}<br>
         <strong>Artículo:</strong> ${data.articulo}<br>
+        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) : 'N/A'}<br> <!-- Adding costo here -->
     </div>
 `;
-
                     // Asigna el id al input oculto
                     document.getElementById('herramienta_id').value = data.id;
                 })
@@ -218,6 +218,7 @@
                     errorDiv.textContent = error.message;
                     errorDiv.classList.remove('hidden');
                 });
+
         });
     });
 </script>

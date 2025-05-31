@@ -75,8 +75,14 @@ class HerramientaController extends Controller
         if (!$herramienta) {
             return response()->json(['error' => 'No se encontró ninguna herramienta con ese filtro']);
         }
+        return response()->json([
+            'id' => $herramienta->id,
+            'modelo' => $herramienta->modelo,
+            'num_serie' => $herramienta->num_serie,
+            'articulo' => $herramienta->articulo,
+            'costo' => $herramienta->costo // Ensure `costo` is included
+        ], 200, [], JSON_UNESCAPED_UNICODE);
 
-        return response()->json($herramienta);
     }
 
 }
