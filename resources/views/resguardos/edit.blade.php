@@ -90,10 +90,8 @@
                     <div class="mb-4 flex gap-2">
                         <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md">
                             <option value="id">ID</option>
-                            <option value="modelo">Modelo</option>
-                            <option value="num_serie">Número de Serie</option>
                         </flux:select>
-                        <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta..."
+                        <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta...(GVRMT-ID)"
                             class="flex-1 px-4 py-2 rounded-md" value="{{ $herramienta->id ?? '' }}"></flux:input>
                         <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
                     </div>
@@ -106,7 +104,7 @@
                         <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
                         <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
                         <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
-                        <strong>Cantidad:</strong> {{ $detalles['cantidad'] ?? 1 }}
+                        <strong>Costo:</strong> ${{ $detalles['costo'] ?? 0 }}
                     </div>
                     @else
                     <div id="herramienta-result" class="mt-4"></div>
@@ -223,29 +221,30 @@
             errorDiv.classList.add('hidden');
             resultDiv.innerHTML = '';
 
-            fetch(`{{ route('herramientas.buscar') }}?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
+            fetch(`/herramientas/buscar?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
                         throw new Error(data.error);
                     }
-                    
+                    // Muestra los datos de la herramienta encontrada, incluyendo costo
                     resultDiv.innerHTML = `
-                        <div class="p-4 border rounded bg-gray-50">
-                            <strong>ID:</strong> ${data.id}<br>
-                            <strong>Modelo:</strong> ${data.modelo}<br>
-                            <strong>Número de Serie:</strong> ${data.num_serie}<br>
-                            <strong>Artículo:</strong> ${data.articulo}<br>
-                            <strong>Cantidad:</strong> ${data.cantidad}
-                        </div>
-                    `;
-                    
+    <div class="p-4 border rounded bg-gray-50">
+        <strong>ID:</strong> ${data.id}<br>
+        <strong>Modelo:</strong> ${data.modelo}<br>
+        <strong>Número de Serie:</strong> ${data.num_serie}<br>
+        <strong>Artículo:</strong> ${data.articulo}<br>
+        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) : 'N/A'}<br> <!-- Adding costo here -->
+    </div>
+`;
+                    // Asigna el id al input oculto
                     document.getElementById('herramienta_id').value = data.id;
                 })
                 .catch(error => {
                     errorDiv.textContent = error.message;
                     errorDiv.classList.remove('hidden');
                 });
+
         });
     });
 </script>
