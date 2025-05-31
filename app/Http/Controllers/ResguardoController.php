@@ -37,10 +37,10 @@ class ResguardoController extends Controller
         }
 
         try {
-            return DB::connection('toolinventory')->transaction(function () use ($request, $herramienta) { // ✅ Pass `$validated` inside transaction
+            return DB::connection('toolinventory')->transaction(function () use ($validated, $herramienta) { // ✅ Pass `$validated` inside transaction
                 $colaborador = DB::connection('sqlsrv')
                     ->table('colaborador')
-                    ->where('claveColab', $request['claveColab'])
+                    ->where('claveColab', $validated['claveColab'])
                     ->where('estado', '1')
                     ->first();
 
@@ -62,15 +62,20 @@ class ResguardoController extends Controller
                     'articulo' => $herramienta->articulo,
                     'modelo' => $herramienta->modelo,
                     'num_serie' => $herramienta->num_serie,
-                    'cantidad' => $request->cantidad,
+                    'unidad' => $herramienta->unidad,
+                    'costo' => $herramienta->costo ?? 0,
                 ]);
 
                 // ✅ `$validated` is now accessible
                 DB::connection('toolinventory')->table('resguardos')->insert([
-                   'fecha_captura' => Carbon::parse($request->fecha_captura),
-                    'prioridad' => $request->prioridad,
-                    'observaciones' => $request->observaciones,
-                    'detalles_resguardo' => $detalles_resguardo, // <-- aquí
+                    'folio' => $folio,
+                    'estatus' => $validated['estatus'],
+                    'colaborador_num' => $colaborador->claveColab,
+                    'aperturo_users_id' => $usuario->id,
+                    'asigno_users_id' => $usuario->id,
+                    'fecha_captura' => Carbon::parse($validated['fecha_captura']),
+                    'observaciones' => $validated['observaciones'],
+                    'detalles_resguardo' => $detalles_resguardo,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -193,7 +198,7 @@ class ResguardoController extends Controller
 
     // Update action
 
-    
+
     public function update(Request $request, $folio)
     {
 
