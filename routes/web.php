@@ -25,6 +25,14 @@ Route::middleware('auth')->group(function () {
     // Herramientas
     Route::resource('herramientas', HerramientaController::class)
         ->only(['index', 'create', 'store']);
+    Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
+    Route::get('/herramientas/{herramienta}/edit', [HerramientaController::class, 'edit'])->name('herramientas.edit');
+    Route::put('/herramientas/{herramienta}', [HerramientaController::class, 'update'])->name('herramientas.update');
+    Route::get('/herramientas/{herramienta}', [HerramientaController::class, 'show'])->name('herramientas.show');
+    Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
+
+
+
 
     // Resguardos
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])
@@ -35,6 +43,12 @@ Route::middleware('auth')->group(function () {
         ->name('resguardos.store');
     Route::get('/buscar-colaborador', [ResguardoController::class, 'buscarColaborador'])
         ->name('resguardos.buscar');
+    Route::get('/resguardos/{resguardo}/edit', [ResguardoController::class, 'edit'])->name('resguardos.edit');
+    // Update
+    Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
+    // cancelar resguardo
+    Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
+    Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
 
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])
@@ -48,7 +62,5 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
-
-
     });
 });
