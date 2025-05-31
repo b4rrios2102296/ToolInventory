@@ -54,6 +54,12 @@
                             @endif
                         </div>
                         <flux:input label="Modelo" name="modelo" :value="$herramienta->modelo" class="w-full" />
+                        <flux:select name="unidad" class="w-full px-3 py-2 rounded" label="Unidad" required>
+                            <option value="Pieza" {{ old('unidad', $herramienta->unidad) == 'Pieza' ? 'selected' : '' }}>Pieza
+                            </option>
+                        </flux:select>
+
+
                         <flux:input label="Número de Serie" name="num_serie" :value="$herramienta->num_serie"
                             class="w-full" />
                         <flux:input label="Costo" name="costo" type="number" :value="$herramienta->costo" class="w-full" />
