@@ -247,7 +247,7 @@ class ResguardoController extends Controller
     }
 
 
-    // Delete action
+    // cancel action
     public function cancel(Request $request, $folio)
     {
         // ✅ Validate incoming request to ensure "estatus" is "Cancelado"

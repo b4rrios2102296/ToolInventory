@@ -10,7 +10,6 @@ use Illuminate\Contracts\View\View;
 
 Route::get('/', fn(): View => view('welcome'))->name(name: 'home');
 Route::get('/test', fn(): View => view('livewire.test'))->name(name: 'test');
-Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
 
 
 // Rutas públicas (sin autenticación)
@@ -26,6 +25,14 @@ Route::middleware('auth')->group(function () {
     // Herramientas
     Route::resource('herramientas', HerramientaController::class)
         ->only(['index', 'create', 'store']);
+    Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
+    Route::get('/herramientas/{herramienta}/edit', [HerramientaController::class, 'edit'])->name('herramientas.edit');
+    Route::put('/herramientas/{herramienta}', [HerramientaController::class, 'update'])->name('herramientas.update');
+    Route::get('/herramientas/{herramienta}', [HerramientaController::class, 'show'])->name('herramientas.show');
+    Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
+
+
+
 
     // Resguardos
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])
