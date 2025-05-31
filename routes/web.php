@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\View;
 
 Route::get('/', fn(): View => view('welcome'))->name(name: 'home');
 Route::get('/test', fn(): View => view('livewire.test'))->name(name: 'test');
+Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
 
 
 // Rutas públicas (sin autenticación)
@@ -54,6 +55,5 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
-        Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
     });
 });

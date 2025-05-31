@@ -37,10 +37,10 @@ class ResguardoController extends Controller
         }
 
         try {
-            return DB::connection('toolinventory')->transaction(function () use ($validated, $herramienta) { // ✅ Pass `$validated` inside transaction
+            return DB::connection('toolinventory')->transaction(function () use ($request, $herramienta) { // ✅ Pass `$validated` inside transaction
                 $colaborador = DB::connection('sqlsrv')
                     ->table('colaborador')
-                    ->where('claveColab', $validated['claveColab'])
+                    ->where('claveColab', $request['claveColab'])
                     ->where('estado', '1')
                     ->first();
 
@@ -62,20 +62,15 @@ class ResguardoController extends Controller
                     'articulo' => $herramienta->articulo,
                     'modelo' => $herramienta->modelo,
                     'num_serie' => $herramienta->num_serie,
-                    'unidad' => $herramienta->unidad,
-                    'costo' => $herramienta->costo ?? 0,
+                    'cantidad' => $request->cantidad,
                 ]);
 
                 // ✅ `$validated` is now accessible
                 DB::connection('toolinventory')->table('resguardos')->insert([
-                    'folio' => $folio,
-                    'estatus' => $validated['estatus'],
-                    'colaborador_num' => $colaborador->claveColab,
-                    'aperturo_users_id' => $usuario->id,
-                    'asigno_users_id' => $usuario->id,
-                    'fecha_captura' => Carbon::parse($validated['fecha_captura']),
-                    'observaciones' => $validated['observaciones'],
-                    'detalles_resguardo' => $detalles_resguardo,
+                   'fecha_captura' => Carbon::parse($request->fecha_captura),
+                    'prioridad' => $request->prioridad,
+                    'observaciones' => $request->observaciones,
+                    'detalles_resguardo' => $detalles_resguardo, // <-- aquí
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
@@ -198,38 +193,52 @@ class ResguardoController extends Controller
 
     // Update action
 
+    
     public function update(Request $request, $folio)
     {
-        // Validamos los datos recibidos
+
         $validated = $request->validate([
-            // Si 'estatus' no es enviado por el formulario, lo dejamos como nullable
-            // y le asignamos un valor predeterminado más adelante.
-            'estatus' => 'nullable|string|in:Disponible,Baja',
-            'colaborador_num' => 'required|integer',
+            'estatus' => 'required|string|in:Resguardo,Cancelado',
+            'colaborador_num' => 'required|string',
+            'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'observaciones' => 'nullable|string',
-            // Asegúrate que detalles_resguardo sea enviado en el formato que esperas (json o array)
-            'detalles_resguardo' => 'required|string',
+            'observaciones' => 'nullable|string|max:500',
         ]);
 
-        // Si 'estatus' viene nulo, asignamos un valor por defecto.
-        // Puedes cambiar 'Disponible' por el valor que tenga sentido en tu contexto.
-        $estatus = $validated['estatus'] ?? 'Disponible';
 
-        // Ejecutamos la actualización en la tabla 'resguardos'
-        DB::connection('toolinventory')->table('resguardos')
-            ->where('folio', $folio)
-            ->update([
-                'estatus' => $estatus,
-                'colaborador_num' => $validated['colaborador_num'],
-                'fecha_captura' => $validated['fecha_captura'],
-                'observaciones' => $validated['observaciones'] ?? null,
-                'detalles_resguardo' => $validated['detalles_resguardo'],
-                'updated_at' => Carbon::now(),
-            ]);
 
-        // Redirigimos con un mensaje de éxito
-        return redirect()->route('resguardos.index')->with('success', 'Resguardo actualizado correctamente.');
+        // Get the tool details
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $request->herramienta_id)
+            ->first();
+
+        if (!$herramienta) {
+            return redirect()->back()
+                ->withErrors(['herramienta_id' => 'La herramienta seleccionada no existe'])
+                ->withInput();
+        }
+
+        // Prepare detalles_resguardo
+        $detalles_resguardo = json_encode([
+            'id' => $herramienta->id,
+            'articulo' => $herramienta->articulo,
+            'modelo' => $herramienta->modelo,
+            'num_serie' => $herramienta->num_serie,
+            'unidad' => $herramienta->unidad,
+            'costo' => $herramienta->costo ?? 0,
+        ]);
+
+        DB::connection('toolinventory')->table('resguardos')->where('folio', $folio)->update([
+            'estatus' => $request->estatus,
+            'colaborador_num' => $request->colaborador_num,
+            'fecha_captura' => Carbon::parse($request->fecha_captura),
+            'observaciones' => $request->observaciones,
+            'detalles_resguardo' => $detalles_resguardo,
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('resguardos.index')->with('success', 'Resguardo actualizado');
     }
 
 

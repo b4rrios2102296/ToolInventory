@@ -26,7 +26,7 @@ class HerramientaController extends Controller
             'costo' => 'required|numeric|min:0|max:100000',
 
         ]);
-            $validated['estatus'] = $validated['estatus'] ?? 'Disponible';
+        $validated['estatus'] = $validated['estatus'] ?? 'Disponible';
 
         // Insertar los valores en la base de datos
         DB::connection('toolinventory')->table('herramientas')->insert([
