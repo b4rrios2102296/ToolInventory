@@ -52,7 +52,7 @@ return [
 
 
         'sqlsrv' => [
-            'driver' => 'sqlsrv',
+            'driver' => env('DB_TOOL_DRIVER', 'sqlsrv'),
             'host' => env('DB_TOOL_HOST', '192.168.100.17'),
             'port' => env('DB_TOOL_PORT', '1433'),
             'database' => env('DB_TOOL_DATABASE', 'GrandVelas_RM_NOM'),
@@ -69,7 +69,9 @@ return [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                 "TrustServerCertificate" => true, // Explicitly trust the certificate
             ],
+
         ],
+        
 
 
 

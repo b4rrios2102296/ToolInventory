@@ -1,20 +1,21 @@
-
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.dark, .dark *));
+
 @theme {
-    --font-sans: Inter, sans-serif;
+  --font-sans: Inter, sans-serif;
 }
-@custom-variant dark (&:where(.dark, .dark *));
-@custom-variant dark (&:where(.dark, .dark *));
+
+/* @custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *)); */
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
 @theme {
-    --font-sans: Inter, sans-serif;
+  --font-sans: Inter, sans-serif;
 }
 
 @theme {
@@ -29,5 +30,6 @@
   --color-zinc-800: var(--color-slate-800);
   --color-zinc-900: var(--color-slate-900);
   --color-zinc-950: var(--color-slate-950);
-}
 
+ 
+}
