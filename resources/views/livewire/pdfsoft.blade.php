@@ -23,7 +23,7 @@
     <div class="row">
 
         <div class="col-xs-12">
-            <h2>Fecha: {{date('d/m/Y', strtotime($fecha_entrega)) }}</h2>
+            <h2>Fecha: {{date('d/m/Y', timestamp: strtotime($fecha_entrega)) }}</h2>
             <h2>Folio de resguardo: {{$folio}}</h2>
         </div>
     </div>
