@@ -64,11 +64,11 @@
                     Editar
                 </flux:button>
                 <flux:button href="{{ route('resguardo.pdf', ['folio' => $resguardo->folio]) }}" icon="document-arrow-down"
-                    class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-                    Descargar PDF 📄
-                </flux:button>
+                    target="_blank">
+                        Descargar PDF 📄
+                    </flux:button>
 
+                </div>
             </div>
         </div>
-    </div>
 @endsection

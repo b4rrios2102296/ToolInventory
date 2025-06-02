@@ -299,7 +299,7 @@ class ResguardoController extends Controller
         return view('resguardos.show', compact('resguardo', 'herramienta'));
     }
 
-public function downloadPDF($folio)
+public function viewPDF($folio)
 {
     // Fetch resguardo details
     $resguardo = DB::connection('toolinventory')
@@ -332,14 +332,15 @@ public function downloadPDF($folio)
         ->where('id', $detalles['id'] ?? null)
         ->first();
 
-    // Generar PDF - pass ALL needed variables to the view
+    // Generar PDF
     $pdf = Pdf::loadView('resguardos.pdf', [
         'resguardo' => $resguardo,
         'herramienta' => $herramienta,
         'detalles' => $detalles
     ]);
     
-    return $pdf->download("resguardo_{$folio}.pdf");
+    return $pdf->stream("resguardo_{$folio}.pdf"); // Instead of download(), use stream()
 }
+
 
 }
