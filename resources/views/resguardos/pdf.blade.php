@@ -96,7 +96,8 @@
         <h1>Grand Velas Riviera Maya</h1>
         <h2>TECNOLOGIAS DE LA INFORMACION</h2>
         <h3>RESGUARDO DE HERRAMIENTA</h3>
-        <img src="{{ asset(path: 'Images/grand-velas-riviera-maya-mexico-logo-_1_.png') }}" />
+        <img
+            src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}" style="width: 65%;">
     </div>
 
     <div class="two-columns">
