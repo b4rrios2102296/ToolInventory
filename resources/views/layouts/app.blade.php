@@ -48,10 +48,10 @@
 
 </head>
 
-<body class="min-h-screen bg #FFF5E6 text-color  #321F01">
+<body class="min-h-screen">
 
     <!-- Sidebar -->
-    <flux:sidebar sticky stashable style="background-color: #321F01 !important; color: #FFF5E6 !important;">
+    <flux:sidebar sticky stashable>
 
         <!-- Toggle (mobile) -->
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
@@ -62,8 +62,8 @@
             <div class="flex items-center justify-center">
                 <img src="{{ asset('Images/logoGrandVelas.svg') }}" alt="Grand Velas Logo" class="w-8 h-8 mr-2" />
                 <div class="text-left">
-                    <div class="font-bold text-xs" style="color: #FFF5E6;">Departamento de Sistemas</div>
-                    <div class="text-xs" style="color: #FFF5E6;">Grand Velas Riviera Maya</div>
+                    <div class="font-bold text-xs">Departamento de Sistemas</div>
+                    <div class="text-xs">Grand Velas Riviera Maya</div>
                 </div>
             </div>
         </div>

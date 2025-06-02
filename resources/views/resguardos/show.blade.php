@@ -24,7 +24,7 @@
         <div class="rounded-lg shadow-md p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Card: Datos del Resguardo -->
-                <div class="border rounded-lg shadow p-4 space-y-6" style="background-color: #FFF9F2; color: #321F01;">
+                <div class="border rounded-lg shadow p-4 space-y-6">
                     <h2 class="text-lg font-semibold">Detalles del Resguardo</h2>
                     <flux:input label="Folio" :value="$resguardo->folio" readonly class="w-full" />
                     <flux:input label="Estatus" :value="$resguardo->estatus" readonly class="w-full" />
@@ -38,7 +38,7 @@
                 </div>
 
                 <!-- Card: Detalle del Resguardo -->
-                <div class="border rounded-lg shadow p-4 space-y-4" style="background-color: #FFF9F2; color: #321F01;">
+                <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Detalle de Resguardo</h2>
                     <div class="bg-gray-100 p-3 rounded">
                         @php
