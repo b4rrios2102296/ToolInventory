@@ -6,21 +6,21 @@
 </head>
 <body>
     <h1>Resguardo Folio #{{ $resguardo->folio }}</h1>
-    <p><strong>Estatus:</strong> {{ $resguardo->estatus }}</p>
     <p><strong>Realizó Resguardo:</strong> {{ $resguardo->aperturo_nombre }} {{ $resguardo->aperturo_apellidos }}</p>
-    <p><strong>Asignado a:</strong> {{ $resguardo->asignado_nombre }}</p>
-    <p><strong>Colaborador:</strong> {{ $resguardo->colaborador_num }}</p>
+    <p><strong>Asignado a:</strong> {{ $colaborador->nombreCompleto ?? 'No asignado' }}</p>
+    <p><strong>Colaborador:</strong> {{ $colaborador->claveColab ?? 'No disponible' }}</p>
     <p><strong>Fecha de Resguardo:</strong> {{ $resguardo->fecha_captura }}</p>
 
-    @php
-        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
-        $herramienta = DB::connection('toolinventory')
-            ->table('herramientas')
-            ->where('id', $detalles['id'] ?? null)
-            ->first();
-    @endphp
+    <h2>Datos del Colaborador</h2>
+    <ul>
+        <li><strong>Número de Colaborador:</strong> {{ $colaborador->claveColab ?? 'No disponible' }}</li>
+        <li><strong>Nombre Completo:</strong> {{ $colaborador->nombreCompleto ?? 'No disponible' }}</li>
+        <li><strong>Puesto:</strong> {{ $colaborador->Puesto ?? 'No especificado' }}</li>
+        <li><strong>Departamento:</strong> {{ $colaborador->area_limpia ?? 'No especificado' }}</li>
+        <li><strong>Ambiente:</strong> {{ $colaborador->sucursal_limpia ?? 'No especificado' }}</li>
+    </ul>
 
-    <p><strong>Detalle del Resguardo:</strong></p>
+    <h2>Detalle del Resguardo</h2>
     @if ($herramienta)
         <ul>
             <li><strong>ID:</strong> {{ $herramienta->id }}</li>

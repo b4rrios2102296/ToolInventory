@@ -317,13 +317,23 @@ public function viewPDF($folio)
         return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
     }
 
-    // Retrieve "Asignado a"
-    $asignado_nombre = DB::connection('sqlsrv')
+    // Retrieve collaborator details
+    $colaborador = DB::connection('sqlsrv')
         ->table('colaborador')
+        ->select(
+            'claveColab',
+            'nombreCompleto',
+            'Puesto',
+            'Area',
+            'Sucursal'
+        )
+        ->selectRaw("
+            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+        ")
         ->where('claveColab', $resguardo->colaborador_num)
-        ->pluck('nombreCompleto', 'claveColab');
-
-    $resguardo->asignado_nombre = $asignado_nombre[$resguardo->colaborador_num] ?? 'No asignado';
+        ->where('estado', '1')
+        ->first();
 
     // Herramienta
     $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
@@ -336,11 +346,13 @@ public function viewPDF($folio)
     $pdf = Pdf::loadView('resguardos.pdf', [
         'resguardo' => $resguardo,
         'herramienta' => $herramienta,
-        'detalles' => $detalles
+        'detalles' => $detalles,
+        'colaborador' => $colaborador // Pass collaborator data to the view
     ]);
-    
-    return $pdf->stream("resguardo_{$folio}.pdf"); // Instead of download(), use stream()
+
+    return $pdf->stream("resguardo_{$folio}.pdf");
 }
+
 
 
 }
