@@ -27,8 +27,7 @@
             <flux:input id="modelo" name="modelo" required />
         </div>
         <div>
-            <label class="block text-gray-700">Unidad <span class="text-red-500">*</span></label>
-            <flux:select name="unidad" class="w-full px-3 py-2 rounded" required>
+            <flux:select name="unidad" label="Unidad" class="w-full px-3 py-2 rounded" required>
                 <option value="Pieza" {{ old('unidad') == 'Pieza' ? 'selected' : '' }}>Pieza
                 </option>
             </flux:select>
