@@ -1,5 +1,10 @@
 @extends('layouts.app')
-
+<link rel="preconnect" href="https://fonts.bunny.net" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
+    <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
+    <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
+     <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
+    @fluxAppearance
 @section('content')
     <div class="overflow-x-auto">
         <div class="container mx-auto px-4 py-8">
@@ -21,7 +26,7 @@
             </div>
             <br>
             <table class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl">
-                <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
+                <thead>
                     <tr>
                         <th class="px-4 py-2">ID</th>
                         <th class="px-4 py-2">Estatus</th>

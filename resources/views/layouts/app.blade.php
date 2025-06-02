@@ -16,30 +16,6 @@
      <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
 
-    <style>
-        [wire\:loading],
-        [wire\:loading.delay],
-        [wire\:loading.inline-block],
-        [wire\:loading.inline],
-        [wire\:loading.block],
-        [wire\:loading.flex],
-        [wire\:loading.table],
-        [wire\:loading.grid],
-        [wire\:loading.inline-flex],
-        [wire\:loading.delay.none],
-        [wire\:loading.delay.shortest],
-        [wire\:loading.delay.shorter],
-        [wire\:loading.delay.short],
-        [wire\:loading.delay.default],
-        [wire\:loading.delay.long],
-        [wire\:loading.delay.longer],
-        [wire\:loading.delay.longest],
-        [wire\:offline],
-        [wire\:dirty]:not(textarea):not(input):not(select) {
-            display: none;
-        }
-    </style>
-
 </head>
 
 <body class="min-h-screen">
