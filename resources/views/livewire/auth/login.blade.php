@@ -9,30 +9,19 @@
 
     <form wire:submit.prevent="login">
         <div class="mb-4">
-            <flux:input 
-                type="text" 
-                label="Nombre de usuario" 
-                wire:model="nombre_usuario"
-            
-            />
+            <flux:input type="text" label="Nombre de usuario" wire:model="nombre_usuario" />
         </div>
 
         <div class="mb-4">
-            <flux:input 
-                type="password" 
-                label="Contraseña" 
-                wire:model="password"
-            
-            />
+            <flux:input type="password" label="Contraseña" wire:model="password" />
         </div>
 
         <div class="mb-6 flex items-center">
         </div>
 
-        <button type="submit"
-            >
-            Ingresar 
-        </button>
+        <flux:button type="submit">
+            Ingresar
+        </flux:button>
     </form>
-    
+
 </div>

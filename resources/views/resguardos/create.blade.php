@@ -51,28 +51,27 @@
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
                             <label class="block text-gray-700">Número</label>
-                            <flux:input type="text" name="claveColab" id="claveColab"
-                                class="w-full px-3 py-2 rounded bg-gray-100" value="{{ old('claveColab') }}" readonly
+                            <flux:input type="text" name="claveColab" id="claveColab" value="{{ old('claveColab') }}" readonly
                                 required></flux:input>
                         </div>
                         <div>
                             <label class="block text-gray-700">Nombre</label>
-                            <flux:input type="text" id="nombreCompleto" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input type="text" id="nombreCompleto" 
                                 value="{{ old('nombreCompleto') }}" readonly></flux:input>
                         </div>
                         <div>
                             <label class="block text-gray-700">Puesto</label>
-                            <flux:input type="text" id="Puesto" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input type="text" id="Puesto" 
                                 value="{{ old('Puesto') }}" readonly></flux:input>
                         </div>
                         <div>
                             <label class="block text-gray-700">Departamento</label>
-                            <flux:input type="text" id="area_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input type="text" id="area_limpia" 
                                 value="{{ old('area_limpia') }}" readonly></flux:input>
                         </div>
                         <div>
                             <label class="block text-gray-700">Ambiente</label>
-                            <flux:input type="text" id="sucursal_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input type="text" id="sucursal_limpia" 
                                 value="{{ old('sucursal_limpia') }}" readonly></flux:input>
                         </div>
                     </div>
@@ -82,7 +81,7 @@
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div class="mb-4 flex gap-2">
-                        <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md" label="Buscar por ID">
+                        <flux:select id="herramienta-filtro" label="Buscar por ID">
                             <option value="id">ID</option>
                         </flux:select>
                         <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta...(GVRMT-ID)"
