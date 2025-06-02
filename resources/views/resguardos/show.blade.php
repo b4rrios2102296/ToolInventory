@@ -40,7 +40,7 @@
                 <!-- Card: Detalle del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Detalle de Resguardo</h2>
-                    <div class="bg-gray-100 p-3 rounded">
+                    <div class="p-3 rounded">
                         @php
                             $detalles = json_decode($resguardo->detalles_resguardo ?? '[]', true);
                         @endphp

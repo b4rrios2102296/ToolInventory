@@ -37,7 +37,7 @@
             <!-- Card: Observaciones -->
             <div class="border rounded-lg shadow p-4 space-y-4">
                 <h2 class="text-lg font-semibold">Observaciones</h2>
-                <div class="bg-gray-100 p-3 rounded">
+                <div>
                     {{ $herramienta->observaciones ?? 'No hay observaciones registradas.' }}
                 </div>
             </div>
