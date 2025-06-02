@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     // cancelar resguardo
     Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
-Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'downloadPDF'])->name('resguardo.pdf');
+Route::get('/resguardo/{folio}/pdf', [ResguardoController::class, 'downloadPDF'])->name('resguardo.pdf');
 
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])

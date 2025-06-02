@@ -11,13 +11,7 @@
     <!-- Fuentes y estilos -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
-    <link rel="icon" href="/faviconcircle16x16.png" type="image/png" sizes="16x16" />
-    <link rel="icon" href="/faviconcircle32x32.png" type="image/png" sizes="32x32" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon-circle.png" sizes="180x180" />
-    <meta name="algolia-site-verification" content="A39CBDEB76ED91E0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
-      <!-- @livewireStyles-->
     <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
      <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
@@ -142,6 +136,7 @@
     <flux:main>
         @yield('content')
     </flux:main>
+    @fluxScripts
 
     @livewireScripts
     @fluxScripts

@@ -299,38 +299,47 @@ class ResguardoController extends Controller
         return view('resguardos.show', compact('resguardo', 'herramienta'));
     }
 
-    public function downloadPDF($folio)
-    {
-        // Fetch resguardo details
-        $resguardo = DB::connection('toolinventory')
-            ->table('resguardos')
-            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
-            ->select(
-                'resguardos.*',
-                'aperturo.nombre as aperturo_nombre',
-                'aperturo.apellidos as aperturo_apellidos'
-            )
-            ->where('folio', $folio)
-            ->first();
+public function downloadPDF($folio)
+{
+    // Fetch resguardo details
+    $resguardo = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+        ->select(
+            'resguardos.*',
+            'aperturo.nombre as aperturo_nombre',
+            'aperturo.apellidos as aperturo_apellidos'
+        )
+        ->where('folio', $folio)
+        ->first();
 
-        if (!$resguardo) {
-            return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
-        }
-
-        // Retrieve "Asignado a" name based on colaborador_num in SQL Server
-        $asignado_nombre = DB::connection('sqlsrv')
-            ->table('colaborador')
-            ->where('claveColab', $resguardo->colaborador_num)
-            ->pluck('nombreCompleto', 'claveColab');
-
-        $resguardo->asignado_nombre = $asignado_nombre[$resguardo->colaborador_num] ?? 'No asignado';
-
-        // Decode detalles_resguardo properly
-        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
-        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $detalles['id'] ?? null)->first();
-
-        // Generate PDF
-        $pdf = Pdf::loadView('resguardos.pdf', compact('resguardo'));
-        return view('resguardos.pdf', compact('resguardo', 'folio'));
+    if (!$resguardo) {
+        return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
     }
+
+    // Retrieve "Asignado a"
+    $asignado_nombre = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->where('claveColab', $resguardo->colaborador_num)
+        ->pluck('nombreCompleto', 'claveColab');
+
+    $resguardo->asignado_nombre = $asignado_nombre[$resguardo->colaborador_num] ?? 'No asignado';
+
+    // Herramienta
+    $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+    $herramienta = DB::connection('toolinventory')
+        ->table('herramientas')
+        ->where('id', $detalles['id'] ?? null)
+        ->first();
+
+    // Generar PDF - pass ALL needed variables to the view
+    $pdf = Pdf::loadView('resguardos.pdf', [
+        'resguardo' => $resguardo,
+        'herramienta' => $herramienta,
+        'detalles' => $detalles
+    ]);
+    
+    return $pdf->download("resguardo_{$folio}.pdf");
+}
+
 }

@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 @import '../../vendor/livewire/flux/dist/flux.css';
 
-@custom-variant light (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-sans: Inter, sans-serif;
@@ -19,17 +19,21 @@
 }
 
 @theme {
-  --color-zinc-50: var(--color-slate-50);
-  --color-zinc-100: var(--color-slate-100);
-  --color-zinc-200: var(--color-slate-200);
-  --color-zinc-300: var(--color-slate-300);
-  --color-zinc-400: var(--color-slate-400);
-  --color-zinc-500: var(--color-slate-500);
-  --color-zinc-600: var(--color-slate-600);
-  --color-zinc-700: var(--color-slate-700);
-  --color-zinc-800: var(--color-slate-800);
-  --color-zinc-900: var(--color-slate-900);
-  --color-zinc-950: var(--color-slate-950);
+  --color-zinc-50: var(--color-black-50);
+  --color-zinc-100: var(--color-black-100);
+  --color-zinc-200: var(--color-black-200);
+  --color-zinc-300: var(--color-black-300);
+  --color-zinc-400: var(--color-black-400);
+  --color-zinc-500: var(--color-black-500);
+  --color-zinc-600: var(--color-black-600);
+  --color-zinc-700: var(--color-black-700);
+  --color-zinc-800: var(--color-black-800);
+  --color-zinc-900: var(--color-black-900);
+  --color-zinc-950: var(--color-black-950);
 
+    --color-accent: var(--color-black-500);
+    --color-accent-content: var(--color-black-600);
+    --color-accent-foreground: var(--color-white);
+ 
  
 }
