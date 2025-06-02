@@ -24,6 +24,7 @@
     @if ($herramienta)
         <ul>
             <li><strong>ID:</strong> {{ $herramienta->id }}</li>
+            <li><strong>Unidad:</strong> {{ $herramienta->unidad }}
             <li><strong>Nombre:</strong> {{ $herramienta->articulo }}</li>
             <li><strong>Modelo:</strong> {{ $herramienta->modelo }}</li>
             <li><strong>Número de Serie:</strong> {{ $herramienta->num_serie }}</li>

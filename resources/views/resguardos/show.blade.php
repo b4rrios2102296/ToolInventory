@@ -40,20 +40,20 @@
                 <!-- Card: Detalle del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Detalle de Resguardo</h2>
-                    <div class="p-3 rounded">
                         @php
                             $detalles = json_decode($resguardo->detalles_resguardo ?? '[]', true);
                         @endphp
+
                         @if(!empty($detalles))
-                            <ul class="list-disc space-y-2">
-                                @foreach($detalles as $detalle)
-                                    <li>{{ is_string($detalle) ? $detalle : json_encode($detalle) }}</li>
-                                @endforeach
-                            </ul>
+                            <strong>ID:</strong> {{ $detalles['id'] ?? 'N/A' }}<br>
+                            <strong>Modelo:</strong> {{ $detalles['modelo'] ?? 'N/A' }}<br>
+                            <strong>Número de Serie:</strong> {{ $detalles['num_serie'] ?? 'N/A' }}<br>
+                            <strong>Artículo:</strong> {{ $detalles['articulo'] ?? 'N/A' }}<br>
+                            <strong>Costo:</strong>
+                            {{ isset($detalles['costo']) ? '$' . number_format($detalles['costo'], 2) : 'N/A' }}<br>
                         @else
-                            <p>No hay detalles disponibles.</p>
+                            <p class="text-gray-500">No hay detalles disponibles.</p>
                         @endif
-                    </div>
                 </div>
 
             </div>
@@ -65,10 +65,10 @@
                 </flux:button>
                 <flux:button href="{{ route('resguardo.pdf', ['folio' => $resguardo->folio]) }}" icon="document-arrow-down"
                     target="_blank">
-                        Descargar PDF 📄
-                    </flux:button>
+                    Descargar PDF 📄
+                </flux:button>
 
-                </div>
             </div>
         </div>
+    </div>
 @endsection

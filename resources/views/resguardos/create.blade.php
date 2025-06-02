@@ -191,7 +191,7 @@
                     }
                     // Muestra los datos de la herramienta encontrada, incluyendo costo
                     resultDiv.innerHTML = `
-    <div class="p-4 border rounded bg-gray-50">
+    <div class="p-4 border rounded">
         <strong>ID:</strong> ${data.id}<br>
         <strong>Modelo:</strong> ${data.modelo}<br>
         <strong>Número de Serie:</strong> ${data.num_serie}<br>
