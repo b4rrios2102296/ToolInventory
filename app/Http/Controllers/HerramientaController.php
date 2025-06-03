@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Exports\HerramientasExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+
 
 class HerramientaController extends Controller
 {
@@ -64,29 +69,29 @@ class HerramientaController extends Controller
     }
 
     public function baja(Request $request, $id)
-{
-    // Validate incoming request to ensure "estatus" is either "Disponible" or "Baja"
-    $request->validate([
-        'estatus' => 'required|in:Disponible,Baja',
-    ]);
-
-    // Find the herramienta
-    $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
-
-    if (!$herramienta) {
-        return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
-    }
-
-    // Update the status instead of deleting the record
-    DB::connection('toolinventory')->table('herramientas')
-        ->where('id', $id)
-        ->update([
-            'estatus' => 'Baja',
-            'updated_at' => now(),
+    {
+        // Validate incoming request to ensure "estatus" is either "Disponible" or "Baja"
+        $request->validate([
+            'estatus' => 'required|in:Disponible,Baja',
         ]);
 
-    return redirect()->route('herramientas.index')->with('success', 'Herramienta marcada como Baja.');
-}
+        // Find the herramienta
+        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
+
+        if (!$herramienta) {
+            return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
+        }
+
+        // Update the status instead of deleting the record
+        DB::connection('toolinventory')->table('herramientas')
+            ->where('id', $id)
+            ->update([
+                'estatus' => 'Baja',
+                'updated_at' => now(),
+            ]);
+
+        return redirect()->route('herramientas.index')->with('success', 'Herramienta marcada como Baja.');
+    }
 
 
 
@@ -175,6 +180,36 @@ class HerramientaController extends Controller
             'costo' => $herramienta->costo // Ensure `costo` is included
         ], 200, [], JSON_UNESCAPED_UNICODE);
 
+    }
+    public function generarPDF()
+    {
+        $herramientas = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->select(
+                'id',
+                'estatus',
+                'articulo',
+                'unidad',
+                'modelo',
+                'num_serie',
+                'costo'
+            )
+            ->get();
+
+        if ($herramientas->isEmpty()) {
+            return redirect()->route('herramientas.index')->with('error', 'No hay herramientas disponibles.');
+        }
+
+        $pdf = PDF::loadView('herramientas.listapdf', compact('herramientas'));
+
+        return $pdf->download('listado_herramientas.pdf');
+
+
+
+    }
+    public function generarExcel()
+    {
+        return Excel::download(new HerramientasExport, 'listado_herramientas.xlsx');
     }
 
 }
