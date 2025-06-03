@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
     Route::get('/resguardos/pdf', [ResguardoController::class, 'generarPDF'])->name('resguardos.pdf');
     Route::get('/resguardo/{folio}/pdf', action: [ResguardoController::class, 'viewPDF'])->name('resguardo.pdf');
+    Route::get('/resguardos/excel', [ResguardoController::class, 'generarExcel'])->name('resguardos.excel');
 
 
 
