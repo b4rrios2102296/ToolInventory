@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Listado de Resguardos</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 9; }
+        body { font-family: Arial, sans-serif; font-size: 7; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid black; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
@@ -24,6 +24,7 @@
                 <th>Modelo</th>
                 <th>Número de Serie</th>
                 <th>Costo</th>
+                <th>Comentarios</th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +39,7 @@
                 <td>{{ $resguardo->herramienta_modelo ?? 'N/A' }}</td>
                 <td>{{ $resguardo->herramienta_num_serie ?? 'N/A' }}</td>
                 <td>${{ number_format($resguardo->herramienta_costo ?? 0, 2) }}</td>
-                <td>{{ $resguardo-> }}
+                <td>{{ $resguardo->comentarios}}</td>
             </tr>
             @endforeach
         </tbody>

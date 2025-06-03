@@ -15,27 +15,31 @@
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .header h1 {
-            font-size: 18px;
+            font-size: 14px;
+            /* Smaller title */
             font-weight: bold;
             margin: 0;
         }
 
         .header h2 {
-            font-size: 16px;
-            margin: 5px 0 0 0;
+            font-size: 12px;
+            /* Smaller subtitle */
+            margin: 3px 0 0 0;
         }
 
         .header h3 {
-            font-size: 14px;
+            font-size: 10px;
+            /* Smaller section title */
             font-weight: bold;
-            border-bottom: 2px solid #000;
-            padding-bottom: 5px;
-            margin: 5px 0 15px 0;
+            border-bottom: 1px solid #000;
+            padding-bottom: 3px;
+            margin: 3px 0 10px 0;
         }
+
 
         .info-section {
             margin-bottom: 15px;
@@ -94,7 +98,6 @@
     style="width: 35%; margin-right: 55%; margin-bottom: 50px;">
 
 <body>
-
     <div class="header">
         <h1>Grand Velas Riviera Maya</h1>
         <h2>TECNOLOGIAS DE LA INFORMACION</h2>
@@ -135,6 +138,10 @@
         <p><span class="bold">DEPARTAMENTO:</span> <span
                 class="uppercase">{{ $colaborador->area_limpia ?? 'No especificado' }}</span></p>
     </div>
+    <p class="bold">Comentarios</p>
+    <p>
+        {{ $resguardo->comentarios }}
+    </p>
 
     <div class="conditions">
         <p>El presente resguardo ampara la responsabilidad del colaborador para con la empresa
@@ -159,11 +166,6 @@
                         </span></li>
                 </ul>
             </div>
-            <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3"
-                class="w-full px-3 py-2 rounded" readonly>
-                {{ $resguardo->comentarios }}
-            </flux:textarea>
-
         @else
             <p>No hay herramienta registrada</p>
         @endif
