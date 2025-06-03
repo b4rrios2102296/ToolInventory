@@ -90,14 +90,16 @@
         }
     </style>
 </head>
+<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}"
+    style="width: 35%; margin-right: 55%; margin-bottom: 50px;">
 
 <body>
+
     <div class="header">
         <h1>Grand Velas Riviera Maya</h1>
         <h2>TECNOLOGIAS DE LA INFORMACION</h2>
         <h3>RESGUARDO DE HERRAMIENTA</h3>
-        <img
-            src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}" style="width: 65%;">
+
     </div>
 
     <div class="two-columns">
@@ -145,15 +147,19 @@
 
         @if($herramienta)
             <div class="tool-details">
-                <p><span class="bold">ID:</span> <span class="uppercase">{{ $herramienta->id }}</span></p>
-                <p><span class="bold">NOMBRE DEL ARTÍCULO:</span> <span
-                        class="uppercase">{{ $herramienta->articulo }}</span></p>
-                <p><span class="bold">NUM SERIE:</span> <span class="uppercase">{{ $herramienta->num_serie }}</span></p>
-                <p><span class="bold">MODELO:</span> <span class="uppercase">{{ $herramienta->modelo }}</span></p>
-                <p><span class="bold">COSTO:</span> <span class="uppercase">
-                        {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
-                    </span></p>
+                <ul style="list-style-type: disc; padding-left: 20px;">
+                    <li><span class="bold">ID:</span> <span class="uppercase">{{ $herramienta->id }}</span></li>
+                    <li><span class="bold">NOMBRE DEL ARTÍCULO:</span> <span
+                            class="uppercase">{{ $herramienta->articulo }}</span></li>
+                    <li><span class="bold">NUM SERIE:</span> <span class="uppercase">{{ $herramienta->num_serie }}</span>
+                    </li>
+                    <li><span class="bold">MODELO:</span> <span class="uppercase">{{ $herramienta->modelo }}</span></li>
+                    <li><span class="bold">COSTO:</span> <span class="uppercase">
+                            {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                        </span></li>
+                </ul>
             </div>
+
         @else
             <p>No hay herramienta registrada</p>
         @endif
