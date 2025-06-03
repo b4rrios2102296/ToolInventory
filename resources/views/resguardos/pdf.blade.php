@@ -159,6 +159,10 @@
                         </span></li>
                 </ul>
             </div>
+            <flux:textarea label="Observaciones" is="textarea" name="observaciones" rows="3"
+                class="w-full px-3 py-2 rounded" readonly>
+                {{ $resguardo->observaciones }}
+            </flux:textarea>
 
         @else
             <p>No hay herramienta registrada</p>

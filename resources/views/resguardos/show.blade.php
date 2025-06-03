@@ -36,28 +36,30 @@
                         :value="\Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y')" readonly
                         class="w-full" />
                 </div>
-
                 <!-- Card: Detalle del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Detalle de Resguardo</h2>
-                        @php
-                            $detalles = json_decode($resguardo->detalles_resguardo ?? '[]', true);
-                        @endphp
+                    @php
+                        $detalles = json_decode($resguardo->detalles_resguardo ?? '[]', true);
+                    @endphp
 
-                        @if(!empty($detalles))
-                            <strong>ID:</strong> {{ $detalles['id'] ?? 'N/A' }}<br>
-                            <strong>Modelo:</strong> {{ $detalles['modelo'] ?? 'N/A' }}<br>
-                            <strong>Número de Serie:</strong> {{ $detalles['num_serie'] ?? 'N/A' }}<br>
-                            <strong>Artículo:</strong> {{ $detalles['articulo'] ?? 'N/A' }}<br>
-                            <strong>Costo:</strong>
-                            {{ isset($detalles['costo']) ? '$' . number_format($detalles['costo'], 2) : 'N/A' }}<br>
-                        @else
-                            <p class="text-gray-500">No hay detalles disponibles.</p>
-                        @endif
+                    @if(!empty($detalles))
+                        <strong>ID:</strong> {{ $detalles['id'] ?? 'N/A' }}<br>
+                        <strong>Modelo:</strong> {{ $detalles['modelo'] ?? 'N/A' }}<br>
+                        <strong>Número de Serie:</strong> {{ $detalles['num_serie'] ?? 'N/A' }}<br>
+                        <strong>Artículo:</strong> {{ $detalles['articulo'] ?? 'N/A' }}<br>
+                        <strong>Costo:</strong>
+                        {{ isset($detalles['costo']) ? '$' . number_format($detalles['costo'], 2) : 'N/A' }}<br>
+                    @else
+                        <p class="text-gray-500">No hay detalles disponibles.</p>
+                    @endif
                 </div>
-
             </div>
-
+             <div class="mb-6">
+                    <flux:textarea label="Observaciones" is="textarea" name="observaciones" rows="3" class="w-full px-3 py-2 rounded" readonly>
+                        {{ $resguardo->observaciones }}
+                    </flux:textarea>
+                </div>
             <div class="flex justify-end gap-4">
                 <flux:button href="{{ route('resguardos.edit', $resguardo->folio) }}" icon="pencil-square"
                     class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
