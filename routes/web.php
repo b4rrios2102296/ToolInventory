@@ -30,7 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/herramientas/{herramienta}', [HerramientaController::class, 'update'])->name('herramientas.update');
     Route::get('/herramientas/{herramienta}', [HerramientaController::class, 'show'])->name('herramientas.show');
     Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
-
+    Route::get('/resguardos/pdf', [ResguardoController::class, 'generarPDF'])->name('resguardos.pdf');
+    Route::get('/resguardo/{folio}/pdf', action: [ResguardoController::class, 'viewPDF'])->name('resguardo.pdf');
 
 
 
@@ -49,7 +50,9 @@ Route::middleware('auth')->group(function () {
     // cancelar resguardo
     Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
-Route::get('/resguardo/{folio}/pdf', [ResguardoController::class, 'viewPDF'])->name('resguardo.pdf');
+    //DOCS
+    Route::get('/resguardo/{folio}/pdf', action: [ResguardoController::class, 'viewPDF'])->name('resguardo.pdf');
+
 
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])
@@ -63,5 +66,7 @@ Route::get('/resguardo/{folio}/pdf', [ResguardoController::class, 'viewPDF'])->n
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
+        Route::get('/resguardos/pdf', [ResguardoController::class, 'generarPDF'])->name('resguardos.pdf');
+
     });
 });

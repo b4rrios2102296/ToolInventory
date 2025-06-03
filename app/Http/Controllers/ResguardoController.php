@@ -299,10 +299,67 @@ class ResguardoController extends Controller
         return view('resguardos.show', compact('resguardo', 'herramienta'));
     }
 
-public function viewPDF($folio)
+    public function viewPDF($folio)
+    {
+        // Fetch resguardo details
+        $resguardo = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.*',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos'
+            )
+            ->where('folio', $folio)
+            ->first();
+
+        if (!$resguardo) {
+            return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
+        }
+
+        // Retrieve collaborator details
+        $colaborador = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->select(
+                'claveColab',
+                'nombreCompleto',
+                'Puesto',
+                'Area',
+                'Sucursal'
+            )
+            ->selectRaw("
+            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+        ")
+            ->where('claveColab', $resguardo->colaborador_num)
+            ->where('estado', '1')
+            ->first();
+
+        // Herramienta
+        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $detalles['id'] ?? null)
+            ->first();
+
+        // Generar PDF
+        $pdf = Pdf::loadView('resguardos.pdf', [
+            'resguardo' => $resguardo,
+            'herramienta' => $herramienta,
+            'detalles' => $detalles,
+            'colaborador' => $colaborador // Pass collaborator data to the view
+        ]);
+
+        return $pdf->stream("resguardo_{$folio}.pdf");
+    }
+
+
+
+
+public function generarPDF()
 {
-    // Fetch resguardo details
-    $resguardo = DB::connection('toolinventory')
+    // Fetch all resguardos from toolinventory
+    $resguardos = DB::connection('toolinventory')
         ->table('resguardos')
         ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
         ->select(
@@ -310,49 +367,40 @@ public function viewPDF($folio)
             'aperturo.nombre as aperturo_nombre',
             'aperturo.apellidos as aperturo_apellidos'
         )
-        ->where('folio', $folio)
-        ->first();
+        ->get();
 
-    if (!$resguardo) {
-        return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
+    if ($resguardos->isEmpty()) {
+        return redirect()->route('resguardos.index')->with('error', 'No hay resguardos disponibles.');
     }
 
-    // Retrieve collaborator details
-    $colaborador = DB::connection('sqlsrv')
+    // Fetch collaborator details
+    $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
+    $colaboradores = DB::connection('sqlsrv')
         ->table('colaborador')
-        ->select(
-            'claveColab',
-            'nombreCompleto',
-            'Puesto',
-            'Area',
-            'Sucursal'
-        )
-        ->selectRaw("
-            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
-            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
-        ")
-        ->where('claveColab', $resguardo->colaborador_num)
-        ->where('estado', '1')
-        ->first();
+        ->whereIn('claveColab', $colaborador_nums)
+        ->pluck('nombreCompleto', 'claveColab');
 
-    // Herramienta
-    $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
-    $herramienta = DB::connection('toolinventory')
-        ->table('herramientas')
-        ->where('id', $detalles['id'] ?? null)
-        ->first();
+    // Retrieve Herramienta details
+    foreach ($resguardos as $resguardo) {
+        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
 
-    // Generar PDF
-    $pdf = Pdf::loadView('resguardos.pdf', [
-        'resguardo' => $resguardo,
-        'herramienta' => $herramienta,
-        'detalles' => $detalles,
-        'colaborador' => $colaborador // Pass collaborator data to the view
-    ]);
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $detalles['id'] ?? null)
+            ->first();
 
-    return $pdf->stream("resguardo_{$folio}.pdf");
+        // Assign collaborator and herramienta details
+        $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
+        $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
+        $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
+        $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
+        $resguardo->herramienta_costo = $herramienta->costo ?? 0;
+    }
+
+    // Generate PDF
+    $pdf = PDF::loadView('resguardos.listapdf', compact('resguardos'));
+
+    return $pdf->download("listado_resguardos.pdf");
 }
-
-
 
 }

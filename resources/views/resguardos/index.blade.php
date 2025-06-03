@@ -13,7 +13,7 @@
         <br>
         <div>
             <flux:tooltip content="PDF">
-                <flux:button icon="document-arrow-down" icon:variant="outline" />
+                <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('resguardos.pdf') }}" />
             </flux:tooltip>
             <flux:tooltip content="Excel">
                 <flux:button icon="document-chart-bar" icon:variant="outline" />
