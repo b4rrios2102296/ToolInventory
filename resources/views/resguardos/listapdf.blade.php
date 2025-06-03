@@ -38,6 +38,7 @@
                 <td>{{ $resguardo->herramienta_modelo ?? 'N/A' }}</td>
                 <td>{{ $resguardo->herramienta_num_serie ?? 'N/A' }}</td>
                 <td>${{ number_format($resguardo->herramienta_costo ?? 0, 2) }}</td>
+                <td>{{ $resguardo-> }}
             </tr>
             @endforeach
         </tbody>

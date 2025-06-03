@@ -18,7 +18,7 @@ class ResguardoController extends Controller
             'claveColab' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'observaciones' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:500',
             'estatus' => 'nullable|string|in:Resguardo,Baja',
         ]);
 
@@ -74,7 +74,7 @@ class ResguardoController extends Controller
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
                     'fecha_captura' => Carbon::parse($validated['fecha_captura']),
-                    'observaciones' => $validated['observaciones'],
+                    'comentarios' => $validated['comentarios'],
                     'detalles_resguardo' => $detalles_resguardo,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -207,7 +207,7 @@ class ResguardoController extends Controller
             'colaborador_num' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'observaciones' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:500',
         ]);
 
 
@@ -238,7 +238,7 @@ class ResguardoController extends Controller
             'estatus' => $request->estatus,
             'colaborador_num' => $request->colaborador_num,
             'fecha_captura' => Carbon::parse($request->fecha_captura),
-            'observaciones' => $request->observaciones,
+            'comentarios' => $request->comentarios,
             'detalles_resguardo' => $detalles_resguardo,
             'updated_at' => now(),
         ]);

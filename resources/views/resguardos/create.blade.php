@@ -96,8 +96,8 @@
             </div>
 
             <div class="mb-6">
-                <flux:textarea label="Observaciones" is="textarea" name="observaciones" rows="3" class="w-full px-3 py-2 rounded">
-                    {{ old('observaciones') }}
+                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3" class="w-full px-3 py-2 rounded">
+                    {{ old('comentarios') }}
                 </flux:textarea>
             </div>
 
