@@ -12,86 +12,94 @@ use App\Exports\ResguardosExport;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
-    {
-        Log::debug('Resguardo store method called', $request->all());
+{
+    Log::debug('Resguardo store method called', $request->all());
 
-        // ✅ Define `$validated` first
-        $validated = $request->validate([
-            'claveColab' => 'required|string',
-            'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
-            'fecha_captura' => 'required|date',
-            'comentarios' => 'nullable|string|max:500',
-            'estatus' => 'nullable|string|in:Resguardo,Baja',
-        ]);
+    $validated = $request->validate([
+        'claveColab' => 'required|string',
+        'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
+        'fecha_captura' => 'required|date',
+        'comentarios' => 'nullable|string|max:500',
+        'estatus' => 'nullable|string|in:Resguardo,Baja',
+    ]);
 
-        // ✅ Ensure "Resguardo" is set as default if not provided
-        $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
+    $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
 
-        $herramienta = DB::connection('toolinventory')
-            ->table('herramientas')
-            ->where('id', $validated['herramienta_id'])
-            ->first();
+    try {
+        return DB::connection('toolinventory')->transaction(function () use ($validated) {
+            // First, check if the tool exists and is available
+            $herramienta = DB::connection('toolinventory')
+                ->table('herramientas')
+                ->where('id', $validated['herramienta_id'])
+                ->where('estatus', 'Disponible')
+                ->lockForUpdate() // Lock the row for update
+                ->first();
 
-        if (!$herramienta) {
-            return redirect()->back()
-                ->withErrors(['herramienta_id' => 'La herramienta seleccionada no existe'])
-                ->withInput();
-        }
+            if (!$herramienta) {
+                return redirect()->back()
+                    ->withErrors(['herramienta_id' => 'La herramienta no está disponible o no existe'])
+                    ->withInput();
+            }
 
-        try {
-            return DB::connection('toolinventory')->transaction(function () use ($validated, $herramienta) { // ✅ Pass `$validated` inside transaction
-                $colaborador = DB::connection('sqlsrv')
-                    ->table('colaborador')
-                    ->where('claveColab', $validated['claveColab'])
-                    ->where('estado', '1')
-                    ->first();
+            // Check the collaborator
+            $colaborador = DB::connection('sqlsrv')
+                ->table('colaborador')
+                ->where('claveColab', $validated['claveColab'])
+                ->where('estado', '1')
+                ->first();
 
-                if (!$colaborador) {
-                    return redirect()->back()
-                        ->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.'])
-                        ->withInput();
-                }
+            if (!$colaborador) {
+                return redirect()->back()
+                    ->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.'])
+                    ->withInput();
+            }
 
-                $usuario = DB::connection('toolinventory')
-                    ->table('usuarios')
-                    ->where('id', auth()->id())
-                    ->firstOrFail();
+            $usuario = DB::connection('toolinventory')
+                ->table('usuarios')
+                ->where('id', auth()->id())
+                ->firstOrFail();
 
-                $folio = $this->generarFolio();
+            $folio = $this->generarFolio();
 
-                $detalles_resguardo = json_encode([
-                    'id' => $herramienta->id,
-                    'articulo' => $herramienta->articulo,
-                    'modelo' => $herramienta->modelo,
-                    'num_serie' => $herramienta->num_serie,
-                    'unidad' => $herramienta->unidad,
-                    'costo' => $herramienta->costo ?? 0,
-                ]);
+            $detalles_resguardo = json_encode([
+                'id' => $herramienta->id,
+                'articulo' => $herramienta->articulo,
+                'modelo' => $herramienta->modelo,
+                'num_serie' => $herramienta->num_serie,
+                'unidad' => $herramienta->unidad,
+                'costo' => $herramienta->costo ?? 0,
+            ]);
 
-                // ✅ `$validated` is now accessible
-                DB::connection('toolinventory')->table('resguardos')->insert([
-                    'folio' => $folio,
-                    'estatus' => $validated['estatus'],
-                    'colaborador_num' => $colaborador->claveColab,
-                    'aperturo_users_id' => $usuario->id,
-                    'asigno_users_id' => $usuario->id,
-                    'fecha_captura' => Carbon::parse($validated['fecha_captura']),
-                    'comentarios' => $validated['comentarios'],
-                    'detalles_resguardo' => $detalles_resguardo,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
+            // Create the resguardo
+            DB::connection('toolinventory')->table('resguardos')->insert([
+                'folio' => $folio,
+                'estatus' => $validated['estatus'],
+                'colaborador_num' => $colaborador->claveColab,
+                'aperturo_users_id' => $usuario->id,
+                'asigno_users_id' => $usuario->id,
+                'fecha_captura' => Carbon::parse($validated['fecha_captura']),
+                'comentarios' => $validated['comentarios'],
+                'detalles_resguardo' => $detalles_resguardo,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-                return redirect()->route('resguardos.index')
-                    ->with('success', "Resguardo $folio creado exitosamente");
-            });
-        } catch (\Exception $e) {
-            Log::error('Error creating resguardo: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Ocurrió un error al crear el resguardo')
-                ->withInput();
-        }
+            // Update the tool status to "Resguardo"
+            DB::connection('toolinventory')
+                ->table('herramientas')
+                ->where('id', $validated['herramienta_id'])
+                ->update(['estatus' => 'Resguardo', 'updated_at' => now()]);
+
+            return redirect()->route('resguardos.index')
+                ->with('success', "Resguardo $folio creado exitosamente");
+        });
+    } catch (\Exception $e) {
+        Log::error('Error creating resguardo: ' . $e->getMessage());
+        return redirect()->back()
+            ->with('error', 'Ocurrió un error al crear el resguardo')
+            ->withInput();
     }
+}
 
 
     protected function generarFolio()
@@ -136,6 +144,7 @@ class ResguardoController extends Controller
     {
         $herramientas = DB::connection('toolinventory')
             ->table('herramientas')
+            ->where('estatus','Disponible')
             ->get();
 
         return view('resguardos.create', compact('herramientas'));
@@ -250,21 +259,49 @@ class ResguardoController extends Controller
 
 
     // cancel action
-    public function cancel(Request $request, $folio)
-    {
-        // ✅ Validate incoming request to ensure "estatus" is "Cancelado"
-        $request->validate([
-            'estatus' => 'required|in:Resguardo,Cancelado', // ✅ Allow both statuses
-        ]);
+public function cancel(Request $request, $folio)
+{
+    $request->validate([
+        'estatus' => 'required|in:Resguardo,Cancelado',
+    ]);
 
-
-        // ✅ Update the status instead of deleting the record
-        DB::connection('toolinventory')->table('resguardos')
-            ->where('folio', $folio)
-            ->update(['estatus' => 'Cancelado', 'updated_at' => now()]);
-
-        return redirect()->route('resguardos.index')->with('success', 'Resguardo marcado como Cancelado.');
+    try {
+        DB::connection('toolinventory')->transaction(function () use ($request, $folio) {
+            // Get the resguardo to find the herramienta_id
+            $resguardo = DB::connection('toolinventory')
+                ->table('resguardos')
+                ->where('folio', $folio)
+                ->first();
+                
+            if ($resguardo) {
+                $detalles = json_decode($resguardo->detalles_resguardo, true);
+                $herramienta_id = $detalles['id'] ?? null;
+                
+                // Update the resguardo status
+                DB::connection('toolinventory')
+                    ->table('resguardos')
+                    ->where('folio', $folio)
+                    ->update(['estatus' => 'Cancelado', 'updated_at' => now()]);
+                
+                // If there's a herramienta associated, set it back to Disponible
+                if ($herramienta_id) {
+                    DB::connection('toolinventory')
+                        ->table('herramientas')
+                        ->where('id', $herramienta_id)
+                        ->update(['estatus' => 'Disponible', 'updated_at' => now()]);
+                }
+            }
+        });
+        
+        return redirect()->route('resguardos.index')
+            ->with('success', 'Resguardo marcado como Cancelado y herramienta liberada.');
+            
+    } catch (\Exception $e) {
+        Log::error('Error canceling resguardo: ' . $e->getMessage());
+        return redirect()->back()
+            ->with('error', 'Ocurrió un error al cancelar el resguardo');
     }
+}
 
 
 

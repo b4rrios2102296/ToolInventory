@@ -155,7 +155,9 @@ class HerramientaController extends Controller
         $filtro = $request->query('filtro', 'id'); // default to id
         $valor = $request->query('valor');
 
-        $query = DB::connection('toolinventory')->table('herramientas');
+        $query = DB::connection('toolinventory')
+        ->table('herramientas')
+        ->where('estatus','Disponible');
 
         if ($filtro === 'id') {
             $query->where('id', $valor);
@@ -172,6 +174,7 @@ class HerramientaController extends Controller
         if (!$herramienta) {
             return response()->json(['error' => 'No se encontró ninguna herramienta con ese filtro']);
         }
+        
         return response()->json([
             'id' => $herramienta->id,
             'modelo' => $herramienta->modelo,

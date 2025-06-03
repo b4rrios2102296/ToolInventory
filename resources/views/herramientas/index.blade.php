@@ -21,7 +21,7 @@
                 </flux:tooltip>
             </div>
             <br>
-            <table class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl">
+            <table>
                 <thead>
                     <tr>
                         <th class="px-4 py-2">ID</th>
