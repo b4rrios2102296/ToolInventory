@@ -16,7 +16,7 @@
                 <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('resguardos.pdf') }}" />
             </flux:tooltip>
             <flux:tooltip content="Excel">
-                <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('resguardos.excel') }}" class="btn btn-success" />
+                <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('resguardos.excel') }}" />
             </flux:tooltip>
         </div>
         <br>

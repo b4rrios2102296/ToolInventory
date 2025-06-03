@@ -465,9 +465,10 @@ public function generarPDF()
         ];
         
     }
-    public function generarExcel()
+   public function generarExcel()
 {
-    return Excel::download(new ResguardosExport, 'listado_resguardos.xlsx');}
+    return Excel::download(new ResguardosExport, 'listado_resguardos.xlsx');
+}
 }
 
 
