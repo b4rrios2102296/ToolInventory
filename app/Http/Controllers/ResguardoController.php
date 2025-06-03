@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ResguardosExport;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
@@ -18,7 +20,7 @@ class ResguardoController extends Controller
             'claveColab' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'observaciones' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:500',
             'estatus' => 'nullable|string|in:Resguardo,Baja',
         ]);
 
@@ -74,7 +76,7 @@ class ResguardoController extends Controller
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
                     'fecha_captura' => Carbon::parse($validated['fecha_captura']),
-                    'observaciones' => $validated['observaciones'],
+                    'comentarios' => $validated['comentarios'],
                     'detalles_resguardo' => $detalles_resguardo,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -207,7 +209,7 @@ class ResguardoController extends Controller
             'colaborador_num' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'observaciones' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:500',
         ]);
 
 
@@ -238,7 +240,7 @@ class ResguardoController extends Controller
             'estatus' => $request->estatus,
             'colaborador_num' => $request->colaborador_num,
             'fecha_captura' => Carbon::parse($request->fecha_captura),
-            'observaciones' => $request->observaciones,
+            'comentarios' => $request->comentarios,
             'detalles_resguardo' => $detalles_resguardo,
             'updated_at' => now(),
         ]);
@@ -298,4 +300,175 @@ class ResguardoController extends Controller
 
         return view('resguardos.show', compact('resguardo', 'herramienta'));
     }
+
+    public function viewPDF($folio)
+    {
+        // Fetch resguardo details
+        $resguardo = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.*',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos'
+            )
+            ->where('folio', $folio)
+            ->first();
+
+        if (!$resguardo) {
+            return redirect()->route('resguardos.index')->with('error', 'Resguardo no encontrado');
+        }
+
+        // Retrieve collaborator details
+        $colaborador = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->select(
+                'claveColab',
+                'nombreCompleto',
+                'Puesto',
+                'Area',
+                'Sucursal'
+            )
+            ->selectRaw("
+            LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+            LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+        ")
+            ->where('claveColab', $resguardo->colaborador_num)
+            ->where('estado', '1')
+            ->first();
+
+        // Herramienta
+        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $detalles['id'] ?? null)
+            ->first();
+
+        // Generar PDF
+        $pdf = Pdf::loadView('resguardos.pdf', [
+            'resguardo' => $resguardo,
+            'herramienta' => $herramienta,
+            'detalles' => $detalles,
+            'colaborador' => $colaborador // Pass collaborator data to the view
+        ]);
+
+        return $pdf->stream("resguardo_{$folio}.pdf");
+    }
+
+
+
+
+public function generarPDF()
+{
+    // Fetch all resguardos from toolinventory
+    $resguardos = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+        ->select(
+            'resguardos.*',
+            'aperturo.nombre as aperturo_nombre',
+            'aperturo.apellidos as aperturo_apellidos'
+        )
+        ->get();
+
+    if ($resguardos->isEmpty()) {
+        return redirect()->route('resguardos.index')->with('error', 'No hay resguardos disponibles.');
+    }
+
+    // Fetch collaborator details
+    $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
+    $colaboradores = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->whereIn('claveColab', $colaborador_nums)
+        ->pluck('nombreCompleto', 'claveColab');
+
+    // Retrieve Herramienta details
+    foreach ($resguardos as $resguardo) {
+        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+
+        $herramienta = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->where('id', $detalles['id'] ?? null)
+            ->first();
+
+        // Assign collaborator and herramienta details
+        $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
+        $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
+        $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
+        $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
+        $resguardo->herramienta_costo = $herramienta->costo ?? 0;
+    }
+
+    // Generate PDF
+    $pdf = PDF::loadView('resguardos.listapdf', compact('resguardos'));
+
+    return $pdf->download("listado_resguardos.pdf");
 }
+
+
+
+
+    public function collection()
+    {
+        // Fetch all resguardos from toolinventory
+        $resguardos = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.folio',
+                'resguardos.estatus',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos',
+                'resguardos.fecha_captura',
+                'resguardos.colaborador_num'
+            )
+            ->get();
+
+        // Fetch collaborator details
+        $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
+        $colaboradores = DB::connection('sqlsrv')
+            ->table('colaborador')
+            ->whereIn('claveColab', $colaborador_nums)
+            ->pluck('nombreCompleto', 'claveColab');
+
+        foreach ($resguardos as $resguardo) {
+            $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+
+            $herramienta = DB::connection('toolinventory')
+                ->table('herramientas')
+                ->where('id', $detalles['id'] ?? null)
+                ->first();
+
+            // Assign collaborator and herramienta details
+            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
+            $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
+            $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
+            $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
+            $resguardo->herramienta_costo = $herramienta->costo ?? 0;
+        }
+
+        return $resguardos;
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Folio',
+            'Estado',
+            'Realizó Resguardo',
+            'Asignado a',
+            'Fecha de Resguardo',
+            'Artículo',
+            'Modelo',
+            'Número de Serie',
+            'Costo'
+        ];
+        
+    }
+   public function generarExcel()
+{
+    return Excel::download(new ResguardosExport, 'listado_resguardos.xlsx');
+}
+}
+
+

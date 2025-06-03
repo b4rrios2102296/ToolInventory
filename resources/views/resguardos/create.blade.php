@@ -36,10 +36,8 @@
                 <div class=" border rounded-lg shadow p-4 space-y-6">
                     <!-- Buscar Colaborador -->
                     <div>
-                        <label class="block text-gray-700 font-medium mb-2">Buscar Colaborador</label>
                         <div class="flex gap-2">
-                            <flux:input type="text" id="colaborador-search" placeholder="Número o nombre"
-                                class="flex-1 px-4 py-2 rounded-md"></flux:input>
+                            <flux:input label="Buscar Colaborador" type="text" id="colaborador-search" placeholder="Número o nombre"></flux:input>
                             <flux:button icon="magnifying-glass" id="buscar-btn">
                                 Buscar
                             </flux:button>
@@ -50,29 +48,23 @@
                     <div class="space-y-4">
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
-                            <label class="block text-gray-700">Número</label>
-                            <flux:input type="text" name="claveColab" id="claveColab"
-                                class="w-full px-3 py-2 rounded bg-gray-100" value="{{ old('claveColab') }}" readonly
+                            <flux:input label="Num Colaborador" type="text" name="claveColab" id="claveColab" value="{{ old('claveColab') }}" readonly
                                 required></flux:input>
                         </div>
                         <div>
-                            <label class="block text-gray-700">Nombre</label>
-                            <flux:input type="text" id="nombreCompleto" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input label="Nombre Completo" type="text" id="nombreCompleto" 
                                 value="{{ old('nombreCompleto') }}" readonly></flux:input>
                         </div>
                         <div>
-                            <label class="block text-gray-700">Puesto</label>
-                            <flux:input type="text" id="Puesto" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input label="Puesto" type="text" id="Puesto" 
                                 value="{{ old('Puesto') }}" readonly></flux:input>
                         </div>
                         <div>
-                            <label class="block text-gray-700">Departamento</label>
-                            <flux:input type="text" id="area_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input label="Departamento" type="text" id="area_limpia" 
                                 value="{{ old('area_limpia') }}" readonly></flux:input>
                         </div>
                         <div>
-                            <label class="block text-gray-700">Ambiente</label>
-                            <flux:input type="text" id="sucursal_limpia" class="w-full px-3 py-2 rounded bg-gray-100"
+                            <flux:input label="Ambiente" type="text" id="sucursal_limpia" 
                                 value="{{ old('sucursal_limpia') }}" readonly></flux:input>
                         </div>
                     </div>
@@ -82,7 +74,7 @@
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
                     <div class="mb-4 flex gap-2">
-                        <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md" label="Buscar por ID">
+                        <flux:select id="herramienta-filtro" label="Buscar por ID">
                             <option value="id">ID</option>
                         </flux:select>
                         <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta...(GVRMT-ID)"
@@ -94,9 +86,8 @@
                     <div id="herramienta-result" class="mt-4"></div>
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="">
                     <div>
-                        <label class="block text-gray-700">Fecha de Resguardo <span
-                                class="text-red-500">*</span></label>
-                        <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
+
+                        <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded" label="Fecha del Resguardo"
                             value="{{ old('fecha_captura', date('Y-m-d')) }}" required></flux:input>
                     </div>
                     <div>
@@ -105,19 +96,16 @@
             </div>
 
             <div class="mb-6">
-                <label class="block text-gray-700">Observaciones</label>
-                <flux:textarea is="textarea" name="observaciones" rows="3" class="w-full px-3 py-2 rounded">
-                    {{ old('observaciones') }}
+                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3" class="w-full px-3 py-2 rounded">
+                    {{ old('comentarios') }}
                 </flux:textarea>
             </div>
 
             <div class="flex justify-end gap-4">
-                <flux:button href="{{ route('resguardos.index') }}" icon="x-mark"
-                    class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                <flux:button href="{{ route('resguardos.index') }}" icon="x-mark">
                     Cancelar
                 </flux:button>
-                <flux:button icon="document-plus" type="submit"
-                    class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                <flux:button icon="document-plus" type="submit">
                     Guardar Resguardo
                 </flux:button>
             </div>
@@ -203,7 +191,7 @@
                     }
                     // Muestra los datos de la herramienta encontrada, incluyendo costo
                     resultDiv.innerHTML = `
-    <div class="p-4 border rounded bg-gray-50">
+    <div class="p-4 border rounded">
         <strong>ID:</strong> ${data.id}<br>
         <strong>Modelo:</strong> ${data.modelo}<br>
         <strong>Número de Serie:</strong> ${data.num_serie}<br>

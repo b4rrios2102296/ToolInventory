@@ -1,9 +1,8 @@
 @extends('layouts.app')
-
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
-            <h1 class="text-2xl font-bold mb-6 text-center text-[#321F01]">
+            <h1 class="text-2xl font-bold mb-6 text-center">
                 Listado de Resguardos
             </h1>
             <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">Nuevo Resguardo</flux:button>
@@ -14,16 +13,15 @@
         <br>
         <div>
             <flux:tooltip content="PDF">
-                <flux:button icon="document-arrow-down" icon:variant="outline" />
+                <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('resguardos.pdf') }}" />
             </flux:tooltip>
             <flux:tooltip content="Excel">
-                <flux:button icon="document-chart-bar" icon:variant="outline" />
+                <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('resguardos.excel') }}" />
             </flux:tooltip>
         </div>
         <br>
-        <table class="min-w-full divide-y divide-blue-200 shadow-xl transition-all duration-300 rounded-2xl"
-            style="background-color: #FFF9F2; color: #321F01; border: 5px solid #321F01; border-radius: 1rem; overflow: hidden;">
-            <thead class="bg-gradient-to-r from-blue-700 to-blue-500">
+        <table>
+            <thead>
                 <tr>
                     <th class="px-4 py-2">Folio</th>
                     <th class="px-4 py-2">Estatus</th>
@@ -39,7 +37,7 @@
                 @forelse($resguardos as $resguardo)
                     <tr
                         class="border-t text-center 
-                        {{ $resguardo->estatus == 'Cancelado' ? 'bg-gray-100 text-gray-500' : 'bg-white text-black' }}">
+                                                                    {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -48,8 +46,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}"
-                                class="text-white">
+                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}">
                                 @if ($resguardo->estatus == 'Cancelado')
                                     <s>{{ $resguardo->estatus }}</s>
                                 @else
@@ -143,39 +140,31 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <flux:dropdown class="relative">
-                                <flux:button icon:trailing="chevron-down" class="px-4 py-2 rounded-md transition-all">
-                                    Acciones
-                                </flux:button>
-                                <flux:menu
-                                    class="absolute right-0 w-48 bg-white shadow-lg rounded-md py-2 z-10 border border-gray-300">
-                                    <flux:menu.item icon="eye" kbd="⌘V"
-                                        class="px-4 py-2 hover:bg-gray-100 transition-all">
-                                        <a href="{{ route('resguardos.show', $resguardo->folio) }}"
-                                            class="block text-gray-700">Ver</a>
-                                    </flux:menu.item>
-                                    <flux:menu.item icon="pencil-square" kbd="⌘E"
-                                        class="px-4 py-2 hover:bg-gray-100 transition-all">
-                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}"
-                                            class="block text-gray-700">Editar</a>
-                                    </flux:menu.item>
+                            <flux:dropdown>
+                                <flux:button icon:trailing="chevron-down"> Acciones </flux:button>
+
+                                <flux:menu>
+                                    <a href="{{ route('resguardos.show', $resguardo->folio) }}">
+                                        <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
+                                    </a>
+                                    <a href="{{ route('resguardos.edit', $resguardo->folio) }}">
+                                        <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
+                                    </a>
+
                                     @if ($resguardo->estatus == 'Resguardo')
-                                        <div>
-                                            <form action="{{ route('resguardos.cancel', $resguardo->folio) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="estatus" value="Cancelado">
-                                                <flux:menu.item type="submit" icon="x-circle" kbd="⌘⌫"
-                                                    class="px-4 py-2 hover:bg-red-100 transition-all" variant="danger">
-                                                    Cancelar
-                                                </flux:menu.item>
-                                            </form>
-                                        </div>
+                                        <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="estatus" value="Cancelado">
+                                            <flux:menu.item type="submit" icon="x-circle" variant="danger" kbd="⌘⌫">
+                                                Cancelar
+                                            </flux:menu.item>
+                                        </form>
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
+
                         </td>
                     </tr>
                 @empty
@@ -188,35 +177,5 @@
     </div>
 </div>
 <style>
-    /* Estilos específicos para la tabla */
-    .container table tbody tr:not(.bg-gray-100) {
-        background-color: #FFF9F2 !important;
-    }
 
-    /* Estilos para los botones Flux con mayor especificidad */
-    div.container flux-button {
-        --flux-button-bg: #321F01 !important;
-        --flux-button-text: #FFF9F2 !important;
-        --flux-button-border: none !important;
-        --flux-button-hover-bg: rgba(255, 249, 242, 0.74) !important;
-        --flux-button-hover-text: #321F01 !important;
-        --flux-button-active-bg: #1a1300 !important;
-    }
-
-    /* Estilos para el dropdown */
-    div.container .relative flux-button {
-        background-color: #321F01 !important;
-        color: #FFF9F2 !important;
-        border: none !important;
-    }
-
-    div.container .relative flux-button:hover {
-        background-color: rgba(255, 249, 242, 0.74) !important;
-        color: #321F01 !important;
-    }
-
-    /* Badges - mantener colores pero forzar texto blanco */
-    div.container flux-badge {
-        --flux-badge-text: white !important;
-    }
 </style>

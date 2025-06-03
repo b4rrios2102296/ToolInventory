@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('herramientas', function (Blueprint $table) {
             $table->string('id', 25)->primary();
-            $table->string('articulo', 100);
+            $table->string('articulo')->nullable();
             $table->string('unidad', 45);
             $table->string('modelo', 100)->nullable();
             $table->string('num_serie', 100)->nullable();

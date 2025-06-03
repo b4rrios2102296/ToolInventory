@@ -24,7 +24,7 @@
     <div class="rounded-lg shadow-md p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <!-- Card: Datos de la Herramienta -->
-            <div class="border rounded-lg shadow p-4 space-y-6" style="background-color: #FFF9F2; color: #321F01;">
+            <div class="border rounded-lg shadow p-4 space-y-6">
                 <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
                 <flux:input label="Estatus" :value="$herramienta->estatus" readonly class="w-full" />
                 <flux:input label="Artículo" :value="$herramienta->articulo" readonly class="w-full" />
@@ -35,9 +35,9 @@
             </div>
 
             <!-- Card: Observaciones -->
-            <div class="border rounded-lg shadow p-4 space-y-4" style="background-color: #FFF9F2; color: #321F01;">
+            <div class="border rounded-lg shadow p-4 space-y-4">
                 <h2 class="text-lg font-semibold">Observaciones</h2>
-                <div class="bg-gray-100 p-3 rounded">
+                <div>
                     {{ $herramienta->observaciones ?? 'No hay observaciones registradas.' }}
                 </div>
             </div>
