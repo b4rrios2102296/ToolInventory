@@ -51,7 +51,7 @@
                                     @php
                                         $resguardo = DB::connection('toolinventory')
                                             ->table('resguardos')
-                                            ->where('detalles_resguardo', 'like', '%"id":"'.$herramienta->id.'"%')
+                                            ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
                                             ->first();
                                     @endphp
                                     @if($resguardo)
@@ -122,7 +122,7 @@
                                             <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
                                         </a>
 
-                                        @if ($herramienta->estatus != 'Baja')
+                                        @if ($herramienta->estatus == 'Disponible')
                                             <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
                                                 onsubmit="return confirm('¿Seguro que deseas dar de baja esta herramienta?');">
                                                 @csrf
@@ -133,6 +133,7 @@
                                                 </flux:menu.item>
                                             </form>
                                         @endif
+
                                     </flux:menu>
                                 </flux:dropdown>
                             </td>
