@@ -26,7 +26,38 @@
             <!-- Card: Datos de la Herramienta -->
             <div class="border rounded-lg shadow p-4 space-y-6">
                 <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
-                <flux:input label="Estatus" :value="$herramienta->estatus" readonly class="w-full" />
+
+                <!-- Estatus Handling -->
+                <div>
+                    @if($herramienta->estatus == 'Resguardo')
+                        <div class="mb-4">
+                            <div class="mt-1">
+                                @if($resguardo)
+                                    <a href="{{ route('resguardos.show', $resguardo->folio) }}">
+                                        <flux:badge color="teal">
+                                            Resguardo
+                                        </flux:badge>
+                                    </a>
+                                @else
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        <a href="{{ route('resguardos.show', $herramienta->id) }}" class="text-blue-600 hover:text-blue-800">
+                                            Ver resguardo
+                                        </a>
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                    @else
+                        <flux:badge color="
+                            @if ($herramienta->estatus == 'Baja') zinc
+                            @else green
+                            @endif
+                        ">
+                            {{ $herramienta->estatus }}
+                        </flux:badge>
+                    @endif
+                </div>
+
                 <flux:input label="Artículo" :value="$herramienta->articulo" readonly class="w-full" />
                 <flux:input label="Unidad" :value="$herramienta->unidad" readonly class="w-full" />
                 <flux:input label="Modelo" :value="$herramienta->modelo" readonly class="w-full" />

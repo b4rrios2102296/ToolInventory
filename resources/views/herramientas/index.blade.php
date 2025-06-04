@@ -35,7 +35,7 @@
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody >
                     @forelse($herramientas as $herramienta)
                         <tr class="border-t text-center {{ $herramienta->estatus == 'Baja' ? ' text-gray-500' : '' }}">
 

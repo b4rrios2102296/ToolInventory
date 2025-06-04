@@ -40,8 +40,6 @@
                     <!-- Card: Datos de la Herramienta -->
                     <div class="border rounded-lg shadow p-4 space-y-6">
                         <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
-                        <flux:input label="Artículo" name="articulo" :value="$herramienta->articulo" class="w-full" />
-
                         <div>
                             @if($herramienta->estatus == 'Resguardo')
                                 <div class="mb-4">
@@ -74,6 +72,9 @@
                                 </flux:select>
                             @endif
                         </div>
+                        <flux:input label="Artículo" name="articulo" :value="$herramienta->articulo" class="w-full" />
+
+
 
                         <flux:input label="Modelo" name="modelo" :value="$herramienta->modelo" class="w-full" />
                         <flux:select name="unidad" class="w-full px-3 py-2 rounded" label="Unidad" required>

@@ -148,18 +148,24 @@ class HerramientaController extends Controller
     }
 
     public function show($id)
-    {
-        // Retrieve herramienta details
-        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
+{
+    // Retrieve herramienta details
+    $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
 
-        // Handle case where herramienta does not exist
-        if (!$herramienta) {
-            return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
-        }
-
-        // Return the show view with herramienta details
-        return view('herramientas.show', compact('herramienta'));
+    // Handle case where herramienta does not exist
+    if (!$herramienta) {
+        return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
     }
+
+    // Retrieve related resguardo details
+    $resguardo = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
+        ->first();
+
+    // Return the show view with herramienta and resguardo details
+    return view('herramientas.show', compact('herramienta', 'resguardo'));
+}
 
 
     public function buscarHerramienta(Request $request)
