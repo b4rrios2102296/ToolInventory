@@ -1,4 +1,4 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 @fluxAppearance
 
 <div class="overflow-x-auto">
@@ -39,7 +39,7 @@
                 @forelse($resguardos as $resguardo)
                     <tr
                         class="border-t text-center 
-                                                                            {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
+                                                                                {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -144,16 +144,18 @@
                         <td class="px-4 py-2">
                             <flux:dropdown>
                                 <flux:button icon:trailing="chevron-down"> Acciones </flux:button>
-
                                 <flux:menu>
                                     <a href="{{ route('resguardos.show', $resguardo->folio) }}">
                                         <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                     </a>
-                                    <a href="{{ route('resguardos.edit', $resguardo->folio) }}">
-                                        <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
-                                    </a>
 
                                     @if ($resguardo->estatus == 'Resguardo')
+                                        <!-- Allow Editing Only If Resguardo -->
+                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}">
+                                            <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
+                                        </a>
+
+                                        <!-- Option to Cancel Resguardo -->
                                         <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
                                             onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
                                             @csrf
@@ -163,12 +165,11 @@
                                                 Cancelar
                                             </flux:menu.item>
                                         </form>
-                                       
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
-
                         </td>
+
                     </tr>
                 @empty
                     <tr>
