@@ -40,26 +40,22 @@
                     <!-- Card: Datos de la Herramienta -->
                     <div class="border rounded-lg shadow p-4 space-y-6">
                         <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
+
                         <div>
                             @if($herramienta->estatus == 'Resguardo')
                                 <div class="mb-4">
+                                    <label class="block text-sm font-medium">Estatus</label>
                                     <div class="mt-1">
                                         @if($resguardo)
-                                            <a href="{{ route('resguardos.show', $resguardo->folio) }}">
-                                                <flux:badge color="teal">
+                                            <a href="{{ route('resguardos.show', $resguardo->folio) }}" class="hover:opacity-80">
+                                                <flux:badge color="teal" class="inline-block">
                                                     Resguardo
                                                 </flux:badge>
                                             </a>
-                                        @else
-                                            <p class="text-sm text-gray-500 mt-1">
-                                                <a href="{{ route('resguardos.show', $resguardo->folio) }}"
-                                                    class="text-blue-600 hover:text-blue-800">
-                                                    Ver resguardo
-                                                </a>
-                                            </p>
                                         @endif
                                     </div>
                                 </div>
+
                             @elseif($herramienta->estatus == 'Baja')
                                 <flux:select label="Estatus de la Herramienta" name="estatus" class="w-full px-3 py-2 rounded">
                                     <option value="Baja" selected>Baja</option>
@@ -73,9 +69,6 @@
                             @endif
                         </div>
                         <flux:input label="Artículo" name="articulo" :value="$herramienta->articulo" class="w-full" />
-
-
-
                         <flux:input label="Modelo" name="modelo" :value="$herramienta->modelo" class="w-full" />
                         <flux:select name="unidad" class="w-full px-3 py-2 rounded" label="Unidad" required>
                             <option value="Pieza" {{ old('unidad', $herramienta->unidad) == 'Pieza' ? 'selected' : '' }}>Pieza
