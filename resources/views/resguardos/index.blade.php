@@ -1,4 +1,4 @@
- @extends('layouts.app')
+@extends('layouts.app')
 @fluxAppearance
 
 <div class="overflow-x-auto">
@@ -39,7 +39,7 @@
                 @forelse($resguardos as $resguardo)
                     <tr
                         class="border-t text-center 
-                                                                                {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
+                                                                                                {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -165,16 +165,28 @@
                                                 Cancelar
                                             </flux:menu.item>
                                         </form>
+                                    @elseif ($resguardo->estatus == 'Cancelado')
+                                        <form action="{{ route('resguardos.change-status', $resguardo->folio) }}" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas cambiar el estatus a Resguardo?');">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="estatus" value="Resguardo">
+                                            <flux:menu.item type="submit" icon="arrow-path" variant="danger">
+                                                Cambiar a Resguardo
+                                            </flux:menu.item>
+                                        </form>
                                     @endif
+
                                 </flux:menu>
                             </flux:dropdown>
                         </td>
 
+
                     </tr>
                 @empty
-                    <tr>
-                        <td colspan="8" class="text-center py-4">No hay resguardos registrados.</td>
-                    </tr>
+                <tr>
+                    <td colspan="8" class="text-center py-4">No hay resguardos registrados.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>

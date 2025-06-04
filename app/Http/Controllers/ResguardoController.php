@@ -559,6 +559,26 @@ class ResguardoController extends Controller
     {
         return Excel::download(new ResguardosExport, 'listado_resguardos.xlsx');
     }
+
+    public function changeStatus(Request $request, $folio)
+{
+    try {
+        DB::connection('toolinventory')
+            ->table('resguardos')
+            ->where('folio', $folio)
+            ->update([
+                'estatus' => 'Resguardo', // Automatically sets status to Resguardo
+                'updated_at' => now(),
+            ]);
+
+        return back()->with('success', 'Estatus cambiado a Resguardo.');
+    } catch (\Exception $e) {
+        Log::error('Error al cambiar estatus: ' . $e->getMessage());
+        return back()->with('error', 'Error al cambiar estatus.');
+    }
 }
+
+}
+
 
 

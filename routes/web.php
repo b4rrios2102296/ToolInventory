@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
     Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
+    Route::patch('/resguardos/{folio}/change-status', [ResguardoController::class, 'changeStatus'])
+        ->name('resguardos.change-status');
 
 
 
