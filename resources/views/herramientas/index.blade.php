@@ -32,13 +32,12 @@
                         <th class="px-4 py-2">Modelo</th>
                         <th class="px-4 py-2">Número de Serie</th>
                         <th class="px-4 py-2">Costo</th>
-                        <th class="px-4 py-2">Acciones </th>
+                        <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($herramientas as $herramienta)
-                        <tr class="border-t text-center 
-                                                                {{ $herramienta->estatus == 'Baja' ? ' text-gray-500' : '' }}">
+                        <tr class="border-t text-center {{ $herramienta->estatus == 'Baja' ? ' text-gray-500' : '' }}">
 
                             <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
                                 @if ($herramienta->estatus == 'Baja')
@@ -48,13 +47,27 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2">
-                                @if ($herramienta->estatus == 'Resguardo')
-                                    <flux:badge color="teal">
-                                        {{ $herramienta->estatus }}
-                                    </flux:badge>
+                                @if($herramienta->estatus == 'Resguardo')
+                                    @php
+                                        $resguardo = DB::connection('toolinventory')
+                                            ->table('resguardos')
+                                            ->where('detalles_resguardo', 'like', '%"id":"'.$herramienta->id.'"%')
+                                            ->first();
+                                    @endphp
+                                    @if($resguardo)
+                                        <a href="{{ route('resguardos.show', $resguardo->folio) }}">
+                                            <flux:badge color="teal">
+                                                Resguardo
+                                            </flux:badge>
+                                        </a>
+                                    @else
+                                        <flux:badge color="teal">
+                                            Resguardo
+                                        </flux:badge>
+                                    @endif
                                 @else
                                     <flux:badge color="{{ $herramienta->estatus == 'Baja' ? 'zinc' : 'green' }}">
-                                        @if ($herramienta->estatus == 'Baja')
+                                        @if($herramienta->estatus == 'Baja')
                                             <s>{{ $herramienta->estatus }}</s>
                                         @else
                                             {{ $herramienta->estatus }}
