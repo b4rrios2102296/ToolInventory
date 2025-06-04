@@ -39,7 +39,7 @@
                 @forelse($resguardos as $resguardo)
                     <tr
                         class="border-t text-center 
-                                                                        {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
+                                                                            {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -163,6 +163,7 @@
                                                 Cancelar
                                             </flux:menu.item>
                                         </form>
+                                       
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>

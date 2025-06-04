@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/resguardos/excel', [ResguardoController::class, 'generarExcel'])->name('resguardos.excel');
     Route::get('/herramientas/pdf', [HerramientaController::class, 'generarPDF'])->name('herramientas.pdf');
     Route::get('/herramientas/excel', [HerramientaController::class, 'generarExcel'])->name('herramientas.excel');
-        // Exportaciones para todos los usuarios autenticados
+    // Exportaciones para todos los usuarios autenticados
     Route::resource('herramientas', HerramientaController::class)->only(['index', 'create', 'store']);
     Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
     Route::get('/herramientas/{herramienta}/edit', [HerramientaController::class, 'edit'])->name('herramientas.edit');
@@ -41,7 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
     Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
-    
+
+
 
 
 

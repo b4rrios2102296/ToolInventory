@@ -8,8 +8,6 @@ use App\Exports\HerramientasExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
-
 class HerramientaController extends Controller
 {
     public function index()
