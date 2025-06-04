@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@fluxAppearance
+
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
@@ -37,7 +39,7 @@
                 @forelse($resguardos as $resguardo)
                     <tr
                         class="border-t text-center 
-                                                                    {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
+                                                                        {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -46,7 +48,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'green' }}">
+                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'teal' }}">
                                 @if ($resguardo->estatus == 'Cancelado')
                                     <s>{{ $resguardo->estatus }}</s>
                                 @else

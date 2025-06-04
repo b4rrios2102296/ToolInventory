@@ -14,10 +14,11 @@
             <br>
             <div>
                 <flux:tooltip content="PDF">
-                    <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('herramientas.pdf') }}"/>
+                    <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('herramientas.pdf') }}" />
                 </flux:tooltip>
                 <flux:tooltip content="Excel">
-                    <flux:button icon="document-chart-bar" icon:variant="outline"  href="{{ route('herramientas.excel') }}"/>
+                    <flux:button icon="document-chart-bar" icon:variant="outline"
+                        href="{{ route('herramientas.excel') }}" />
                 </flux:tooltip>
             </div>
             <br>
@@ -36,19 +37,66 @@
                 </thead>
                 <tbody>
                     @forelse($herramientas as $herramienta)
-                        <tr class="border-t">
+                        <tr class="border-t text-center 
+                                                                {{ $herramienta->estatus == 'Baja' ? ' text-gray-500' : '' }}">
+
                             <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
-                                {{ $herramienta->id }}
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->id }}</s>
+                                @else
+                                    {{ $herramienta->id }}
+                                @endif
                             </td>
-                            <td class="px-4 py-2">{{ $herramienta->estatus }}</td>
-                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->articulo }}</td>
-                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->unidad }}</td>
-                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
-                                {{ $herramienta->modelo }}
+                            <td class="px-4 py-2">
+                                @if ($herramienta->estatus == 'Resguardo')
+                                    <flux:badge color="teal">
+                                        {{ $herramienta->estatus }}
+                                    </flux:badge>
+                                @else
+                                    <flux:badge color="{{ $herramienta->estatus == 'Baja' ? 'zinc' : 'green' }}">
+                                        @if ($herramienta->estatus == 'Baja')
+                                            <s>{{ $herramienta->estatus }}</s>
+                                        @else
+                                            {{ $herramienta->estatus }}
+                                        @endif
+                                    </flux:badge>
+                                @endif
                             </td>
-                            <td class="px-4 py-2 text-center align-middle">{{ $herramienta->num_serie }}</td>
                             <td class="px-4 py-2 text-center align-middle">
-                                {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->articulo }}</s>
+                                @else
+                                    {{ $herramienta->articulo }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->unidad }}</s>
+                                @else
+                                    {{ $herramienta->unidad }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 whitespace-normal break-all max-w-xs text-center align-middle">
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->modelo }}</s>
+                                @else
+                                    {{ $herramienta->modelo }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->num_serie }}</s>
+                                @else
+                                    {{ $herramienta->num_serie }}
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">
+                                @if ($herramienta->estatus == 'Baja')
+                                    <s>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</s>
+                                @else
+                                    {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                                @endif
+                            </td>
                             <td class="px-4 py-2 text-center align-middle">
                                 <flux:dropdown>
                                     <flux:button icon:trailing="ellipsis-horizontal"></flux:button>
@@ -61,21 +109,20 @@
                                             <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
                                         </a>
 
-
-
-                                        <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas dar de baja esta herramienta?');">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="estatus" value="Baja">
-                                            <flux:menu.item type="submit" icon="x-circle" variant="danger" kbd="⌘⌫">
-                                                Dar de Baja
-                                            </flux:menu.item>
-                                        </form>
+                                        @if ($herramienta->estatus != 'Baja')
+                                            <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
+                                                onsubmit="return confirm('¿Seguro que deseas dar de baja esta herramienta?');">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="estatus" value="Baja">
+                                                <flux:menu.item type="submit" icon="x-circle" variant="danger" kbd="⌘⌫">
+                                                    Dar de Baja
+                                                </flux:menu.item>
+                                            </form>
+                                        @endif
                                     </flux:menu>
                                 </flux:dropdown>
                             </td>
-
                         </tr>
                     @empty
                         <tr>
