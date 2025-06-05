@@ -189,6 +189,7 @@
                                 </flux:menu>
                             </flux:dropdown>
                             <!-- Modal for "Cancelar Resguardo" -->
+                            <!-- Modal for "Cancelar Resguardo" -->
                             <flux:modal name="cancelar-resguardo-{{ $resguardo->folio }}" class="md:w-96">
                                 <div class="space-y-6">
                                     <flux:heading size="lg">Cancelar Resguardo</flux:heading>
@@ -197,12 +198,12 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="estatus" value="Cancelado">
-                                        <flux:textarea label="Motivo" name="comentario"
+                                        <flux:textarea label="Motivo" name="comentarios" 
                                             placeholder="Escribe el motivo aquí..." required class="mb-4" />
-                                        <div class="flex mt-4">
-                                            <flux:spacer />
-                                            <flux:button type="submit" variant="primary">Confirmar</flux:button>
-                                        </div>
+                                            <div class="flex mt-4">
+                                                <flux:spacer />
+                                                <flux:button type="submit" variant="primary">Confirmar</flux:button>
+                                            </div>
                                     </form>
                                 </div>
                             </flux:modal>

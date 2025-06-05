@@ -113,56 +113,56 @@ class ResguardoController extends Controller
     }
 
     public function index()
-{
-    $search = request('search');
+    {
+        $search = request('search');
 
-    $query = DB::connection('toolinventory')
-        ->table('resguardos')
-        ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
-        ->select(
-            'resguardos.*',
-            'aperturo.nombre as aperturo_nombre',
-            'aperturo.apellidos as aperturo_apellidos'
-        );
+        $query = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+            ->select(
+                'resguardos.*',
+                'aperturo.nombre as aperturo_nombre',
+                'aperturo.apellidos as aperturo_apellidos'
+            );
 
-    if ($search) {
-        // Buscar en colaboradores primero
-        $colaboradoresIds = DB::connection('sqlsrv')
+        if ($search) {
+            // Buscar en colaboradores primero
+            $colaboradoresIds = DB::connection('sqlsrv')
+                ->table('colaborador')
+                ->where('nombreCompleto', 'like', "%{$search}%")
+                ->orWhere('claveColab', 'like', "%{$search}%")
+                ->pluck('claveColab')
+                ->toArray();
+
+            $query->where(function ($q) use ($search, $colaboradoresIds) {
+                $q->where('resguardos.folio', 'like', "%{$search}%")
+                    ->orWhere('resguardos.colaborador_num', 'like', "%{$search}%")
+                    ->orWhere('aperturo.nombre', 'like', "%{$search}%")
+                    ->orWhere('aperturo.apellidos', 'like', "%{$search}%")
+                    ->orWhere('resguardos.estatus', 'like', "%{$search}%")
+                    ->orWhere('resguardos.detalles_resguardo', 'like', "%{$search}%")
+                    ->orWhere('resguardos.fecha_captura', 'like', "%{$search}%")
+                    ->orWhereIn('resguardos.colaborador_num', $colaboradoresIds);
+            });
+        }
+
+        $resguardos = $query->orderBy('resguardos.folio', 'desc')->paginate(15);
+
+        // Obtener nombres de colaboradores
+        $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
+        $colaboradores = DB::connection('sqlsrv')
             ->table('colaborador')
-            ->where('nombreCompleto', 'like', "%{$search}%")
-            ->orWhere('claveColab', 'like', "%{$search}%")
-            ->pluck('claveColab')
-            ->toArray();
+            ->whereIn('claveColab', $colaborador_nums)
+            ->pluck('nombreCompleto', 'claveColab');
 
-        $query->where(function($q) use ($search, $colaboradoresIds) {
-            $q->where('resguardos.folio', 'like', "%{$search}%")
-              ->orWhere('resguardos.colaborador_num', 'like', "%{$search}%")
-              ->orWhere('aperturo.nombre', 'like', "%{$search}%")
-              ->orWhere('aperturo.apellidos', 'like', "%{$search}%")
-              ->orWhere('resguardos.estatus', 'like', "%{$search}%")
-              ->orWhere('resguardos.detalles_resguardo', 'like', "%{$search}%")
-              ->orWhere('resguardos.fecha_captura', 'like', "%{$search}%")
-              ->orWhereIn('resguardos.colaborador_num', $colaboradoresIds);
+        $resguardos->transform(function ($resguardo) use ($colaboradores) {
+            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
+            $resguardo->detalles_herramienta = json_decode($resguardo->detalles_resguardo, true) ?? [];
+            return $resguardo;
         });
+
+        return view('resguardos.index', compact('resguardos'));
     }
-
-    $resguardos = $query->orderBy('resguardos.folio', 'desc')->paginate(15);
-
-    // Obtener nombres de colaboradores
-    $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
-    $colaboradores = DB::connection('sqlsrv')
-        ->table('colaborador')
-        ->whereIn('claveColab', $colaborador_nums)
-        ->pluck('nombreCompleto', 'claveColab');
-
-    $resguardos->transform(function($resguardo) use ($colaboradores) {
-        $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
-        $resguardo->detalles_herramienta = json_decode($resguardo->detalles_resguardo, true) ?? [];
-        return $resguardo;
-    });
-
-    return view('resguardos.index', compact('resguardos'));
-}
 
     public function create()
     {
@@ -340,6 +340,7 @@ class ResguardoController extends Controller
     {
         $request->validate([
             'estatus' => 'required|in:Resguardo,Cancelado',
+            'comentarios' => 'required|string', // Añadir validación para el campo comentarios
         ]);
 
         try {
@@ -354,11 +355,15 @@ class ResguardoController extends Controller
                     $detalles = json_decode($resguardo->detalles_resguardo, true);
                     $herramienta_id = $detalles['id'] ?? null;
 
-                    // Update the resguardo status
+                    // Update the resguardo status and comments
                     DB::connection('toolinventory')
                         ->table('resguardos')
                         ->where('folio', $folio)
-                        ->update(['estatus' => 'Cancelado', 'updated_at' => now()]);
+                        ->update([
+                            'estatus' => 'Cancelado',
+                            'comentarios' => $request->comentarios, // Guardar el comentario
+                            'updated_at' => now()
+                        ]);
 
                     // If there's a herramienta associated, set it back to Disponible
                     if ($herramienta_id) {
