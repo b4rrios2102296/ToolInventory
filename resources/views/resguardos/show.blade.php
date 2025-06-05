@@ -63,10 +63,10 @@
             </div>
             <div class="flex justify-end gap-4">
                 @if ($resguardo->estatus != 'Cancelado')
-                    <flux:button href="{{ route('resguardos.edit', $resguardo->folio) }}" icon="pencil-square"
+                     <!-- <flux:button href="{{ route('resguardos.edit', $resguardo->folio) }}" icon="pencil-square"
                         class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Editar
-                    </flux:button>
+                    </flux:button>-->
                     <flux:button href="{{ route('resguardo.pdf', ['folio' => $resguardo->folio]) }}" icon="document-arrow-down"
                         target="_blank">
                         Descargar PDF 📄

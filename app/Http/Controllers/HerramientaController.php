@@ -11,10 +11,30 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class HerramientaController extends Controller
 {
     public function index()
-    {
-        $herramientas = DB::connection('toolinventory')->table('herramientas')->get();
-        return view('herramientas.index', compact('herramientas'));
+{
+    $search = request('search');
+
+    $query = DB::connection('toolinventory')
+        ->table('herramientas')
+        ->select('herramientas.*');
+
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('herramientas.id', 'like', "%{$search}%")
+                ->orWhere('herramientas.estatus', 'like', "%{$search}%")
+                ->orWhere('herramientas.articulo', 'like', "%{$search}%")
+                ->orWhere('herramientas.unidad', 'like', "%{$search}%")
+                ->orWhere('herramientas.modelo', 'like', "%{$search}%")
+                ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
+                ->orWhere('herramientas.costo', 'like', "%{$search}%");
+        });
     }
+
+    $herramientas = $query->orderBy('herramientas.id', 'desc')->paginate(15);
+
+    return view('herramientas.index', compact('herramientas', 'search'));
+}
+
     public function update(Request $request, $id)
     {
         $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
@@ -146,24 +166,24 @@ class HerramientaController extends Controller
     }
 
     public function show($id)
-{
-    // Retrieve herramienta details
-    $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
+    {
+        // Retrieve herramienta details
+        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
 
-    // Handle case where herramienta does not exist
-    if (!$herramienta) {
-        return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
+        // Handle case where herramienta does not exist
+        if (!$herramienta) {
+            return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
+        }
+
+        // Retrieve related resguardo details
+        $resguardo = DB::connection('toolinventory')
+            ->table('resguardos')
+            ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
+            ->first();
+
+        // Return the show view with herramienta and resguardo details
+        return view('herramientas.show', compact('herramienta', 'resguardo'));
     }
-
-    // Retrieve related resguardo details
-    $resguardo = DB::connection('toolinventory')
-        ->table('resguardos')
-        ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
-        ->first();
-
-    // Return the show view with herramienta and resguardo details
-    return view('herramientas.show', compact('herramienta', 'resguardo'));
-}
 
 
     public function buscarHerramienta(Request $request)

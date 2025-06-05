@@ -13,15 +13,25 @@
         <flux:separator />
         <flux:separator />
         <br>
-        <div>
-            <flux:tooltip content="PDF">
-                <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('resguardos.pdf') }}" />
-            </flux:tooltip>
-            <flux:tooltip content="Excel">
-                <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('resguardos.excel') }}" />
-            </flux:tooltip>
+        <div class="flex justify-between items-center mb-4">
+            <div class="flex space-x-2">
+                <flux:tooltip content="PDF">
+                    <flux:button icon="document-arrow-down" icon:variant="outline"
+                        href="{{ route('resguardos.pdf') }}" />
+                </flux:tooltip>
+                <flux:tooltip content="Excel">
+                    <flux:button icon="document-chart-bar" icon:variant="outline"
+                        href="{{ route('resguardos.excel') }}" />
+                </flux:tooltip>
+            </div>
+
+            <!-- Filtro de búsqueda -->
+            <div class="w-64">
+                <flux:input type="search" id="searchInput" name="search" placeholder="Buscar resguardos..."
+                    value="{{ request('search') }}" icon="magnifying-glass" />
+            </div>
         </div>
-        <br>
+
         <table>
             <thead>
                 <tr>
@@ -37,9 +47,7 @@
             </thead>
             <tbody>
                 @forelse($resguardos as $resguardo)
-                    <tr
-                        class="border-t text-center 
-                                                                                                {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
+                    <tr class="border-t text-center {{ $resguardo->estatus == 'Cancelado' ? ' text-gray-500' : '' }}">
                         <td class="px-4 py-2">
                             @if ($resguardo->estatus == 'Cancelado')
                                 <s>{{ $resguardo->folio }}</s>
@@ -148,14 +156,8 @@
                                     <a href="{{ route('resguardos.show', $resguardo->folio) }}">
                                         <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                     </a>
-
                                     @if ($resguardo->estatus == 'Resguardo')
-                                        <!-- Allow Editing Only If Resguardo -->
-                                        <a href="{{ route('resguardos.edit', $resguardo->folio) }}">
-                                            <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
-                                        </a>
-
-                                        <!-- Option to Cancel Resguardo -->
+                                        <!-- Opción para cancelar el resguardo -->
                                         <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
                                             onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
                                             @csrf
@@ -165,33 +167,55 @@
                                                 Cancelar
                                             </flux:menu.item>
                                         </form>
-                                    @elseif ($resguardo->estatus == 'Cancelado')
-                                        <form action="{{ route('resguardos.change-status', $resguardo->folio) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas cambiar el estatus a Resguardo?');">
+                                    @elseif ($resguardo->estatus == 'Cancelado' && auth()->user()->hasPermission('user_audit'))
+                                        <form action="{{ route('resguardos.delete', $resguardo->folio) }}" method="POST"
+                                            onsubmit="return confirm('¿Seguro que deseas eliminar este resguardo? Esta acción no se puede deshacer.');">
                                             @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="estatus" value="Resguardo">
-                                            <flux:menu.item type="submit" icon="arrow-path" variant="danger">
-                                                Cambiar a Resguardo
+                                            @method('DELETE')
+                                            <flux:menu.item type="submit" icon="trash" variant="danger">
+                                                Eliminar Resguardo
                                             </flux:menu.item>
                                         </form>
                                     @endif
-
                                 </flux:menu>
                             </flux:dropdown>
                         </td>
-
-
                     </tr>
                 @empty
-                <tr>
-                    <td colspan="8" class="text-center py-4">No hay resguardos registrados.</td>
-                </tr>
+                    <tr>
+                        <td colspan="8" class="text-center py-4">No hay resguardos registrados.</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
     </div>
 </div>
-<style>
+<script>
+    // Versión alternativa con AJAX (reemplaza el script anterior)
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    let searchTimer;
 
-</style>
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimer);
+        
+        searchTimer = setTimeout(function() {
+            const searchValue = searchInput.value;
+            
+            fetch(`{{ route('resguardos.index') }}?search=${encodeURIComponent(searchValue)}`)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newTable = doc.querySelector('tbody');
+                    const newPagination = doc.querySelector('.pagination');
+                    
+                    document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                    if (newPagination) {
+                        document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                    }
+                });
+        }, );
+    });
+});
+</script>

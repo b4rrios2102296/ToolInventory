@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/resguardos/excel', [ResguardoController::class, 'generarExcel'])->name('resguardos.excel');
     Route::get('/herramientas/pdf', [HerramientaController::class, 'generarPDF'])->name('herramientas.pdf');
     Route::get('/herramientas/excel', [HerramientaController::class, 'generarExcel'])->name('herramientas.excel');
+    Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas.index');
+
     // Exportaciones para todos los usuarios autenticados
     Route::resource('herramientas', HerramientaController::class)->only(['index', 'create', 'store']);
     Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
@@ -59,5 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
+        Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
+
     });
 });

@@ -113,32 +113,56 @@ class ResguardoController extends Controller
     }
 
     public function index()
-    {
-        // Obtener los resguardos junto con los datos del usuario que aperturó el resguardo
-        $resguardos = DB::connection('toolinventory')
-            ->table('resguardos')
-            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
-            ->select(
-                'resguardos.*',
-                'aperturo.nombre as aperturo_nombre',
-                'aperturo.apellidos as aperturo_apellidos'
+{
+    $search = request('search');
 
-            )
-            ->get();
+    $query = DB::connection('toolinventory')
+        ->table('resguardos')
+        ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+        ->select(
+            'resguardos.*',
+            'aperturo.nombre as aperturo_nombre',
+            'aperturo.apellidos as aperturo_apellidos'
+        );
 
-        $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
-        $colaboradores = DB::connection('sqlsrv')
+    if ($search) {
+        // Buscar en colaboradores primero
+        $colaboradoresIds = DB::connection('sqlsrv')
             ->table('colaborador')
-            ->whereIn('claveColab', $colaborador_nums)
-            ->pluck('nombreCompleto', 'claveColab');
+            ->where('nombreCompleto', 'like', "%{$search}%")
+            ->orWhere('claveColab', 'like', "%{$search}%")
+            ->pluck('claveColab')
+            ->toArray();
 
-        foreach ($resguardos as $resguardo) {
-            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
-        }
-
-        // Pasar los datos al view
-        return view('resguardos.index', compact('resguardos'));
+        $query->where(function($q) use ($search, $colaboradoresIds) {
+            $q->where('resguardos.folio', 'like', "%{$search}%")
+              ->orWhere('resguardos.colaborador_num', 'like', "%{$search}%")
+              ->orWhere('aperturo.nombre', 'like', "%{$search}%")
+              ->orWhere('aperturo.apellidos', 'like', "%{$search}%")
+              ->orWhere('resguardos.estatus', 'like', "%{$search}%")
+              ->orWhere('resguardos.detalles_resguardo', 'like', "%{$search}%")
+              ->orWhere('resguardos.fecha_captura', 'like', "%{$search}%")
+              ->orWhereIn('resguardos.colaborador_num', $colaboradoresIds);
+        });
     }
+
+    $resguardos = $query->orderBy('resguardos.folio', 'desc')->paginate(15);
+
+    // Obtener nombres de colaboradores
+    $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();
+    $colaboradores = DB::connection('sqlsrv')
+        ->table('colaborador')
+        ->whereIn('claveColab', $colaborador_nums)
+        ->pluck('nombreCompleto', 'claveColab');
+
+    $resguardos->transform(function($resguardo) use ($colaboradores) {
+        $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? '';
+        $resguardo->detalles_herramienta = json_decode($resguardo->detalles_resguardo, true) ?? [];
+        return $resguardo;
+    });
+
+    return view('resguardos.index', compact('resguardos'));
+}
 
     public function create()
     {
@@ -172,39 +196,39 @@ class ResguardoController extends Controller
     }
 
 
-    public function edit($folio)
-    {
-        $resguardo = DB::connection('toolinventory')
-            ->table('resguardos')
-            ->where('folio', $folio)
-            ->first();
+    // public function edit($folio)
+    // {
+    //  $resguardo = DB::connection('toolinventory')
+    //   ->table('resguardos')
+    // ->where('folio', $folio)
+    // ->first();
 
-        if (!$resguardo) {
-            abort(404);
-        }
+    // if (!$resguardo) {
+    //  abort(404);
+    // }
 
-        $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+    // $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
 
-        $herramienta = DB::connection('toolinventory')
-            ->table('herramientas')
-            ->where('id', $detalles['id'] ?? null)
-            ->first();
+    // $herramienta = DB::connection('toolinventory')
+    //  ->table('herramientas')
+    // ->where('id', $detalles['id'] ?? null)
+    // ->first();
 
-        // Get collaborator name from SQL Server
-        $colaborador_nombre = DB::connection('sqlsrv')
-            ->table('colaborador')
-            ->where('claveColab', $resguardo->colaborador_num)
-            ->value('nombreCompleto');
+    // Get collaborator name from SQL Server
+    // $colaborador_nombre = DB::connection('sqlsrv')
+    //  ->table('colaborador')
+    // ->where('claveColab', $resguardo->colaborador_num)
+    // >value('nombreCompleto');
 
 
-        return view('resguardos.edit', [
-            'resguardo' => $resguardo,
-            'herramienta' => $herramienta,
-            'detalles' => $detalles,
-            'colaborador_nombre' => $colaborador_nombre,
-            'costo' => $herramienta->costo ?? 0
-        ]);
-    }
+    // return view('resguardos.edit', [
+    //  'resguardo' => $resguardo,
+    // 'herramienta' => $herramienta,
+    // 'detalles' => $detalles,
+    // 'colaborador_nombre' => $colaborador_nombre,
+    // 'costo' => $herramienta->costo ?? 0
+    // ]);
+    // }
 
 
     // Update action
@@ -355,6 +379,43 @@ class ResguardoController extends Controller
                 ->with('error', 'Ocurrió un error al cancelar el resguardo');
         }
     }
+    public function destroy(Request $request, $folio)
+    {
+        try {
+            DB::connection('toolinventory')->transaction(function () use ($folio) {
+                // Verificar si el resguardo existe
+                $resguardo = DB::connection('toolinventory')
+                    ->table('resguardos')
+                    ->where('folio', $folio)
+                    ->first();
+
+                if (!$resguardo) {
+                    throw new \Exception('Resguardo no encontrado.');
+                }
+
+                // Verificar permisos
+                if (!auth()->user()->hasPermission('user_audit')) {
+                    throw new \Exception('No tienes permisos para eliminar este resguardo.');
+                }
+
+                // Eliminar el resguardo
+                DB::connection('toolinventory')
+                    ->table('resguardos')
+                    ->where('folio', $folio)
+                    ->delete();
+            });
+
+            return redirect()->route('resguardos.index')
+                ->with('success', 'Resguardo eliminado correctamente.');
+
+        } catch (\Exception $e) {
+            Log::error('Error eliminando resguardo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Ocurrió un error al eliminar el resguardo.');
+        }
+    }
+
+
 
 
 
@@ -561,22 +622,22 @@ class ResguardoController extends Controller
     }
 
     public function changeStatus(Request $request, $folio)
-{
-    try {
-        DB::connection('toolinventory')
-            ->table('resguardos')
-            ->where('folio', $folio)
-            ->update([
-                'estatus' => 'Resguardo', // Automatically sets status to Resguardo
-                'updated_at' => now(),
-            ]);
+    {
+        try {
+            DB::connection('toolinventory')
+                ->table('resguardos')
+                ->where('folio', $folio)
+                ->update([
+                    'estatus' => 'Resguardo', // Automatically sets status to Resguardo
+                    'updated_at' => now(),
+                ]);
 
-        return back()->with('success', 'Estatus cambiado a Resguardo.');
-    } catch (\Exception $e) {
-        Log::error('Error al cambiar estatus: ' . $e->getMessage());
-        return back()->with('error', 'Error al cambiar estatus.');
+            return back()->with('success', 'Estatus cambiado a Resguardo.');
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estatus: ' . $e->getMessage());
+            return back()->with('error', 'Error al cambiar estatus.');
+        }
     }
-}
 
 }
 

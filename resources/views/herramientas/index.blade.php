@@ -12,16 +12,27 @@
             <flux:separator />
             <flux:separator />
             <br>
-            <div>
-                <flux:tooltip content="PDF">
-                    <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('herramientas.pdf') }}" />
-                </flux:tooltip>
-                <flux:tooltip content="Excel">
-                    <flux:button icon="document-chart-bar" icon:variant="outline"
-                        href="{{ route('herramientas.excel') }}" />
-                </flux:tooltip>
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex space-x-2">
+                    <flux:tooltip content="PDF">
+                        <flux:button icon="document-arrow-down" icon:variant="outline"
+                            href="{{ route('herramientas.pdf') }}" />
+                    </flux:tooltip>
+                    <flux:tooltip content="Excel">
+                        <flux:button icon="document-chart-bar" icon:variant="outline"
+                            href="{{ route('herramientas.excel') }}" />
+                    </flux:tooltip>
+                </div>
+
+                <!-- Filtro de búsqueda -->
+                <div class="w-64">
+                    <form action="{{ route('herramientas.index') }}" method="GET" id="searchForm">
+                        <flux:input type="search" id="searchInput" name="search" placeholder="Buscar herramientas..."
+                            value="{{ $search }}" icon="magnifying-glass" />
+                    </form>
+                </div>
             </div>
-            <br>
+
             <table>
                 <thead>
                     <tr>
@@ -35,7 +46,7 @@
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
-                <tbody >
+                <tbody>
                     @forelse($herramientas as $herramienta)
                         <tr class="border-t text-center {{ $herramienta->estatus == 'Baja' ? ' text-gray-500' : '' }}">
 
@@ -118,10 +129,11 @@
                                         <a href="{{ route('herramientas.show', $herramienta->id) }}">
                                             <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                         </a>
-                                        <a href="{{ route('herramientas.edit', $herramienta->id) }}">
-                                            <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
-                                        </a>
-
+                                        @if ($herramienta->estatus != 'Resguardo')
+                                            <a href="{{ route('herramientas.edit', $herramienta->id) }}">
+                                                <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
+                                            </a>
+                                        @endif
                                         @if ($herramienta->estatus == 'Disponible')
                                             <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
                                                 onsubmit="return confirm('¿Seguro que deseas dar de baja esta herramienta?');">
@@ -133,9 +145,9 @@
                                                 </flux:menu.item>
                                             </form>
                                         @endif
-
                                     </flux:menu>
                                 </flux:dropdown>
+
                             </td>
                         </tr>
                     @empty
@@ -148,3 +160,32 @@
         </div>
     </div>
 @endsection
+<script>
+    // Versión alternativa con AJAX (reemplaza el script anterior)
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        let searchTimer;
+
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+
+            searchTimer = setTimeout(function () {
+                const searchValue = searchInput.value;
+
+                fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newTable = doc.querySelector('tbody');
+                        const newPagination = doc.querySelector('.pagination');
+
+                        document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                        if (newPagination) {
+                            document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                        }
+                    });
+            },);
+        });
+    });
+</script>
