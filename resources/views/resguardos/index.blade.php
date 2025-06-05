@@ -160,7 +160,7 @@
                                     {{ Str::limit($resguardo->comentarios, 50) }}
                                 @endif
                             @else
-                                <span class="text-gray-400">Sin comentarios</span>
+                                <span class="text-gray-400">N/A</span>
                             @endif
                         </td>
                         <td class="px-4 py-2">
