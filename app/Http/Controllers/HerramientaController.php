@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use App\Exports\HerramientasExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -11,29 +12,29 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class HerramientaController extends Controller
 {
     public function index()
-{
-    $search = request('search');
+    {
+        $search = request('search');
 
-    $query = DB::connection('toolinventory')
-        ->table('herramientas')
-        ->select('herramientas.*');
+        $query = DB::connection('toolinventory')
+            ->table('herramientas')
+            ->select('herramientas.*');
 
-    if ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('herramientas.id', 'like', "%{$search}%")
-                ->orWhere('herramientas.estatus', 'like', "%{$search}%")
-                ->orWhere('herramientas.articulo', 'like', "%{$search}%")
-                ->orWhere('herramientas.unidad', 'like', "%{$search}%")
-                ->orWhere('herramientas.modelo', 'like', "%{$search}%")
-                ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
-                ->orWhere('herramientas.costo', 'like', "%{$search}%");
-        });
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('herramientas.id', 'like', "%{$search}%")
+                    ->orWhere('herramientas.estatus', 'like', "%{$search}%")
+                    ->orWhere('herramientas.articulo', 'like', "%{$search}%")
+                    ->orWhere('herramientas.unidad', 'like', "%{$search}%")
+                    ->orWhere('herramientas.modelo', 'like', "%{$search}%")
+                    ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
+                    ->orWhere('herramientas.costo', 'like', "%{$search}%");
+            });
+        }
+
+        $herramientas = $query->orderBy('herramientas.id', 'desc')->paginate(15);
+
+        return view('herramientas.index', compact('herramientas', 'search'));
     }
-
-    $herramientas = $query->orderBy('herramientas.id', 'desc')->paginate(15);
-
-    return view('herramientas.index', compact('herramientas', 'search'));
-}
 
     public function update(Request $request, $id)
     {
@@ -122,6 +123,38 @@ class HerramientaController extends Controller
 
         return redirect()->route('herramientas.index')->with('success', 'Herramienta marcada como Baja.');
     }
+    public function destroy($id)
+    {
+        try {
+            DB::connection('toolinventory')->transaction(function () use ($id) {
+                $herramienta = DB::connection('toolinventory')
+                    ->table('herramientas')
+                    ->where('id', $id)
+                    ->first();
+
+                if (!$herramienta) {
+                    throw new \Exception('Herramienta no encontrada.');
+                }
+
+                if (!auth()->user()->hasPermission('user_audit')) {
+                    throw new \Exception('No tienes permisos para eliminar esta herramienta.');
+                }
+
+                DB::connection('toolinventory')
+                    ->table('herramientas')
+                    ->where('id', $id)
+                    ->delete();
+            });
+
+            return redirect()->route('herramientas.index')
+                ->with('success', 'Herramienta eliminada correctamente.');
+        } catch (\Exception $e) {
+            Log::error('Error eliminando herramienta: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Ocurrió un error al eliminar la herramienta.');
+        }
+    }
+
 
 
 

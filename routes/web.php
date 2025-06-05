@@ -34,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/herramientas/{herramienta}', [HerramientaController::class, 'show'])->name('herramientas.show');
     Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
 
+
     // Resguardos
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
     Route::get('/resguardos', [ResguardoController::class, 'index'])->name('resguardos.index');
@@ -62,6 +63,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
         Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
+        Route::delete('/herramientas/{id}', [HerramientaController::class, 'destroy'])->name('herramientas.delete');
 
     });
 });

@@ -129,25 +129,65 @@
                                         <a href="{{ route('herramientas.show', $herramienta->id) }}">
                                             <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                         </a>
-                                        @if ($herramienta->estatus != 'Resguardo')
+                                        @if ($herramienta->estatus == 'Disponible')
                                             <a href="{{ route('herramientas.edit', $herramienta->id) }}">
                                                 <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
                                             </a>
-                                        @endif
-                                        @if ($herramienta->estatus == 'Disponible')
-                                            <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
-                                                onsubmit="return confirm('¿Seguro que deseas dar de baja esta herramienta?');">
-                                                @csrf
-                                                @method('PATCH')
-                                                <input type="hidden" name="estatus" value="Baja">
-                                                <flux:menu.item type="submit" icon="x-circle" variant="danger" kbd="⌘⌫">
+                                            <!-- Trigger Modal for "Dar de Baja" -->
+                                            <flux:modal.trigger name="baja-herramienta-{{ $herramienta->id }}">
+                                                <flux:menu.item icon="x-circle" variant="danger" kbd="⌘⌫">
                                                     Dar de Baja
                                                 </flux:menu.item>
-                                            </form>
+                                            </flux:modal.trigger>
+                                        @endif
+                                        @if ($herramienta->estatus == 'Baja' && auth()->user()->hasPermission('user_audit'))
+                                            <!-- Trigger Modal for "Eliminar Herramienta" -->
+                                            <flux:modal.trigger name="eliminar-herramienta-{{ $herramienta->id }}">
+                                                <flux:menu.item icon="trash" variant="danger">
+                                                    Eliminar Herramienta
+                                                </flux:menu.item>
+                                            </flux:modal.trigger>
                                         @endif
                                     </flux:menu>
                                 </flux:dropdown>
+                            </td>
 
+                            <!-- Modal for "Dar de Baja" -->
+                            <flux:modal name="baja-herramienta-{{ $herramienta->id }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <flux:heading size="lg">Dar de Baja Herramienta</flux:heading>
+                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la baja.</flux:text>
+                                    <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="estatus" value="Baja">
+                                        <flux:textarea label="Motivo" name="comentario" placeholder="Escribe el motivo aquí..."
+                                            required class="mb-4" />
+                                        <div class="flex mt-4">
+                                            <flux:spacer />
+                                            <flux:button type="submit" variant="primary">Confirmar</flux:button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </flux:modal>
+
+                            <!-- Modal for "Eliminar Herramienta" -->
+                            <flux:modal name="eliminar-herramienta-{{ $herramienta->id }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <flux:heading size="lg">Eliminar Herramienta</flux:heading>
+                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la eliminación.</flux:text>
+                                    <form action="{{ route('herramientas.delete', $herramienta->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <flux:textarea label="Motivo" name="comentario" placeholder="Escribe el motivo aquí..."
+                                            required class="mb-4" />
+                                        <div class="flex mt-4">
+                                            <flux:spacer />
+                                            <flux:button type="submit" variant="danger">Eliminar</flux:button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </flux:modal>
                             </td>
                         </tr>
                     @empty

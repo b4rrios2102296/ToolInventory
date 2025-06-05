@@ -152,34 +152,67 @@
                         <td class="px-4 py-2">
                             <flux:dropdown>
                                 <flux:button icon:trailing="chevron-down"> Acciones </flux:button>
+
                                 <flux:menu>
                                     <a href="{{ route('resguardos.show', $resguardo->folio) }}">
                                         <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                     </a>
                                     @if ($resguardo->estatus == 'Resguardo')
-                                        <!-- Opción para cancelar el resguardo -->
-                                        <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas cancelar este resguardo?');">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="hidden" name="estatus" value="Cancelado">
-                                            <flux:menu.item type="submit" icon="x-circle" variant="danger" kbd="⌘⌫">
+                                        <!-- Trigger Modal for "Cancelar Resguardo" -->
+                                        <flux:modal.trigger name="cancelar-resguardo-{{ $resguardo->folio }}">
+                                            <flux:menu.item icon="x-circle" variant="danger" kbd="⌘⌫">
                                                 Cancelar
                                             </flux:menu.item>
-                                        </form>
-                                    @elseif ($resguardo->estatus == 'Cancelado' && auth()->user()->hasPermission('user_audit'))
-                                        <form action="{{ route('resguardos.delete', $resguardo->folio) }}" method="POST"
-                                            onsubmit="return confirm('¿Seguro que deseas eliminar este resguardo? Esta acción no se puede deshacer.');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <flux:menu.item type="submit" icon="trash" variant="danger">
+                                        </flux:modal.trigger>
+                                    @elseif ($resguardo->estatus == 'Cancelado' && auth()->user()->hasPermission('audit_user'))
+                                        <!-- Trigger Modal for "Eliminar Resguardo" -->
+                                        <flux:modal.trigger name="eliminar-resguardo-{{ $resguardo->folio }}">
+                                            <flux:menu.item icon="trash" variant="danger">
                                                 Eliminar Resguardo
                                             </flux:menu.item>
-                                        </form>
+                                        </flux:modal.trigger>
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
+                            <!-- Modal for "Cancelar Resguardo" -->
+                            <flux:modal name="cancelar-resguardo-{{ $resguardo->folio }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <flux:heading size="lg">Cancelar Resguardo</flux:heading>
+                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la cancelación.</flux:text>
+                                    <form action="{{ route('resguardos.cancel', $resguardo->folio) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="estatus" value="Cancelado">
+                                        <flux:textarea label="Motivo" name="comentario"
+                                            placeholder="Escribe el motivo aquí..." required class="mb-4" />
+                                        <div class="flex mt-4">
+                                            <flux:spacer />
+                                            <flux:button type="submit" variant="primary">Confirmar</flux:button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </flux:modal>
+
+                            <!-- Modal for "Eliminar Resguardo" -->
+                            <flux:modal name="eliminar-resguardo-{{ $resguardo->folio }}" class="md:w-96">
+                                <div class="space-y-6">
+                                    <flux:heading size="lg">Eliminar Resguardo</flux:heading>
+                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la eliminación.</flux:text>
+                                    <form action="{{ route('resguardos.delete', $resguardo->folio) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <flux:textarea label="Motivo" name="comentario"
+                                            placeholder="Escribe el motivo aquí..." required class="mb-4" />
+                                        <div class="flex mt-4">
+                                            <flux:spacer />
+                                            <flux:button type="submit" variant="danger">Eliminar</flux:button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </flux:modal>
+
                         </td>
+
                     </tr>
                 @empty
                     <tr>
@@ -192,30 +225,30 @@
 </div>
 <script>
     // Versión alternativa con AJAX (reemplaza el script anterior)
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    let searchTimer;
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        let searchTimer;
 
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimer);
-        
-        searchTimer = setTimeout(function() {
-            const searchValue = searchInput.value;
-            
-            fetch(`{{ route('resguardos.index') }}?search=${encodeURIComponent(searchValue)}`)
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newTable = doc.querySelector('tbody');
-                    const newPagination = doc.querySelector('.pagination');
-                    
-                    document.querySelector('tbody').innerHTML = newTable.innerHTML;
-                    if (newPagination) {
-                        document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
-                    }
-                });
-        }, );
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimer);
+
+            searchTimer = setTimeout(function () {
+                const searchValue = searchInput.value;
+
+                fetch(`{{ route('resguardos.index') }}?search=${encodeURIComponent(searchValue)}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newTable = doc.querySelector('tbody');
+                        const newPagination = doc.querySelector('.pagination');
+
+                        document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                        if (newPagination) {
+                            document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                        }
+                    });
+            },);
+        });
     });
-});
 </script>
