@@ -42,8 +42,10 @@
                     <th class="px-4 py-2">Colaborador</th>
                     <th class="px-4 py-2">Fecha de Resguardo</th>
                     <th class="px-4 py-2">Detalle de Resguardo</th>
+                    <th class="px-4 py-2">Comentarios</th> <!-- Nueva columna -->
                     <th class="px-4 py-2">Opciones</th>
                 </tr>
+            </thead>
             </thead>
             <tbody>
                 @forelse($resguardos as $resguardo)
@@ -147,6 +149,18 @@
                                         </div>
                                     @endforeach
                                 </ul>
+                            @endif
+                        </td>
+                        <!-- Nueva celda para comentarios -->
+                        <td class="px-4 py-2">
+                            @if($resguardo->comentarios)
+                                @if ($resguardo->estatus == 'Cancelado')
+                                    <s>{{ Str::limit($resguardo->comentarios, 50) }}</s>
+                                @else
+                                    {{ Str::limit($resguardo->comentarios, 50) }}
+                                @endif
+                            @else
+                                <span class="text-gray-400">Sin comentarios</span>
                             @endif
                         </td>
                         <td class="px-4 py-2">
