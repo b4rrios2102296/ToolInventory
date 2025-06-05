@@ -164,7 +164,7 @@
                                                 Cancelar
                                             </flux:menu.item>
                                         </flux:modal.trigger>
-                                    @elseif ($resguardo->estatus == 'Cancelado' && auth()->user()->hasPermission('audit_user'))
+                                    @elseif ($resguardo->estatus == 'Cancelado' && auth()->user()->hasPermission('user_audit'))
                                         <!-- Trigger Modal for "Eliminar Resguardo" -->
                                         <flux:modal.trigger name="eliminar-resguardo-{{ $resguardo->folio }}">
                                             <flux:menu.item icon="trash" variant="danger">
