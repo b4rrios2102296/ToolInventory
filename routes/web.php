@@ -24,13 +24,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/resguardos/excel', [ResguardoController::class, 'generarExcel'])->name('resguardos.excel');
     Route::get('/herramientas/pdf', [HerramientaController::class, 'generarPDF'])->name('herramientas.pdf');
     Route::get('/herramientas/excel', [HerramientaController::class, 'generarExcel'])->name('herramientas.excel');
-        // Exportaciones para todos los usuarios autenticados
+    Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas.index');
+
+    // Exportaciones para todos los usuarios autenticados
     Route::resource('herramientas', HerramientaController::class)->only(['index', 'create', 'store']);
     Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
     Route::get('/herramientas/{herramienta}/edit', [HerramientaController::class, 'edit'])->name('herramientas.edit');
     Route::put('/herramientas/{herramienta}', [HerramientaController::class, 'update'])->name('herramientas.update');
     Route::get('/herramientas/{herramienta}', [HerramientaController::class, 'show'])->name('herramientas.show');
     Route::patch('/herramientas/{id}/baja', [HerramientaController::class, 'baja'])->name('herramientas.baja');
+
 
     // Resguardos
     Route::get('/resguardos/crear', [ResguardoController::class, 'create'])->name('resguardos.create');
@@ -41,7 +44,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/resguardos/{resguardo}', [ResguardoController::class, 'update'])->name('resguardos.update');
     Route::patch('/resguardos/{resguardo}/cancel', [ResguardoController::class, 'cancel'])->name('resguardos.cancel');
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
-    
+    Route::patch('/resguardos/{folio}/change-status', [ResguardoController::class, 'changeStatus'])
+        ->name('resguardos.change-status');
+
+
 
 
 
@@ -56,5 +62,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('permission:user_audit')->group(function () {
         Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
         Route::get('/register', Register::class)->name('register');
+        Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
+        Route::delete('/herramientas/{id}', [HerramientaController::class, 'destroy'])->name('herramientas.delete');
+
     });
 });
