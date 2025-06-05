@@ -198,12 +198,12 @@
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="estatus" value="Cancelado">
-                                        <flux:textarea label="Motivo" name="comentarios" 
+                                        <flux:textarea label="Motivo" name="comentarios"
                                             placeholder="Escribe el motivo aquí..." required class="mb-4" />
-                                            <div class="flex mt-4">
-                                                <flux:spacer />
-                                                <flux:button type="submit" variant="primary">Confirmar</flux:button>
-                                            </div>
+                                        <div class="flex mt-4">
+                                            <flux:spacer />
+                                            <flux:button type="submit" variant="primary">Confirmar</flux:button>
+                                        </div>
                                     </form>
                                 </div>
                             </flux:modal>
@@ -212,12 +212,10 @@
                             <flux:modal name="eliminar-resguardo-{{ $resguardo->folio }}" class="md:w-96">
                                 <div class="space-y-6">
                                     <flux:heading size="lg">Eliminar Resguardo</flux:heading>
-                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la eliminación.</flux:text>
                                     <form action="{{ route('resguardos.delete', $resguardo->folio) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <flux:textarea label="Motivo" name="comentario"
-                                            placeholder="Escribe el motivo aquí..." required class="mb-4" />
+                                        <flux:text class="mt-2">¿Seguro que quieres eliminarlo? esta acción es irreversible</flux:text>
                                         <div class="flex mt-4">
                                             <flux:spacer />
                                             <flux:button type="submit" variant="danger">Eliminar</flux:button>

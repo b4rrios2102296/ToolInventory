@@ -43,6 +43,7 @@
                         <th class="px-4 py-2">Modelo</th>
                         <th class="px-4 py-2">Número de Serie</th>
                         <th class="px-4 py-2">Costo</th>
+                        <th class="px-4 py-2">Observaciones</th> <!-- Nueva columna -->
                         <th class="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
@@ -122,6 +123,19 @@
                                 @endif
                             </td>
                             <td class="px-4 py-2 text-center align-middle">
+                                @if(!empty($herramienta->observaciones))
+                                    @if($herramienta->estatus == 'Baja')
+                                        <s>{{ Str::limit($herramienta->observaciones, 50) }}</s>
+                                    @else
+                                        <div class="tooltip" data-tip="{{ $herramienta->observaciones }}">
+                                            {{ Str::limit($herramienta->observaciones, 50) }}
+                                        </div>
+                                    @endif
+                                @else
+                                    <span class="text-gray-400">N/A</span>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 text-center align-middle">
                                 <flux:dropdown>
                                     <flux:button icon:trailing="ellipsis-horizontal"></flux:button>
 
@@ -157,12 +171,13 @@
                                 <div class="space-y-6">
                                     <flux:heading size="lg">Dar de Baja Herramienta</flux:heading>
                                     <flux:text class="mt-2">Por favor, ingresa el motivo de la baja.</flux:text>
-                                    <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST">
+                                    <form action="{{ route('herramientas.baja', $herramienta->id) }}" method="POST"
+                                        id="bajaForm-{{ $herramienta->id }}">
                                         @csrf
                                         @method('PATCH')
                                         <input type="hidden" name="estatus" value="Baja">
-                                        <flux:textarea label="Motivo" name="comentario" placeholder="Escribe el motivo aquí..."
-                                            required class="mb-4" />
+                                        <flux:textarea label="Motivo" name="observaciones"
+                                            placeholder="Escribe el motivo aquí..." required class="mb-4" />
                                         <div class="flex mt-4">
                                             <flux:spacer />
                                             <flux:button type="submit" variant="primary">Confirmar</flux:button>
@@ -175,12 +190,11 @@
                             <flux:modal name="eliminar-herramienta-{{ $herramienta->id }}" class="md:w-96">
                                 <div class="space-y-6">
                                     <flux:heading size="lg">Eliminar Herramienta</flux:heading>
-                                    <flux:text class="mt-2">Por favor, ingresa el motivo de la eliminación.</flux:text>
+                                    <flux:text class="mt-2">¿Seguro que quieres eliminarlo? esta acción es irreversible
+                                    </flux:text>
                                     <form action="{{ route('herramientas.delete', $herramienta->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <flux:textarea label="Motivo" name="comentario" placeholder="Escribe el motivo aquí..."
-                                            required class="mb-4" />
                                         <div class="flex mt-4">
                                             <flux:spacer />
                                             <flux:button type="submit" variant="danger">Eliminar</flux:button>

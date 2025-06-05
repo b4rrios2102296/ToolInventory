@@ -27,7 +27,8 @@ class HerramientaController extends Controller
                     ->orWhere('herramientas.unidad', 'like', "%{$search}%")
                     ->orWhere('herramientas.modelo', 'like', "%{$search}%")
                     ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
-                    ->orWhere('herramientas.costo', 'like', "%{$search}%");
+                    ->orWhere('herramientas.costo', 'like', "%{$search}%")
+                    ->orWhere('herramientas.observaciones', 'like', "%{$search}%");
             });
         }
 
@@ -101,27 +102,45 @@ class HerramientaController extends Controller
 
     public function baja(Request $request, $id)
     {
-        // Validate incoming request to ensure "estatus" is either "Disponible" or "Baja"
         $request->validate([
             'estatus' => 'required|in:Disponible,Baja',
+            'observaciones' => 'required|string',
         ]);
 
-        // Find the herramienta
-        $herramienta = DB::connection('toolinventory')->table('herramientas')->where('id', $id)->first();
+        try {
+            DB::connection('toolinventory')->transaction(function () use ($request, $id) {
+                DB::connection('toolinventory')->table('herramientas')
+                    ->where('id', $id)
+                    ->update([
+                        'estatus' => 'Baja',
+                        'observaciones' => $request->observaciones,
+                        'updated_at' => now(),
+                    ]);
+            });
 
-        if (!$herramienta) {
-            return redirect()->route('herramientas.index')->with('error', 'La herramienta no existe.');
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'observaciones' => $request->observaciones, // Corregido
+                ]);
+            }
+
+            return redirect()->route('herramientas.index')
+                ->with('success', 'Herramienta marcada como Baja con observaciones.');
+
+        } catch (\Exception $e) {
+            Log::error('Error dando de baja herramienta: ' . $e->getMessage());
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Ocurrió un error al dar de baja la herramienta'
+                ], 500);
+            }
+
+            return redirect()->back()
+                ->with('error', 'Ocurrió un error al dar de baja la herramienta');
         }
-
-        // Update the status instead of deleting the record
-        DB::connection('toolinventory')->table('herramientas')
-            ->where('id', $id)
-            ->update([
-                'estatus' => 'Baja',
-                'updated_at' => now(),
-            ]);
-
-        return redirect()->route('herramientas.index')->with('success', 'Herramienta marcada como Baja.');
     }
     public function destroy($id)
     {
