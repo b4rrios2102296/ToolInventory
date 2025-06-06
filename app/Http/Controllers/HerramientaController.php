@@ -32,7 +32,9 @@ class HerramientaController extends Controller
             });
         }
 
-        $herramientas = $query->orderBy('herramientas.id', 'desc')->paginate(15);
+        $herramientas = DB::table('herramientas')
+            ->orderBy(DB::raw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED)"), 'desc')
+            ->paginate(10);
 
         return view('herramientas.index', compact('herramientas', 'search'));
     }

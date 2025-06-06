@@ -146,7 +146,7 @@ class ResguardoController extends Controller
             });
         }
 
-        $resguardos = $query->orderBy('resguardos.folio', 'desc')->paginate(15);
+        $resguardos = $query->orderBy('resguardos.folio', direction: 'desc')->paginate(10);
 
         // Obtener nombres de colaboradores
         $colaborador_nums = $resguardos->pluck('colaborador_num')->unique()->filter();

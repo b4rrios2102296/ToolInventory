@@ -211,11 +211,16 @@
                     @endforelse
                 </tbody>
             </table>
+            <!-- Agrega esto para la paginación -->
+            @if($herramientas->hasPages())
+                <div class="mt-4 pagination-container">
+                    {{ $herramientas->links() }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection
 <script>
-    // Versión alternativa con AJAX (reemplaza el script anterior)
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         let searchTimer;
@@ -225,8 +230,15 @@
 
             searchTimer = setTimeout(function () {
                 const searchValue = searchInput.value;
+                const url = new URL(window.location.href);
+                url.searchParams.set('search', searchValue);
+                url.searchParams.delete('page'); // Resetear a la primera página al buscar
 
-                fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
+                fetch(url.toString(), {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
                     .then(response => response.text())
                     .then(html => {
                         const parser = new DOMParser();
@@ -235,11 +247,47 @@
                         const newPagination = doc.querySelector('.pagination');
 
                         document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                        const paginationContainer = document.querySelector('.pagination-container');
+
                         if (newPagination) {
-                            document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                            if (!paginationContainer) {
+                                const container = document.createElement('div');
+                                container.className = 'pagination-container mt-4';
+                                document.querySelector('table').after(container);
+                            }
+                            document.querySelector('.pagination-container').innerHTML = newPagination.innerHTML;
+                        } else if (paginationContainer) {
+                            paginationContainer.remove();
                         }
                     });
-            },);
+            }, 500);
+        });
+
+        // Manejar clics en la paginación (para AJAX)
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.pagination a')) {
+                e.preventDefault();
+                const url = e.target.closest('a').href;
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newTable = doc.querySelector('tbody');
+                        const newPagination = doc.querySelector('.pagination');
+
+                        document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                        document.querySelector('.pagination-container').innerHTML = newPagination.innerHTML;
+
+                        // Actualizar la URL en el navegador sin recargar
+                        window.history.pushState({}, '', url);
+                    });
+            }
         });
     });
 </script>
