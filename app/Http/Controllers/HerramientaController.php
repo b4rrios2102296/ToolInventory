@@ -12,32 +12,38 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class HerramientaController extends Controller
 {
     public function index()
-    {
-        $search = request('search');
+{
+    $search = request('search');
 
-        $query = DB::connection('toolinventory')
-            ->table('herramientas')
-            ->select('herramientas.*');
+    $query = DB::connection('toolinventory')
+        ->table('herramientas')
+        ->select('herramientas.*');
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('herramientas.id', 'like', "%{$search}%")
-                    ->orWhere('herramientas.estatus', 'like', "%{$search}%")
-                    ->orWhere('herramientas.articulo', 'like', "%{$search}%")
-                    ->orWhere('herramientas.unidad', 'like', "%{$search}%")
-                    ->orWhere('herramientas.modelo', 'like', "%{$search}%")
-                    ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
-                    ->orWhere('herramientas.costo', 'like', "%{$search}%")
-                    ->orWhere('herramientas.observaciones', 'like', "%{$search}%");
-            });
-        }
-
-        $herramientas = DB::table('herramientas')
-            ->orderBy(DB::raw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED)"), 'desc')
-            ->paginate(10);
-
-        return view('herramientas.index', compact('herramientas', 'search'));
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('herramientas.id', 'like', "%{$search}%")
+                ->orWhere('herramientas.estatus', 'like', "%{$search}%")
+                ->orWhere('herramientas.articulo', 'like', "%{$search}%")
+                ->orWhere('herramientas.unidad', 'like', "%{$search}%")
+                ->orWhere('herramientas.modelo', 'like', "%{$search}%")
+                ->orWhere('herramientas.num_serie', 'like', "%{$search}%")
+                ->orWhere('herramientas.costo', 'like', "%{$search}%")
+                ->orWhere('herramientas.observaciones', 'like', "%{$search}%");
+        });
     }
+
+    // Use the query you built for pagination
+    $herramientas = $query->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
+                         ->paginate(10);
+
+    if (request()->ajax()) {
+        return response()->json([
+            'html' => view('herramientas.index', compact('herramientas', 'search'))->render()
+        ]);
+    }
+
+    return view('herramientas.index', compact('herramientas', 'search'));
+}
 
     public function update(Request $request, $id)
     {
