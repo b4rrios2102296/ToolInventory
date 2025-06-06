@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
     <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
-     <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
+    <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
 
 </head>
@@ -51,6 +51,7 @@
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin" class="hidden lg:grid">
                     <flux:navlist.item href="{{ route('register') }}">Crear Usuario</flux:navlist.item>
+                    <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios </flux:navlist.item>
                 </flux:navlist.group>
             @endif
         </flux:navlist>

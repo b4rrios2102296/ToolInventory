@@ -6,6 +6,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ResguardoController;
 use App\Http\Controllers\HerramientaController;
+use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
 
 Route::get('/', fn(): View => view('welcome'))->name('home');
@@ -60,7 +61,8 @@ Route::middleware('auth')->group(function () {
 
     // Rutas solo para administradores
     Route::middleware('permission:user_audit')->group(function () {
-        Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
+        Route::get('/user-audit', [UserActionsController::class, 'index'])->middleware(['auth', 'permission:user_audit']);
+        Route::get('/acciones', [UserActionsController::class, 'index'])->name('acciones');
         Route::get('/register', Register::class)->name('register');
         Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
         Route::delete('/herramientas/{id}', [HerramientaController::class, 'destroy'])->name('herramientas.delete');

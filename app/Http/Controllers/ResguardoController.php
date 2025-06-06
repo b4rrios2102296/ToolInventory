@@ -70,6 +70,14 @@ class ResguardoController extends Controller
                     'unidad' => $herramienta->unidad,
                     'costo' => $herramienta->costo ?? 0,
                 ]);
+                DB::connection('toolinventory')->table('user_actions')->insert([
+                    'user_id' => auth()->id(),
+                    'resguardo_id' => $folio,
+                    'accion' => 'Creado',
+                    'comentarios' => $validated['comentarios'],
+                    'created_at' => now(),
+                ]);
+
 
                 // Create the resguardo
                 DB::connection('toolinventory')->table('resguardos')->insert([
@@ -161,6 +169,7 @@ class ResguardoController extends Controller
             $resguardo->detalles_herramienta = json_decode($resguardo->detalles_resguardo, true) ?? [];
             return $resguardo;
         });
+        
 
         return view('resguardos.index', compact('resguardos'));
     }
@@ -357,6 +366,14 @@ class ResguardoController extends Controller
                     $herramienta_id = $detalles['id'] ?? null;
 
                     $user = Auth::user(); // Get authenticated user
+
+                    DB::connection('toolinventory')->table('user_actions')->insert([
+                        'user_id' => auth()->id(),
+                        'resguardo_id' => $folio,
+                        'accion' => 'Cancelado',
+                        'comentarios' => $request->comentarios,
+                        'created_at' => now(),
+                    ]);
 
                     DB::connection('toolinventory')
                         ->table('resguardos')
