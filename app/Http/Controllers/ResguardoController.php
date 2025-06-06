@@ -525,12 +525,13 @@ class ResguardoController extends Controller
                 'aperturo.nombre as aperturo_nombre',
                 'aperturo.apellidos as aperturo_apellidos'
             )
+            ->orderBy('folio','desc')
             ->get();
+            
 
         if ($resguardos->isEmpty()) {
             return redirect()->route('resguardos.index')->with('error', 'No hay resguardos disponibles.');
         }
-
         // Fetch collaborator details
         $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
         $colaboradores = DB::connection('sqlsrv')
@@ -554,6 +555,7 @@ class ResguardoController extends Controller
             $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
             $resguardo->herramienta_costo = $herramienta->costo ?? 0;
         }
+        
 
         // Generate PDF
         $pdf = PDF::loadView('resguardos.listapdf', compact('resguardos'));

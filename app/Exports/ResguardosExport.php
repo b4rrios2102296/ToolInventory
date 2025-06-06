@@ -23,6 +23,7 @@ class ResguardosExport implements FromCollection, WithHeadings
                 'resguardos.comentarios',
                 'resguardos.detalles_resguardo'
             )
+            ->orderBy('folio','desc')
             ->get();
 
         // Fetch collaborator details

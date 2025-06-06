@@ -20,6 +20,8 @@ class HerramientasExport implements FromCollection, WithHeadings
                 'num_serie',
                 'costo'
             )
+            ->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
+
             ->get();
     }
 
