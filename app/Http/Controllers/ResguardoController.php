@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResguardosExport;
+use Illuminate\Support\Facades\Auth;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
@@ -355,13 +356,14 @@ class ResguardoController extends Controller
                     $detalles = json_decode($resguardo->detalles_resguardo, true);
                     $herramienta_id = $detalles['id'] ?? null;
 
-                    // Update the resguardo status and comments
+                    $user = Auth::user(); // Get authenticated user
+
                     DB::connection('toolinventory')
                         ->table('resguardos')
                         ->where('folio', $folio)
                         ->update([
                             'estatus' => 'Cancelado',
-                            'comentarios' => $request->comentarios, // Guardar el comentario
+                            'comentarios' => $request->comentarios . " - Cancelado por: " . $user->nombre . " " . $user->apellidos,
                             'updated_at' => now()
                         ]);
 
@@ -525,9 +527,9 @@ class ResguardoController extends Controller
                 'aperturo.nombre as aperturo_nombre',
                 'aperturo.apellidos as aperturo_apellidos'
             )
-            ->orderBy('folio','desc')
+            ->orderBy('folio', 'desc')
             ->get();
-            
+
 
         if ($resguardos->isEmpty()) {
             return redirect()->route('resguardos.index')->with('error', 'No hay resguardos disponibles.');
@@ -555,7 +557,7 @@ class ResguardoController extends Controller
             $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
             $resguardo->herramienta_costo = $herramienta->costo ?? 0;
         }
-        
+
 
         // Generate PDF
         $pdf = PDF::loadView('resguardos.listapdf', compact('resguardos'));
