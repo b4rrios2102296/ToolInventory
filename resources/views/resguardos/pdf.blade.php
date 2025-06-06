@@ -180,28 +180,37 @@
             UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU
             FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 40px; border: 1px solid #000;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
         <tr>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
-                <p class="bold uppercase">RECIBIDO POR</p>
+            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
+                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">RECIBIDO POR</p>
+                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
+                    {{ $colaborador->nombreCompleto ?? 'No disponible' }}
+                </p>
                 <br>
                 <br>
                 <br>
                 <br>
-                <hr style="width: 80%; margin: 10px auto; border: 0.5px solid #000;">
-                <p>NOMBRE Y FIRMA</p>
+                <br>
+                <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
+                <p style="font-size: 9px;">FIRMA</p>
             </th>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
-                <p class="bold uppercase">ENTREGADO POR</p>
+            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
+                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">ENTREGADO POR</p>
+                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
+                    {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
+                </p>
                 <br>
                 <br>
                 <br>
                 <br>
-                <hr style="width: 80%; margin: 10px auto; border: 0.5px solid #000;">
-                <p>NOMBRE Y FIRMA</p>
+                <br>
+                <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
+                <p style="font-size: 9px;">FIRMA</p>
             </th>
         </tr>
     </table>
+
 
 
 
