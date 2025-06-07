@@ -8,6 +8,9 @@ use App\Http\Controllers\ResguardoController;
 use App\Http\Controllers\HerramientaController;
 use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
+use App\Http\Controllers\UserActionsPDFController;
+
+
 
 Route::get('/', fn(): View => view('welcome'))->name('home');
 Route::get('/test', fn(): View => view('livewire.test'))->name('test');
@@ -66,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/register', Register::class)->name('register');
         Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
         Route::delete('/herramientas/{id}', [HerramientaController::class, 'destroy'])->name('herramientas.delete');
-
+        Route::get('/acciones/export', [UserActionsController::class, 'export'])->name('acciones.excel');
+        Route::get('/acciones/pdf', [UserActionsController::class, 'exportPDF'])->name('acciones.pdf');
     });
 });

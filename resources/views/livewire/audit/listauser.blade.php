@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Acciones de Usuarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Historial de Acciones de Usuarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Folio</th>
+                <th>Comentarios</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($acciones as $accion)
+            <tr>
+                <td>{{ $accion->usuario_nombre_completo }}</td>
+                <td>{{ $accion->accion }}</td>
+                <td>{{ $accion->resguardo_id }}</td>
+                <td>{{ $accion->comentarios }}</td>
+                <td>{{ \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i') }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</body>
+</html>

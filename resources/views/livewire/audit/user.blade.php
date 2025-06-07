@@ -12,11 +12,11 @@
         <br>
         <div class="flex justify-between items-center mb-4">
             <div class="flex space-x-2">
-                <flux:tooltip content="PDF">
-                    <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('resguardos.pdf') }}" />
+                <flux:tooltip content="Exportar a PDF">
+                    <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('acciones.pdf') }}" />
                 </flux:tooltip>
                 <flux:tooltip content="Excel">
-                    <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('resguardos.excel') }}" />
+                    <flux:button icon="document-chart-bar" icon:variant="outline" href="{{ route('acciones.excel') }}" />
                 </flux:tooltip>
             </div>
             <!-- Filtro de búsqueda -->
@@ -48,5 +48,33 @@
                 @endforeach
             </tbody>
         </table>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+    let searchTimer;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(searchTimer);
+
+        searchTimer = setTimeout(function () {
+            const searchValue = searchInput.value;
+
+            fetch(`{{ route('acciones') }}?search=${encodeURIComponent(searchValue) }`)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newTable = doc.querySelector('tbody');
+                    const newPagination = doc.querySelector('.pagination');
+
+                    document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                    if (newPagination) {
+                        document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                    }
+                });
+        }, 500);
+    });
+});
+</script>
 
 @endsection
