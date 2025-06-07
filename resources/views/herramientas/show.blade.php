@@ -4,8 +4,9 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
-                <flux:button icon="arrow-left" href="{{ route('herramientas.index') }}">Volver </flux:button>
+                <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
             </div>
+
             <h1 class="text-2xl font-bold flex-1 text-center">Detalles de Herramienta #{{ $herramienta->id }}</h1>
         </div>
 

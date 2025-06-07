@@ -2,8 +2,9 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center mb-4">
         <div class="ml-4 mt-2">
-            <flux:button icon="arrow-left" href="{{ route('resguardos.index') }}"> Volver</flux:button>
+            <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
         </div>
+
         <h1 class="text-2xl font-bold flex-1 text-center">Registro de Resguardo</h1>
     </div>
     @if(session('success'))
@@ -37,7 +38,8 @@
                     <!-- Buscar Colaborador -->
                     <div>
                         <div class="flex gap-2">
-                            <flux:input label="Buscar Colaborador" type="text" id="colaborador-search" placeholder="Número o nombre"></flux:input>
+                            <flux:input label="Buscar Colaborador" type="text" id="colaborador-search"
+                                placeholder="Número o nombre"></flux:input>
                             <flux:button icon="magnifying-glass" id="buscar-btn">
                                 Buscar
                             </flux:button>
@@ -48,23 +50,23 @@
                     <div class="space-y-4">
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
-                            <flux:input label="Num Colaborador" type="text" name="claveColab" id="claveColab" value="{{ old('claveColab') }}" readonly
-                                required></flux:input>
+                            <flux:input label="Num Colaborador" type="text" name="claveColab" id="claveColab"
+                                value="{{ old('claveColab') }}" readonly required></flux:input>
                         </div>
                         <div>
-                            <flux:input label="Nombre Completo" type="text" id="nombreCompleto" 
+                            <flux:input label="Nombre Completo" type="text" id="nombreCompleto"
                                 value="{{ old('nombreCompleto') }}" readonly></flux:input>
                         </div>
                         <div>
-                            <flux:input label="Puesto" type="text" id="Puesto" 
-                                value="{{ old('Puesto') }}" readonly></flux:input>
+                            <flux:input label="Puesto" type="text" id="Puesto" value="{{ old('Puesto') }}" readonly>
+                            </flux:input>
                         </div>
                         <div>
-                            <flux:input label="Departamento" type="text" id="area_limpia" 
+                            <flux:input label="Departamento" type="text" id="area_limpia"
                                 value="{{ old('area_limpia') }}" readonly></flux:input>
                         </div>
                         <div>
-                            <flux:input label="Ambiente" type="text" id="sucursal_limpia" 
+                            <flux:input label="Ambiente" type="text" id="sucursal_limpia"
                                 value="{{ old('sucursal_limpia') }}" readonly></flux:input>
                         </div>
                     </div>
@@ -87,8 +89,9 @@
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="">
                     <div>
 
-                        <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded" label="Fecha del Resguardo"
-                            value="{{ old('fecha_captura', date('Y-m-d')) }}" required></flux:input>
+                        <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
+                            label="Fecha del Resguardo" value="{{ old('fecha_captura', date('Y-m-d')) }}" required>
+                        </flux:input>
                     </div>
                     <div>
                     </div>
@@ -96,13 +99,14 @@
             </div>
 
             <div class="mb-6">
-                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3" class="w-full px-3 py-2 rounded">
+                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3"
+                    class="w-full px-3 py-2 rounded">
                     {{ old('comentarios') }}
                 </flux:textarea>
             </div>
 
             <div class="flex justify-end gap-4">
-                <flux:button href="{{ route('resguardos.index') }}" icon="x-mark">
+                <flux:button href="{{ url()->previous() }}" icon="x-mark">
                     Cancelar
                 </flux:button>
                 <flux:button icon="document-plus" type="submit">

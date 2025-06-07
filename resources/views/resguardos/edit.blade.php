@@ -41,8 +41,9 @@
                     <!-- Buscar Colaborador -->
                     <div>
                         <div class="flex gap-2">
-                            <flux:input label="Buscar Colaborador" type="text" id="colaborador-search" placeholder="Número o nombre"
-                                class="flex-1 px-4 py-2 rounded-md" value="{{ $resguardo->colaborador_num }}"></flux:input>
+                            <flux:input label="Buscar Colaborador" type="text" id="colaborador-search"
+                                placeholder="Número o nombre" class="flex-1 px-4 py-2 rounded-md"
+                                value="{{ $resguardo->colaborador_num }}"></flux:input>
                             <flux:button icon="magnifying-glass" id="buscar-btn">
                                 Buscar
                             </flux:button>
@@ -54,23 +55,27 @@
                     <div class="space-y-4">
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
-                            <flux:input label="Num Colaborador" type="text" name="colaborador_num" id="claveColab" value="{{ $resguardo->colaborador_num }}" readonly
-                                required></flux:input>
+                            <flux:input label="Num Colaborador" type="text" name="colaborador_num" id="claveColab"
+                                value="{{ $resguardo->colaborador_num }}" readonly required></flux:input>
                         </div>
                         <div>
-                            <flux:input type="text" id="nombreCompleto" label="Nombre Completo" value="{{ $resguardo->colaborador_nombre ?? '' }}" readonly></flux:input>
+                            <flux:input type="text" id="nombreCompleto" label="Nombre Completo"
+                                value="{{ $resguardo->colaborador_nombre ?? '' }}" readonly></flux:input>
                         </div>
                         <div>
-                         
-                            <flux:input type="text" id="Puesto" label="Puesto" value="{{ $detalles['puesto'] ?? '' }}" readonly></flux:input>
+
+                            <flux:input type="text" id="Puesto" label="Puesto" value="{{ $detalles['puesto'] ?? '' }}"
+                                readonly></flux:input>
                         </div>
                         <div>
-                         
-                            <flux:input type="text" id="area_limpia" label="Departamento" value="{{ $detalles['departamento'] ?? '' }}" readonly></flux:input>
+
+                            <flux:input type="text" id="area_limpia" label="Departamento"
+                                value="{{ $detalles['departamento'] ?? '' }}" readonly></flux:input>
                         </div>
                         <div>
-                         
-                            <flux:input type="text" id="sucursal_limpia"  label="Ambiente" value="{{ $detalles['sucursal'] ?? '' }}" readonly></flux:input>
+
+                            <flux:input type="text" id="sucursal_limpia" label="Ambiente"
+                                value="{{ $detalles['sucursal'] ?? '' }}" readonly></flux:input>
                         </div>
                     </div>
                 </div>
@@ -78,7 +83,7 @@
                 <!-- Card: Detalles del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
-                    
+
                     <div class="mb-4 flex gap-2">
                         <flux:select id="herramienta-filtro" class="flex-1 px-4 py-2 rounded-md">
                             <option value="id">ID</option>
@@ -88,9 +93,10 @@
                         <div class="flex gap-2">
                             <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
                             @if(isset($herramienta))
-                            <flux:button icon="x-mark" id="eliminar-herramienta-btn" type="button" class="bg-red-500 hover:bg-red-600">
-                                Eliminar
-                            </flux:button>
+                                <flux:button icon="x-mark" id="eliminar-herramienta-btn" type="button"
+                                    class="bg-red-500 hover:bg-red-600">
+                                    Eliminar
+                                </flux:button>
                             @endif
                         </div>
                     </div>
@@ -98,21 +104,23 @@
 
                     <!-- Display current tool information -->
                     @if(isset($herramienta))
-                    <div id="herramienta-result" class="p-4 border rounded">
-                        <strong>ID:</strong> {{ $herramienta->id }}<br>
-                        <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
-                        <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
-                        <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
-                        <strong>Costo:</strong> ${{ $detalles['costo'] ?? 0 }}
-                    </div>
+                        <div id="herramienta-result" class="p-4 border rounded">
+                            <strong>ID:</strong> {{ $herramienta->id }}<br>
+                            <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
+                            <strong>Número de Serie:</strong> {{ $herramienta->num_serie }}<br>
+                            <strong>Artículo:</strong> {{ $herramienta->articulo }}<br>
+                            <strong>Costo:</strong> ${{ $detalles['costo'] ?? 0 }}
+                        </div>
                     @else
-                    <div id="herramienta-result" class="mt-4"></div>
+                        <div id="herramienta-result" class="mt-4"></div>
                     @endif
 
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="{{ $herramienta->id ?? '' }}">
                     <div>
-                        <flux:input label="Fecha de Resguardo" type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
-                            value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required></flux:input>
+                        <flux:input label="Fecha de Resguardo" type="date" name="fecha_captura"
+                            class="w-full px-3 py-2 rounded"
+                            value="{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('Y-m-d') }}" required>
+                        </flux:input>
                     </div>
                     <div>
                         @if(isset($resguardo) && $resguardo->estatus == 'Cancelado')
@@ -128,13 +136,14 @@
                 </div>
             </div>
             <div class="mb-6">
-                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3" class="w-full px-3 py-2 rounded">
+                <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3"
+                    class="w-full px-3 py-2 rounded">
                     {{ $resguardo->comentarios }}
                 </flux:textarea>
             </div>
 
             <div class="flex justify-end gap-4">
-                <flux:button href="{{ route('resguardos.index') }}" icon="x-mark"
+                <flux:button href="{{ url()->previous() }}" icon="x-mark"
                     class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                     Cancelar
                 </flux:button>
@@ -237,7 +246,7 @@
                     `;
                     // Asigna el id al input oculto
                     herramientaIdInput.value = data.id;
-                    
+
                     // Show the eliminate button if it exists
                     if (eliminarHerramientaBtn) {
                         eliminarHerramientaBtn.classList.remove('hidden');
@@ -251,7 +260,7 @@
 
         // Add functionality to eliminate button if it exists
         if (eliminarHerramientaBtn) {
-            eliminarHerramientaBtn.addEventListener('click', function() {
+            eliminarHerramientaBtn.addEventListener('click', function () {
                 resultDiv.innerHTML = '';
                 searchInput.value = '';
                 herramientaIdInput.value = '';
