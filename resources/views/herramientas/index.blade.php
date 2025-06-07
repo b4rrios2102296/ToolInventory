@@ -64,6 +64,7 @@
                                         $resguardo = DB::connection('toolinventory')
                                             ->table('resguardos')
                                             ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
+                                            ->where('estatus', 'Resguardo') // Ensure resguardo also has the correct status
                                             ->first();
                                     @endphp
                                     @if($resguardo)
@@ -73,9 +74,7 @@
                                             </flux:badge>
                                         </a>
                                     @else
-                                        <flux:badge color="teal">
-                                            Resguardo
-                                        </flux:badge>
+                                        <flux:badge color="zinc">Cancelado</flux:badge>
                                     @endif
                                 @else
                                     <flux:badge color="{{ $herramienta->estatus == 'Baja' ? 'zinc' : 'green' }}">
