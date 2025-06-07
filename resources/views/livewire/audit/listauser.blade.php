@@ -39,7 +39,7 @@
                 <th>Acción</th>
                 <th>Folio</th>
                 <th>Comentarios</th>
-                <th>Fecha</th>
+                <th>Fecha y Hora</th>
             </tr>
         </thead>
         <tbody>
@@ -50,7 +50,8 @@
                     <td>{{ $accion->accion }}</td>
                     <td>{{ $accion->resguardo_id }}</td>
                     <td>{{ $accion->comentarios }}</td>
-                    <td>{{ \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i') }}</td>
+                    <td>{{ $accion->fecha_hora ?? 'Fecha no disponible' }}</td>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

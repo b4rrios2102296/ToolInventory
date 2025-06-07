@@ -57,16 +57,40 @@ class UserActionsController extends Controller
             ->table('user_actions')
             ->leftJoin('usuarios', 'user_actions.user_id', '=', 'usuarios.id')
             ->select(
-                'user_actions.id', // Agregar el ID aquí
+                'user_actions.id',
                 DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellidos) AS usuario_nombre_completo"),
                 'user_actions.accion',
                 'user_actions.resguardo_id',
                 'user_actions.comentarios',
-                'user_actions.created_at'
+                'user_actions.created_at' // Ensure this is included
             )
             ->orderBy('user_actions.created_at', 'desc')
             ->get();
+        foreach ($acciones as $accion) {
+            if (!isset($accion->created_at)) {
+                \Log::error("Missing created_at for action ID: " . $accion->id);
+            } else {
+                $accion->fecha_hora = \Carbon\Carbon::parse($accion->created_at)
+                    ->setTimezone('America/Cancun')
+                    ->format('d/m/Y h:i A');
+            }
+        }
 
+
+
+        // Transformar los datos agregando la fecha formateada
+        $acciones = $acciones->map(function ($accion) {
+            return (object) [
+                'id' => $accion->id,
+                'usuario_nombre_completo' => $accion->usuario_nombre_completo,
+                'accion' => $accion->accion,
+                'resguardo_id' => $accion->resguardo_id,
+                'comentarios' => $accion->comentarios,
+                'fecha_hora' => \Carbon\Carbon::parse($accion->created_at)
+                    ->setTimezone('America/Cancun')
+                    ->format('d/m/Y h:i A')
+            ];
+        });
 
         // Generar el PDF con la vista correcta
         $pdf = Pdf::loadView('livewire.audit.listauser', compact('acciones'));
@@ -74,5 +98,6 @@ class UserActionsController extends Controller
         // Descargar el PDF
         return $pdf->download('acciones.pdf');
     }
+
 
 }

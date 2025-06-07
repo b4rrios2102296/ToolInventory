@@ -17,6 +17,7 @@
                     <flux:tooltip content="Exportar a PDF">
                         <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('acciones.pdf') }}" />
                     </flux:tooltip>
+                    <flux:separator vertical />
                     <flux:tooltip content="Excel">
                         <flux:button icon="document-chart-bar" icon:variant="outline"
                             href="{{ route('acciones.excel') }}" />
@@ -38,7 +39,7 @@
                         <th class="px-6 py-4 text-center">Acción</th>
                         <th class="px-6 py-4 text-center">Folio</th>
                         <th class="px-6 py-4 text-center">Comentarios</th>
-                        <th class="px-6 py-4 text-center">Fecha</th>
+                        <th class="px-6 py-4 text-center">Fecha y Hora</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,23 +48,28 @@
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->id}}</td>
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->nombre }} {{ $accion->apellidos }}</td>
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->accion }}</td>
-                            <td class="px-6 py-4 text-center align-middle">{{ $accion->resguardo_id }}</td>
+                            <td class="px-6 py-4 text-center align-middle">
+                                <flux:link variant="subtle" href="{{ route('resguardos.show', $accion->resguardo_id) }}">
+                                    {{ $accion->resguardo_id }}
+                                </flux:link>
+                            </td>
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->comentarios }}</td>
                             <td class="px-6 py-4 text-center align-middle">
-                                {{ \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i') }}
+                                {{ \Carbon\Carbon::parse($accion->created_at)->setTimezone('America/Cancun')->format('d/m/Y h:i A') }}
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
-                </table>
+            </table>
 
 
-                <!-- Pagination aligned to the bottom-right -->
-                @if($acciones->hasPages())
-                    <div class="mt-4 pagination-container">
-                        {{ $acciones->links() }}
-                    </div>
-                @endif
+            <!-- Pagination aligned to the bottom-right -->
+            @if($acciones->hasPages())
+                <div class="mt-4 pagination-container">
+                    {{ $acciones->links() }}
+                </div>
+            @endif
 
         </div>
 @endsection

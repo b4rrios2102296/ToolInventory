@@ -30,7 +30,8 @@ class UserActionsExport implements FromCollection, WithHeadings
                     'accion' => $accion->accion,
                     'folio' => $accion->resguardo_id,
                     'comentarios' => $accion->comentarios,
-                    'fecha' => \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i'),
+                    'fecha' => \Carbon\Carbon::parse($accion->created_at)->setTimezone('America/Cancun')->format('d/m/Y h:i A') ,
+                                                 
                 ];
             });
 
@@ -44,7 +45,7 @@ class UserActionsExport implements FromCollection, WithHeadings
             'Acción',
             'Folio',
             'Comentarios',
-            'Fecha',
+            'Fecha y Hora',
         ];
     }
 
