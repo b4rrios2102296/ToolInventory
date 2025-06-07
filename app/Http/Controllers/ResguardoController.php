@@ -169,7 +169,7 @@ class ResguardoController extends Controller
             $resguardo->detalles_herramienta = json_decode($resguardo->detalles_resguardo, true) ?? [];
             return $resguardo;
         });
-        
+
 
         return view('resguardos.index', compact('resguardos'));
     }
@@ -552,11 +552,18 @@ class ResguardoController extends Controller
             return redirect()->route('resguardos.index')->with('error', 'No hay resguardos disponibles.');
         }
         // Fetch collaborator details
+// Fetch collaborator details
         $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
         $colaboradores = DB::connection('sqlsrv')
             ->table('colaborador')
             ->whereIn('claveColab', $colaborador_nums)
             ->pluck('nombreCompleto', 'claveColab');
+
+        // Assign collaborator details
+        foreach ($resguardos as $resguardo) {
+            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
+        }
+
 
         // Retrieve Herramienta details
         foreach ($resguardos as $resguardo) {
@@ -567,13 +574,14 @@ class ResguardoController extends Controller
                 ->where('id', $detalles['id'] ?? null)
                 ->first();
 
-            // Assign collaborator and herramienta details
-            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
-            $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
-            $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
-            $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
-            $resguardo->herramienta_costo = $herramienta->costo ?? 0;
+            $resguardo->detalle_resguardo = "<strong>ID:</strong> " . ($herramienta->id ?? 'N/A') . "<br>" .
+                "<strong>Artículo:</strong> " . ($herramienta->articulo ?? 'N/A') . "<br>" .
+                "<strong>Modelo:</strong> " . ($herramienta->modelo ?? 'N/A') . "<br>" .
+                "<strong>Núm. Serie:</strong> " . ($herramienta->num_serie ?? 'N/A') . "<br>" .
+                "<strong>Costo:</strong> $" . number_format($herramienta->costo ?? 0, 2);
+
         }
+
 
 
         // Generate PDF
@@ -583,65 +591,6 @@ class ResguardoController extends Controller
     }
 
 
-
-
-    public function collection()
-    {
-        // Fetch all resguardos from toolinventory
-        $resguardos = DB::connection('toolinventory')
-            ->table('resguardos')
-            ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
-            ->select(
-                'resguardos.folio',
-                'resguardos.estatus',
-                'aperturo.nombre as aperturo_nombre',
-                'aperturo.apellidos as aperturo_apellidos',
-                'resguardos.fecha_captura',
-                'resguardos.colaborador_num'
-            )
-            ->get();
-
-        // Fetch collaborator details
-        $colaborador_nums = $resguardos->pluck('colaborador_num')->filter()->unique();
-        $colaboradores = DB::connection('sqlsrv')
-            ->table('colaborador')
-            ->whereIn('claveColab', $colaborador_nums)
-            ->pluck('nombreCompleto', 'claveColab');
-
-        foreach ($resguardos as $resguardo) {
-            $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
-
-            $herramienta = DB::connection('toolinventory')
-                ->table('herramientas')
-                ->where('id', $detalles['id'] ?? null)
-                ->first();
-
-            // Assign collaborator and herramienta details
-            $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
-            $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
-            $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
-            $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
-            $resguardo->herramienta_costo = $herramienta->costo ?? 0;
-        }
-
-        return $resguardos;
-    }
-
-    public function headings(): array
-    {
-        return [
-            'Folio',
-            'Estado',
-            'Realizó Resguardo',
-            'Asignado a',
-            'Fecha de Resguardo',
-            'Artículo',
-            'Modelo',
-            'Número de Serie',
-            'Costo'
-        ];
-
-    }
     public function generarExcel()
     {
         return Excel::download(new ResguardosExport, 'listado_resguardos.xlsx');

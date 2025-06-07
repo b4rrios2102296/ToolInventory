@@ -23,7 +23,7 @@ class ResguardosExport implements FromCollection, WithHeadings
                 'resguardos.comentarios',
                 'resguardos.detalles_resguardo'
             )
-            ->orderBy('folio','desc')
+            ->orderBy('folio', 'desc')
             ->get();
 
         // Fetch collaborator details
@@ -34,7 +34,6 @@ class ResguardosExport implements FromCollection, WithHeadings
             ->pluck('nombreCompleto', 'claveColab');
 
         foreach ($resguardos as $resguardo) {
-            // Ensure `detalles_resguardo` exists before decoding
             $detalles = isset($resguardo->detalles_resguardo) ? json_decode($resguardo->detalles_resguardo, true) : [];
 
             $herramienta = DB::connection('toolinventory')
@@ -42,16 +41,19 @@ class ResguardosExport implements FromCollection, WithHeadings
                 ->where('id', $detalles['id'] ?? null)
                 ->first();
 
-            // Assign details in the correct order
+            // Ensure collaborator details exist
             $resguardo->colaborador_nombre = $colaboradores[$resguardo->colaborador_num] ?? 'No disponible';
-            $resguardo->herramienta_articulo = $herramienta->articulo ?? 'N/A';
-            $resguardo->herramienta_modelo = $herramienta->modelo ?? 'N/A';
-            $resguardo->herramienta_num_serie = $herramienta->num_serie ?? 'N/A';
-            $resguardo->herramienta_costo = $herramienta->costo ?? 0;
 
-            // Format date correctly
-            $resguardo->fecha_captura = \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y');
+            // Assign details in an escalera format
+            $resguardo->detalle_resguardo =
+                "ID: " . ($herramienta->id ?? 'N/A') . "\n" .
+                "Artículo: " . ($herramienta->articulo ?? 'N/A') . "\n" .
+                "Modelo: " . ($herramienta->modelo ?? 'N/A') . "\n" .
+                "Número de Serie: " . ($herramienta->num_serie ?? 'N/A') . "\n" .
+                "Costo: $" . number_format($herramienta->costo ?? 0, 2);
         }
+
+
 
         // Ensure the output order matches the headings
         return $resguardos->map(function ($resguardo) {
@@ -62,13 +64,11 @@ class ResguardosExport implements FromCollection, WithHeadings
                 'colaborador_nombre' => $resguardo->colaborador_nombre,
                 'colaborador_num' => $resguardo->colaborador_num,
                 'fecha_captura' => $resguardo->fecha_captura,
-                'herramienta_articulo' => $resguardo->herramienta_articulo,
-                'herramienta_modelo' => $resguardo->herramienta_modelo,
-                'herramienta_num_serie' => $resguardo->herramienta_num_serie,
-                'herramienta_costo' => $resguardo->herramienta_costo,
+                'detalle_resguardo' => $resguardo->detalle_resguardo, // Consolidated details
                 'comentarios' => $resguardo->comentarios,
             ];
         });
+
     }
 
     public function headings(): array
@@ -80,13 +80,11 @@ class ResguardosExport implements FromCollection, WithHeadings
             'Asignado a',
             'Num Colaborador',
             'Fecha de Resguardo',
-            'Artículo',
-            'Modelo',
-            'Número de Serie',
-            'Costo',
+            'Detalle de Resguardo', // Consolidated field
             'Comentarios'
         ];
     }
+
 }
 
 

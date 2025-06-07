@@ -11,9 +11,10 @@ class UserActionsExport implements FromCollection, WithHeadings
     public function collection()
     {
         return DB::connection('toolinventory')
-            ->table('user_actions') // ¡Cambiamos 'acciones' por 'user_actions'!
+            ->table('user_actions')
             ->leftJoin('usuarios', 'user_actions.user_id', '=', 'usuarios.id')
             ->select(
+                'user_actions.id', // Agregar ID
                 DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellidos) AS usuario_nombre_completo"),
                 'user_actions.accion',
                 'user_actions.resguardo_id',
@@ -24,6 +25,7 @@ class UserActionsExport implements FromCollection, WithHeadings
             ->get()
             ->map(function ($accion) {
                 return [
+                    'id' => $accion->id, // Agregar ID
                     'usuario_nombre_completo' => $accion->usuario_nombre_completo,
                     'accion' => $accion->accion,
                     'folio' => $accion->resguardo_id,
@@ -31,11 +33,13 @@ class UserActionsExport implements FromCollection, WithHeadings
                     'fecha' => \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i'),
                 ];
             });
+
     }
 
     public function headings(): array
     {
         return [
+            'ID', // Agregar ID
             'Usuario',
             'Acción',
             'Folio',
@@ -43,4 +47,5 @@ class UserActionsExport implements FromCollection, WithHeadings
             'Fecha',
         ];
     }
+
 }

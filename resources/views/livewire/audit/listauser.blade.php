@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Historial de Acciones de Usuarios</title>
     <style>
-        body { font-family: Arial, sans-serif; font-size: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid black; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
+
 <body>
     <h1>Historial de Acciones de Usuarios</h1>
     <table>
         <thead>
             <tr>
+                <th>ID</th> <!-- Nueva columna para el ID -->
                 <th>Usuario</th>
                 <th>Acción</th>
                 <th>Folio</th>
@@ -24,15 +44,18 @@
         </thead>
         <tbody>
             @foreach ($acciones as $accion)
-            <tr>
-                <td>{{ $accion->usuario_nombre_completo }}</td>
-                <td>{{ $accion->accion }}</td>
-                <td>{{ $accion->resguardo_id }}</td>
-                <td>{{ $accion->comentarios }}</td>
-                <td>{{ \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i') }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $accion->id }}</td> <!-- Mostrar el ID -->
+                    <td>{{ $accion->usuario_nombre_completo }}</td>
+                    <td>{{ $accion->accion }}</td>
+                    <td>{{ $accion->resguardo_id }}</td>
+                    <td>{{ $accion->comentarios }}</td>
+                    <td>{{ \Carbon\Carbon::parse($accion->created_at)->format('d/m/Y H:i') }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>
+
 </body>
+
 </html>

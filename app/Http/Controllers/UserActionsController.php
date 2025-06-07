@@ -28,7 +28,8 @@ class UserActionsController extends Controller
         // Aplicar filtro de búsqueda
         if ($search) {
             $acciones->where(function ($q) use ($search) {
-                $q->where('user_actions.accion', 'like', "%{$search}%")
+                $q->where('user_actions.id', 'like', "%{$search}%") // Agregar búsqueda por ID
+                    ->orWhere('user_actions.accion', 'like', "%{$search}%")
                     ->orWhere('user_actions.resguardo_id', 'like', "%{$search}%")
                     ->orWhere('user_actions.comentarios', 'like', "%{$search}%")
                     ->orWhere('user_actions.created_at', 'like', "%{$search}%")
@@ -36,6 +37,7 @@ class UserActionsController extends Controller
                     ->orWhere('usuarios.apellidos', 'like', "%{$search}%");
             });
         }
+
 
         $acciones = $acciones->paginate(10);
 
@@ -52,9 +54,10 @@ class UserActionsController extends Controller
     {
         // Obtener los datos de user_actions
         $acciones = DB::connection('toolinventory')
-            ->table('user_actions') // ¡Aquí corregimos la tabla!
+            ->table('user_actions')
             ->leftJoin('usuarios', 'user_actions.user_id', '=', 'usuarios.id')
             ->select(
+                'user_actions.id', // Agregar el ID aquí
                 DB::raw("CONCAT(usuarios.nombre, ' ', usuarios.apellidos) AS usuario_nombre_completo"),
                 'user_actions.accion',
                 'user_actions.resguardo_id',
@@ -63,6 +66,7 @@ class UserActionsController extends Controller
             )
             ->orderBy('user_actions.created_at', 'desc')
             ->get();
+
 
         // Generar el PDF con la vista correcta
         $pdf = Pdf::loadView('livewire.audit.listauser', compact('acciones'));
