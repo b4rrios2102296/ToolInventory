@@ -39,6 +39,7 @@
                 <th>Artículo</th>
                 <th>Detalle de Herramienta</th> <!-- Consolidated details -->
                 <th>Costo</th>
+                <th>Observaciones</th> <!-- New column -->
             </tr>
         </thead>
         <tbody>
@@ -53,10 +54,12 @@
                         <strong>Número de Serie:</strong> {{ $herramienta->num_serie ?? 'N/A' }}
                     </td>
                     <td>${{ number_format($herramienta->costo, 2) }}</td>
+                    <td>{{ $herramienta->observaciones }}</td> <!-- Display Observaciones -->
                 </tr>
             @endforeach
         </tbody>
     </table>
+
 
 </body>
 

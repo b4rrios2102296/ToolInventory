@@ -295,10 +295,19 @@ class HerramientaController extends Controller
                 'unidad',
                 'modelo',
                 'num_serie',
-                'costo'
+                'costo',
+                'observaciones' // Add Observaciones field
             )
             ->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
-            ->get();
+            ->get()
+            ->map(function ($herramienta) {
+                // If the status is "Baja", include specific observations
+                $herramienta->observaciones = $herramienta->estatus === 'Baja'
+                    ? "Dado de Baja: " . ($herramienta->observaciones ?? 'Sin observaciones')
+                    : $herramienta->observaciones;
+
+                return $herramienta;
+            });
 
         if ($herramientas->isEmpty()) {
             return redirect()->route('herramientas.index')->with('error', 'No hay herramientas disponibles.');
@@ -307,10 +316,8 @@ class HerramientaController extends Controller
         $pdf = PDF::loadView('herramientas.listapdf', compact('herramientas'));
 
         return $pdf->download('listado_herramientas.pdf');
-
-
-
     }
+
     public function generarExcel()
     {
         return Excel::download(new HerramientasExport, 'listado_herramientas.xlsx');
