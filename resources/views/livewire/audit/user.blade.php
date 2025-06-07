@@ -14,7 +14,7 @@
             <br>
             <div class="flex justify-between items-center mb-4">
                 <div class="flex space-x-2">
-                    <flux:tooltip content="Exportar a PDF">
+                    <flux:tooltip content="PDF">
                         <flux:button icon="document-arrow-down" icon:variant="outline" href="{{ route('acciones.pdf') }}" />
                     </flux:tooltip>
                     <flux:separator vertical />
