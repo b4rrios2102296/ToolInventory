@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integer('folio', true)->comment('Folio único del resguardo');
             $table->string('estatus', 45)->comment('Activo, Devuelto, Perdido, etc.');
             $table->binary('detalles_resguardo')->nullable();
-            $table->string('comentarios', 45)->nullable()->comment('Observaciones');
+            $table->string('comentarios', 191)->nullable()->comment('Observaciones');
             $table->integer('aperturo_users_id');
             $table->integer('asigno_users_id');
             $table->timestamp('created_at')->useCurrent();

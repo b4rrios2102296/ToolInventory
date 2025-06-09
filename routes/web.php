@@ -6,7 +6,13 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\ResguardoController;
 use App\Http\Controllers\HerramientaController;
+use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
+use App\Http\Controllers\UserActionsPDFController;
+use App\Http\Controllers\DashboardController;
+
+
+
 
 Route::get('/', fn(): View => view('welcome'))->name('home');
 Route::get('/test', fn(): View => view('livewire.test'))->name('test');
@@ -55,15 +61,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
 
     // Dashboard y logout
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
     // Rutas solo para administradores
     Route::middleware('permission:user_audit')->group(function () {
-        Route::get('/user-audit', fn() => view('audit.user'))->name('audit.user');
+        Route::get('/user-audit', [UserActionsController::class, 'index'])->middleware(['auth', 'permission:user_audit']);
+        Route::get('/acciones', [UserActionsController::class, 'index'])->name('acciones');
         Route::get('/register', Register::class)->name('register');
         Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
         Route::delete('/herramientas/{id}', [HerramientaController::class, 'destroy'])->name('herramientas.delete');
-
+        Route::get('/acciones/export', [UserActionsController::class, 'export'])->name('acciones.excel');
+        Route::get('/acciones/pdf', [UserActionsController::class, 'exportPDF'])->name('acciones.pdf');
     });
 });

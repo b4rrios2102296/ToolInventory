@@ -4,8 +4,9 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
-                <flux:button icon="arrow-left" href="{{ route('herramientas.index') }}">Volver </flux:button>
+                <flux:button icon="arrow-left" href="{{ url('/herramientas') }}">Volver</flux:button>
             </div>
+
             <h1 class="text-2xl font-bold flex-1 text-center">Detalles de Herramienta #{{ $herramienta->id }}</h1>
         </div>
 
@@ -29,12 +30,26 @@
 
                     <!-- Estatus Handling -->
                     <div>
-                        @if ($herramienta->estatus == 'Resguardo')
+                        @if($herramienta->estatus == 'Resguardo')
+                            @php
+                                $resguardo = DB::connection('toolinventory')
+                                    ->table('resguardos')
+                                    ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
+                                    ->where('estatus', 'Resguardo') // Ensure resguardo also has the correct status
+                                    ->first();
+                            @endphp
                             <div class="mb-4">
                                 <label class="block text-sm font-medium">Estatus</label>
 
                                 <div class="mt-1">
-                                    @if ($resguardo)
+                                    @if($herramienta->estatus == 'Resguardo')
+                                        @php
+                                            $resguardo = DB::connection('toolinventory')
+                                                ->table('resguardos')
+                                                ->where('detalles_resguardo', 'like', '%"id":"' . $herramienta->id . '"%')
+                                                ->where('estatus', 'Resguardo') // Ensure resguardo also has the correct status
+                                                ->first();
+                                        @endphp
                                         <a href="{{ route('resguardos.show', $resguardo->folio) }}">
                                             <flux:badge color="teal">
                                                 Resguardo

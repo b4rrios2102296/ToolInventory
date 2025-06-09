@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use App\Exports\HerramientasExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+
 
 class HerramientaController extends Controller
 {
@@ -32,8 +34,15 @@ class HerramientaController extends Controller
             });
         }
 
-        $herramientas = $query->orderBy('herramientas.id', 'desc')->paginate(15);
 
+        $herramientas = $query->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
+            ->paginate(10);
+
+        if (request()->ajax()) {
+            return response()->json([
+                'html' => view('herramientas.index', compact('herramientas', 'search'))->render()
+            ]);
+        }
         return view('herramientas.index', compact('herramientas', 'search'));
     }
 
@@ -108,15 +117,18 @@ class HerramientaController extends Controller
         ]);
 
         try {
-            DB::connection('toolinventory')->transaction(function () use ($request, $id) {
+            $user = Auth::user(); // Get authenticated user
+
+            DB::connection('toolinventory')->transaction(function () use ($request, $id, $user) {
                 DB::connection('toolinventory')->table('herramientas')
                     ->where('id', $id)
                     ->update([
                         'estatus' => 'Baja',
-                        'observaciones' => $request->observaciones,
+                        'observaciones' => $request->observaciones . " - Dado de Baja por: " . $user->nombre . " " . $user->apellidos,
                         'updated_at' => now(),
                     ]);
             });
+
 
             if ($request->ajax()) {
                 return response()->json([
@@ -283,9 +295,19 @@ class HerramientaController extends Controller
                 'unidad',
                 'modelo',
                 'num_serie',
-                'costo'
+                'costo',
+                'observaciones' // Add Observaciones field
             )
-            ->get();
+            ->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
+            ->get()
+            ->map(function ($herramienta) {
+                // If the status is "Baja", include specific observations
+                $herramienta->observaciones = $herramienta->estatus === 'Baja'
+                    ? "Dado de Baja: " . ($herramienta->observaciones ?? 'Sin observaciones')
+                    : $herramienta->observaciones;
+
+                return $herramienta;
+            });
 
         if ($herramientas->isEmpty()) {
             return redirect()->route('herramientas.index')->with('error', 'No hay herramientas disponibles.');
@@ -294,10 +316,8 @@ class HerramientaController extends Controller
         $pdf = PDF::loadView('herramientas.listapdf', compact('herramientas'));
 
         return $pdf->download('listado_herramientas.pdf');
-
-
-
     }
+
     public function generarExcel()
     {
         return Excel::download(new HerramientasExport, 'listado_herramientas.xlsx');

@@ -19,6 +19,7 @@
                     <flux:button icon="document-arrow-down" icon:variant="outline"
                         href="{{ route('resguardos.pdf') }}" />
                 </flux:tooltip>
+                <flux:separator vertical />
                 <flux:tooltip content="Excel">
                     <flux:button icon="document-chart-bar" icon:variant="outline"
                         href="{{ route('resguardos.excel') }}" />
@@ -215,7 +216,8 @@
                                     <form action="{{ route('resguardos.delete', $resguardo->folio) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <flux:text class="mt-2">¿Seguro que quieres eliminarlo? esta acción es irreversible</flux:text>
+                                        <flux:text class="mt-2">¿Seguro que quieres eliminarlo? esta acción es irreversible
+                                        </flux:text>
                                         <div class="flex mt-4">
                                             <flux:spacer />
                                             <flux:button type="submit" variant="danger">Eliminar</flux:button>
@@ -234,6 +236,12 @@
                 @endforelse
             </tbody>
         </table>
+        <!-- Agrega esto para la paginación -->
+        @if($resguardos->hasPages())
+            <div class="mt-4 pagination-container">
+                {{ $resguardos->links() }}
+            </div>
+        @endif
     </div>
 </div>
 <script>

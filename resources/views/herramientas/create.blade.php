@@ -3,8 +3,9 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center mb-4">
         <div class="ml-4 mt-2">
-            <flux:button icon="arrow-left" href="{{ route('herramientas.index') }}">Volver </flux:button>
+            <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
         </div>
+
         <h1 class="text-2xl font-bold flex-1 text-center">Registro de Herramientas</h1>
     </div>
     @if ($errors->any())
@@ -48,10 +49,11 @@
         </div>
 
         <div class="flex justify-end gap-4">
-            <flux:button href="{{ route('herramientas.index') }}" icon="x-mark"
+            <flux:button href="{{ url()->previous() }}" icon="x-mark"
                 class="px-6 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                 Cancelar
             </flux:button>
+
             <flux:button icon="document-plus" type="submit"
                 class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                 Guardar Herramienta
