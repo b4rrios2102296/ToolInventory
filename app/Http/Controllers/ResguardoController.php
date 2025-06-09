@@ -556,7 +556,6 @@ class ResguardoController extends Controller
         // Asignar las firmas al objeto $resguardo
         $resguardo->firma_entregado = optional($firmas->where('firmado_por', 'Entregado Por')->first())->firma_base64;
         $resguardo->firma_recibido = optional($firmas->where('firmado_por', 'Recibido Por')->first())->firma_base64;
-        dd($resguardo->firma_recibido, $resguardo->firma_entregado);
 
 
 
