@@ -30,7 +30,15 @@
                                     {{ $resguardo->folio }}
                                 </flux:link>
                             </td>
-                            <td class="px-6 py-4 text-center align-middle">{{ $resguardo->estatus }}</td>
+                            <td class="px-6 py-4 text-center align-middle">
+                                @if($resguardo->estatus == 'Resguardo')
+                                    <flux:badge color="teal" class="inline-block">
+                                        {{ $resguardo->estatus }}
+                                    </flux:badge>
+                                @else
+                                    {{ $resguardo->estatus }}
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 {{ $resguardo->aperturo_nombre }} {{ $resguardo->aperturo_apellidos }}
                             </td>

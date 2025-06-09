@@ -47,7 +47,19 @@
                         <tr class="border-b border-gray-300 last:border-0">
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->id}}</td>
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->nombre }} {{ $accion->apellidos }}</td>
-                            <td class="px-6 py-4 text-center align-middle">{{ $accion->accion }}</td>
+                            <td class="px-6 py-4 text-center align-middle">
+                                @if($accion->accion == 'Creado')
+                                    <flux:badge color="teal" class="inline-block">
+                                        {{ $accion->accion }}
+                                    </flux:badge>
+                                @elseif($accion->accion == 'Cancelado')
+                                    <flux:badge color="zinc" class="inline-block">
+                                        {{ $accion->accion }}
+                                    </flux:badge>
+                                @else
+                                    {{ $accion->accion }}
+                                @endif
+                            </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 <flux:link variant="subtle" href="{{ route('resguardos.show', $accion->resguardo_id) }}">
                                     {{ $accion->resguardo_id }}
