@@ -183,35 +183,46 @@
             UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU
             FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
-<table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
         <tr>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
-                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">RECIBIDO POR</p>
-                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
+            <!-- Columna de "Recibido Por" -->
+            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
+                <p class="bold uppercase" style="font-size: 12px; margin-bottom: 5px;">RECIBIDO POR</p>
+                <p class="uppercase" style="font-size: 10px; margin-bottom: 5px;">
                     {{ $colaborador->nombreCompleto ?? 'No disponible' }}
                 </p>
-                @if(isset($resguardo->firma_recibido) && $resguardo->firma_recibido)
-                    <img src="data:image/png;base64,{{ $resguardo->firma_recibido }}" class="signature-img" alt="Firma Recibido">
+                @if(!empty($resguardo->firma_recibido))
+                    <img src="data:image/png;base64,{{ trim($resguardo->firma_recibido) }}" class="signature-img"
+                        alt="Firma Recibido" style="height: 80px; display: block; margin: 10px auto;">
                 @else
-                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
+                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;">Firma no disponible
+                    </div>
                 @endif
+
                 <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
-                <p style="font-size: 9px;">FIRMA</p>
+                <p style="font-size: 10px;">FIRMA</p>
             </th>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
-                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">ENTREGADO POR</p>
-                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
+
+            <!-- Columna de "Entregado Por" -->
+            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
+                <p class="bold uppercase" style="font-size: 12px; margin-bottom: 5px;">ENTREGADO POR</p>
+                <p class="uppercase" style="font-size: 10px; margin-bottom: 5px;">
                     {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                 </p>
-                @if(isset($resguardo->firma_entregado) && $resguardo->firma_entregado)
-                    <img src="data:image/png;base64,{{ $resguardo->firma_entregado }}" class="signature-img" alt="Firma Entregado">
+                @if(!empty($resguardo->firma_entregado))
+                    <img src="data:image/png;base64,{{ trim($resguardo->firma_entregado) }}" class="signature-img"
+                        alt="Firma Recibido" style="height: 80px; display: block; margin: 10px auto;">
                 @else
-                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
+                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;">Firma no disponible
+                    </div>
                 @endif
+
                 <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
-                <p style="font-size: 9px;">FIRMA</p>
+                <p style="font-size: 10px;">FIRMA</p>
             </th>
         </tr>
     </table>
+
 </body>
+
 </html>

@@ -12,6 +12,7 @@ use App\Exports\ResguardosExport;
 use Illuminate\Support\Facades\Auth;
 use setasign\Fpdi\Fpdi;
 use App\Models\Firma;
+use Exception;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
@@ -547,36 +548,58 @@ class ResguardoController extends Controller
             ->where('id', $detalles['id'] ?? null)
             ->first();
 
-        // Generar PDF
-        $pdf = Pdf::loadView('resguardos.pdf', [
-            'resguardo' => $resguardo,
-            'herramienta' => $herramienta,
-            'detalles' => $detalles,
-            'colaborador' => $colaborador // Pass collaborator data to the view
-        ]);
+        // Get signatures
         $firmas = DB::connection('toolinventory')->table('firmas')
-            ->where('resguardo_id', $resguardo->id)
+            ->where('resguardo_id', $resguardo->folio)
             ->get();
-        $resguardo->firma_entregado = $firmas->where('firmado_por', 'Entregado Por')->first()->firma_base64 ?? null;
-        $resguardo->firma_recibido = $firmas->where('firmado_por', 'Recibido Por')->first()->firma_base64 ?? null;
+
+        // Asignar las firmas al objeto $resguardo
+        $resguardo->firma_entregado = optional($firmas->where('firmado_por', 'Entregado Por')->first())->firma_base64;
+        $resguardo->firma_recibido = optional($firmas->where('firmado_por', 'Recibido Por')->first())->firma_base64;
+        dd($resguardo->firma_recibido, $resguardo->firma_entregado);
 
 
-        $pdf = new Fpdi();
-        $pdf->AddPage();
-        $pdf->setSourceFile('resguardo_base.pdf');
-        $tplIdx = $pdf->importPage(1);
-        $pdf->useTemplate($tplIdx, 0, 0);
 
-        $firmas = Firma::where('resguardo_id', $resguardo->id)->get();
-        foreach ($firmas as $firma) {
-            $yPos = ($firma->firmado_por == "Entregado Por") ? 200 : 220;
-            $pdf->Image('@' . base64_decode(str_replace("data:image/png;base64,", "", $firma->firma_base64)), 50, $yPos, 50, 20);
+        // Validate and clean signature data
+        if ($resguardo->firma_entregado && !$this->isValidBase64Image($resguardo->firma_entregado)) {
+            $resguardo->firma_entregado = null;
         }
 
-        $pdf->Output('D', "resguardo_{$folio}.pdf");
+        if ($resguardo->firma_recibido && !$this->isValidBase64Image($resguardo->firma_recibido)) {
+            $resguardo->firma_recibido = null;
+        }
 
+        // Generate PDF from HTML view
+        $pdf = \PDF::loadView('resguardos.pdf', [
+            'resguardo' => $resguardo,
+            'colaborador' => $colaborador,
+            'herramienta' => $herramienta
+        ]);
+
+        return $pdf->download("resguardo_{$folio}.pdf");
     }
 
+    // Helper method to validate base64 image data
+    private function isValidBase64Image($base64)
+    {
+        if (empty($base64)) {
+            return false;
+        }
+
+        $base64 = preg_replace('#^data:image/\w+;base64,#i', '', $base64);
+        $imageData = base64_decode($base64, true);
+
+        if ($imageData === false) {
+            return false;
+        }
+
+        $tempFile = tempnam(sys_get_temp_dir(), 'img');
+        file_put_contents($tempFile, $imageData);
+        $imageInfo = @getimagesize($tempFile);
+        unlink($tempFile);
+
+        return $imageInfo !== false;
+    }
 
 
 

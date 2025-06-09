@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
-                <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
+                <flux:button icon="arrow-left" href="/resguardos">Volver</flux:button>
             </div>
 
             <h1 class="text-2xl font-bold flex-1 text-center">Información de Resguardo #{{ $resguardo->folio }}</h1>
