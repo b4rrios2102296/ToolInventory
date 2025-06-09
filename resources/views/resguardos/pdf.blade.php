@@ -192,7 +192,7 @@
                     {{ $colaborador->nombreCompleto ?? 'No disponible' }}
                 </p>
                 @if(!empty($resguardo->firma_recibido))
-                    <img src="data:image/png;base64,{{ $resguardo->firma_recibido }}" class="signature-img"
+                    <img src="{{ $resguardo->firma_recibido }}" class="signature-img"
                         alt="Firma Recibido" style="height: 80px; display: block; margin: 10px auto;">
                 @else
                     <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
@@ -208,7 +208,7 @@
                     {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                 </p>
                 @if(!empty($resguardo->firma_entregado))
-                    <img src="data:image/png;base64,{{ $resguardo->firma_entregado }}" class="signature-img"
+                    <img src="{{ $resguardo->firma_entregado }}" class="signature-img"
                         alt="Firma Entregado" style="height: 80px; display: block; margin: 10px auto;">
                 @else
                     <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
