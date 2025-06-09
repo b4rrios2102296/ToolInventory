@@ -10,6 +10,7 @@ use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\UserActionsPDFController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FirmaController;
 
 
 
@@ -52,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/resguardos/{resguardo}', [ResguardoController::class, 'show'])->name('resguardos.show');
     Route::patch('/resguardos/{folio}/change-status', [ResguardoController::class, 'changeStatus'])
         ->name('resguardos.change-status');
+
+    // Firma Resguardos
+    Route::post('/firmas', [FirmaController::class, 'store'])->name('firmas.store');
+
 
 
 

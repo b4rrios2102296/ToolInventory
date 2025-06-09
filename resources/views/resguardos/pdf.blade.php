@@ -40,7 +40,6 @@
             margin: 3px 0 10px 0;
         }
 
-
         .info-section {
             margin-bottom: 15px;
         }
@@ -92,6 +91,11 @@
         li {
             margin-bottom: 3px;
         }
+
+        .signature-img {
+            height: 80px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}"
@@ -102,7 +106,6 @@
         <h1>Grand Velas Riviera Maya</h1>
         <h2>TECNOLOGIAS DE LA INFORMACION</h2>
         <h3>RESGUARDO DE HERRAMIENTA</h3>
-
     </div>
 
     <div class="two-columns">
@@ -180,18 +183,18 @@
             UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU
             FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
         <tr>
             <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
                 <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">RECIBIDO POR</p>
                 <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
                     {{ $colaborador->nombreCompleto ?? 'No disponible' }}
                 </p>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                @if(isset($resguardo->firma_recibido) && $resguardo->firma_recibido)
+                    <img src="data:image/png;base64,{{ $resguardo->firma_recibido }}" class="signature-img" alt="Firma Recibido">
+                @else
+                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
+                @endif
                 <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
                 <p style="font-size: 9px;">FIRMA</p>
             </th>
@@ -200,21 +203,15 @@
                 <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
                     {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                 </p>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                @if(isset($resguardo->firma_entregado) && $resguardo->firma_entregado)
+                    <img src="data:image/png;base64,{{ $resguardo->firma_entregado }}" class="signature-img" alt="Firma Entregado">
+                @else
+                    <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
+                @endif
                 <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
                 <p style="font-size: 9px;">FIRMA</p>
             </th>
         </tr>
     </table>
-
-
-
-
-
 </body>
-
 </html>

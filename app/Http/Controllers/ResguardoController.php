@@ -10,6 +10,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResguardosExport;
 use Illuminate\Support\Facades\Auth;
+use setasign\Fpdi\Fpdi;
+use App\Models\Firma;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
@@ -22,7 +24,11 @@ class ResguardoController extends Controller
             'fecha_captura' => 'required|date',
             'comentarios' => 'nullable|string|max:191',
             'estatus' => 'nullable|string|in:Resguardo,Baja',
+            'firma_entregado_base64' => 'required|string',
+            'firma_recibido_base64' => 'required|string',
         ]);
+
+
 
         $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
 
@@ -77,6 +83,23 @@ class ResguardoController extends Controller
                     'comentarios' => $validated['comentarios'],
                     'created_at' => now(),
                 ]);
+                DB::connection('toolinventory')->table('firmas')->insert([
+                    'resguardo_id' => $folio,
+                    'firmado_por' => 'Entregado Por',
+                    'firma_base64' => $validated['firma_entregado_base64'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                DB::connection('toolinventory')->table('firmas')->insert([
+                    'resguardo_id' => $folio,
+                    'firmado_por' => 'Recibido Por',
+                    'firma_base64' => $validated['firma_recibido_base64'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+
 
 
                 // Create the resguardo
@@ -176,12 +199,17 @@ class ResguardoController extends Controller
 
     public function create()
     {
+        $resguardo = (object) [
+            'id' => null, // or 0 or whatever makes sense for your application
+            // Add any other default fields you need
+        ];
+
         $herramientas = DB::connection('toolinventory')
             ->table('herramientas')
             ->where('estatus', 'Disponible')
             ->get();
 
-        return view('resguardos.create', compact('herramientas'));
+        return view('resguardos.create', compact('herramientas', 'resguardo'));
     }
 
     public function buscarColaborador(Request $request)
@@ -526,8 +554,27 @@ class ResguardoController extends Controller
             'detalles' => $detalles,
             'colaborador' => $colaborador // Pass collaborator data to the view
         ]);
+        $firmas = DB::connection('toolinventory')->table('firmas')
+            ->where('resguardo_id', $resguardo->id)
+            ->get();
+        $resguardo->firma_entregado = $firmas->where('firmado_por', 'Entregado Por')->first()->firma_base64 ?? null;
+        $resguardo->firma_recibido = $firmas->where('firmado_por', 'Recibido Por')->first()->firma_base64 ?? null;
 
-        return $pdf->stream("resguardo_{$folio}.pdf");
+
+        $pdf = new Fpdi();
+        $pdf->AddPage();
+        $pdf->setSourceFile('resguardo_base.pdf');
+        $tplIdx = $pdf->importPage(1);
+        $pdf->useTemplate($tplIdx, 0, 0);
+
+        $firmas = Firma::where('resguardo_id', $resguardo->id)->get();
+        foreach ($firmas as $firma) {
+            $yPos = ($firma->firmado_por == "Entregado Por") ? 200 : 220;
+            $pdf->Image('@' . base64_decode(str_replace("data:image/png;base64,", "", $firma->firma_base64)), 50, $yPos, 50, 20);
+        }
+
+        $pdf->Output('D', "resguardo_{$folio}.pdf");
+
     }
 
 
