@@ -20,7 +20,7 @@ class ResguardoController extends Controller
             'claveColab' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'comentarios' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:191',
             'estatus' => 'nullable|string|in:Resguardo,Baja',
         ]);
 
@@ -251,7 +251,7 @@ class ResguardoController extends Controller
             'colaborador_num' => 'required|string',
             'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
             'fecha_captura' => 'required|date',
-            'comentarios' => 'nullable|string|max:500',
+            'comentarios' => 'nullable|string|max:191',
         ]);
 
         try {

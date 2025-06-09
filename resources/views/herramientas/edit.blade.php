@@ -1,6 +1,4 @@
-<!-- @extends('layouts.app')
-
-@section('content')
+@extends('layouts.app')
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
@@ -37,7 +35,6 @@
                 @method('PUT')
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                Card: Datos de la Herramienta 
                     <div class="border rounded-lg shadow p-4 space-y-6">
                         <h2 class="text-lg font-semibold">Detalles de la Herramienta</h2>
 
@@ -79,7 +76,7 @@
                         <flux:input label="Costo" name="costo" type="number" :value="$herramienta->costo" class="w-full" />
                     </div>
 
-                
+
                     <div class="border rounded-lg shadow p-4 space-y-4">
                         <h2 class="text-lg font-semibold">Observaciones</h2>
                         <flux:textarea name="observaciones" rows="4" class="w-full">
@@ -101,4 +98,3 @@
             </form>
         </div>
     </div>
-@endsection-->

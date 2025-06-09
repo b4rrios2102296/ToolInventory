@@ -1,4 +1,4 @@
-@extends('layouts.app')
+ <!-- @extends('layouts.app')
 
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center mb-4">
@@ -36,10 +36,9 @@
             @method('PUT')
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <!-- Card: Buscar y Datos del Colaborador -->
+                 Card: Buscar y Datos del Colaborador 
                 <div class="border rounded-lg shadow p-4 space-y-6">
-                    <!-- Buscar Colaborador -->
-                    <div>
+                  Buscar Colaborador 
                         <div class="flex gap-2">
                             <flux:input label="Buscar Colaborador" type="text" id="colaborador-search"
                                 placeholder="Número o nombre" class="flex-1 px-4 py-2 rounded-md"
@@ -51,8 +50,7 @@
                         <div id="colaborador-error" class="text-red-500 mt-2 hidden"></div>
                     </div>
 
-                    <!-- Datos del Colaborador -->
-                    <div class="space-y-4">
+                     Datos del Colaborador
                         <h2 class="text-lg font-semibold">Datos del Colaborador</h2>
                         <div>
                             <flux:input label="Num Colaborador" type="text" name="colaborador_num" id="claveColab"
@@ -80,7 +78,7 @@
                     </div>
                 </div>
 
-                <!-- Card: Detalles del Resguardo -->
+                 Card: Detalles del Resguardo 
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
 
@@ -102,8 +100,7 @@
                     </div>
                     <div id="herramienta-error" class="text-red-500 mt-2 hidden"></div>
 
-                    <!-- Display current tool information -->
-                    @if(isset($herramienta))
+                     Display current tool information 
                         <div id="herramienta-result" class="p-4 border rounded">
                             <strong>ID:</strong> {{ $herramienta->id }}<br>
                             <strong>Modelo:</strong> {{ $herramienta->modelo }}<br>
@@ -267,4 +264,4 @@
             });
         }
     });
-</script>
+</script> -->

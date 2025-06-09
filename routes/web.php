@@ -9,6 +9,8 @@ use App\Http\Controllers\HerramientaController;
 use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\UserActionsPDFController;
+use App\Http\Controllers\DashboardController;
+
 
 
 
@@ -59,7 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
 
     // Dashboard y logout
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
     // Rutas solo para administradores
