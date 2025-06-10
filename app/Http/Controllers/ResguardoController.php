@@ -575,7 +575,7 @@ class ResguardoController extends Controller
             'herramienta' => $herramienta
         ]);
 
-        return $pdf->download("resguardo_{$folio}.pdf");
+        return $pdf->stream("resguardo_{$folio}.pdf");
     }
 
     // Helper method to validate base64 image data

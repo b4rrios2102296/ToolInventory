@@ -93,8 +93,21 @@
         }
 
         .signature-img {
-            height: 80px;
-            margin-bottom: 10px;
+            height: 50px;
+            /* Reduce la altura */
+            margin-bottom: 5px;
+        }
+
+        th {
+            padding: 5px;
+            /* Reduce el espacio interno */
+            width: 20%;
+            /* Ajusta el ancho de cada celda */
+        }
+
+        hr {
+            width: 60%;
+            /* Reduce la línea de firma */
         }
     </style>
 </head>
@@ -183,17 +196,17 @@
             UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU
             FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid #000;">
         <tr>
             <!-- Columna de "Recibido Por" -->
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
+            <th>
                 <p class="bold uppercase" style="font-size: 12px; margin-bottom: 5px;">RECIBIDO POR</p>
                 <p class="uppercase" style="font-size: 10px; margin-bottom: 5px;">
                     {{ $colaborador->nombreCompleto ?? 'No disponible' }}
                 </p>
                 @if(!empty($resguardo->firma_recibido))
-                    <img src="{{ $resguardo->firma_recibido }}" class="signature-img"
-                        alt="Firma Recibido" style="height: 80px; display: block; margin: 10px auto;">
+                    <img src="{{ $resguardo->firma_recibido }}" class="signature-img" alt="Firma Recibido"
+                        style="height: 80px; display: block; margin: 10px auto;">
                 @else
                     <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
                 @endif
@@ -202,14 +215,14 @@
             </th>
 
             <!-- Columna de "Entregado Por" -->
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 10px;">
+            <th style="width: 25%; text-align: center; border: 1px solid #000; padding: 10px;">
                 <p class="bold uppercase" style="font-size: 12px; margin-bottom: 5px;">ENTREGADO POR</p>
                 <p class="uppercase" style="font-size: 10px; margin-bottom: 5px;">
                     {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
                 </p>
                 @if(!empty($resguardo->firma_entregado))
-                    <img src="{{ $resguardo->firma_entregado }}" class="signature-img"
-                        alt="Firma Entregado" style="height: 80px; display: block; margin: 10px auto;">
+                    <img src="{{ $resguardo->firma_entregado }}" class="signature-img" alt="Firma Entregado"
+                        style="height: 80px; display: block; margin: 10px auto;">
                 @else
                     <div style="height: 80px; margin-bottom: 10px; border-bottom: 1px dashed #ccc;"></div>
                 @endif

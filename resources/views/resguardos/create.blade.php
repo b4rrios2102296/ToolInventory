@@ -103,7 +103,7 @@
                     <!-- Firma de "Entregado Por" -->
                     <div class="w-1/2 text-left flex flex-col">
                         <h2 class="font-semibold mb-2">Entregado Por</h2>
-                        <canvas id="firmaEntregado" class="border w-full h-32 bg-white"></canvas>
+                        <canvas id="firmaEntregado" class="border w-1/2 h-50 bg-white"></canvas>
                         <div class="flex justify-end gap-4 mt-2">
                             <flux:button type="button" onclick="guardarFirma('firmaEntregado', 'Entregado Por')">Guardar</flux:button>
                             <flux:button type="button" icon="trash" variant="danger" onclick="borrarFirma('firmaEntregado')">Borrar</flux:button>
@@ -114,7 +114,7 @@
                     <!-- Firma de "Recibido Por" -->
                     <div class="w-1/2 text-left flex flex-col">
                         <h2 class="font-semibold mb-2">Recibido Por</h2>
-                        <canvas id="firmaRecibido" class="border w-full h-32 bg-white"></canvas>
+                        <canvas id="firmaRecibido" class="border w-1/2  h-50 bg-white"></canvas>
                         <div class="flex justify-end gap-4 mt-2">
                             <flux:button type="button" onclick="guardarFirma('firmaRecibido', 'Recibido Por')">Guardar</flux:button>
                             <flux:button type="button" icon="trash" variant="danger" onclick="borrarFirma('firmaRecibido')">Borrar</flux:button>
@@ -123,7 +123,6 @@
                     </div>
                 </div>
             </div>
-
     </div>
     <div class="mb-6">
         <flux:textarea label="Comentarios" is="textarea" name="comentarios" rows="3" class="w-full px-3 py-2 rounded">
