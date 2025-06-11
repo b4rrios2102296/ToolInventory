@@ -2,39 +2,62 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use App\Models\Usuario;
 use App\Models\Role;
-use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Ejecutar primero los permisos y roles
+        // Ejecutar primero los seeders de permisos y roles
         $this->call(UserRolePermissionSeeder::class);
 
-        // Buscar el rol “God” por nombre
-        $rolGod = Role::where('nombre', 'God')->first();
+        // Buscar los roles
+        $roles = [
+            'God' => Role::where('nombre', 'God')->first(),
+            'Normal' => Role::where('nombre', 'Normal')->first(),
+            'Lectura' => Role::where('nombre', 'Lectura')->first(),
+        ];
 
-        // Verificar si el usuario ya existe antes de crearlo
-        if ($rolGod) {
-            $existingUser = Usuario::where('nombre_usuario', 'God')->first();
+        // Definir usuarios con sus respectivos roles
+        $usuarios = [
+            [
+                'numero_colaborador' => 1001,
+                'nombre' => 'Admin',
+                'apellidos' => 'Sistemas',
+                'nombre_usuario' => 'God',
+                'password' => bcrypt('password'),
+                'rol_id' => $roles['God']?->id,
+                'activo' => true,
+            ],
+            [
+                'numero_colaborador' => 1002,
+                'nombre' => 'Usuario',
+                'apellidos' => 'Normal',
+                'nombre_usuario' => 'NormalUser',
+                'password' => bcrypt('password'),
+                'rol_id' => $roles['Normal']?->id,
+                'activo' => true,
+            ],
+            [
+                'numero_colaborador' => 1003,
+                'nombre' => 'Usuario',
+                'apellidos' => 'Lectura',
+                'nombre_usuario' => 'LecturaUser',
+                'password' => bcrypt('password'),
+                'rol_id' => $roles['Lectura']?->id,
+                'activo' => true,
+            ],
+        ];
 
-            if (!$existingUser) {
-                Usuario::create([
-                    'numero_colaborador' => 1001,
-                    'nombre' => 'Admin',
-                    'apellidos' => 'Sistemas',
-                    'nombre_usuario' => 'God',
-                    'password' => bcrypt('password'),
-                    'rol_id' => $rolGod->id,
-                    'activo' => true
-                ]);
-            } else {
-                \Log::info('El usuario "God" ya existe, no se creó nuevamente.');
-            }
-        } else {
-            \Log::error('El rol "God" no se encontró en la base de datos.');
+        // Crear usuarios si no existen
+        foreach ($usuarios as $usuario) {
+            Usuario::firstOrCreate(
+                ['nombre_usuario' => $usuario['nombre_usuario']],
+                $usuario
+            );
         }
     }
 }
+

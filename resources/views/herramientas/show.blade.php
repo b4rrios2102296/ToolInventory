@@ -94,13 +94,12 @@
             </div>
 
             <div class="flex justify-end gap-4">
-                @if ($herramienta->estatus == 'Disponible')
+                @if ($herramienta->estatus == 'Disponible' && !auth()->user()->hasPermission('read_access'))
                     <flux:button href="{{ route('herramientas.edit', $herramienta->id) }}" icon="pencil-square"
                         class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Editar
                     </flux:button>
                 @endif
-
             </div>
         </div>
 @endsection
