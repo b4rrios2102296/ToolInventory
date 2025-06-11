@@ -3,15 +3,15 @@
 @section('content')
     <div class="overflow-x-auto">
         <div class="container mx-auto px-4 py-8">
-            <div>
-                <h1 class="text-2xl font-bold mb-6 text-center">Últimos Resguardos</h1>
+          <div>
+    <h1 class="text-2xl font-bold mb-6 text-center">Últimos Resguardos</h1>
 
-                @if(!Auth::user()->hasPermission('read_access'))
-                    <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">
-                        Nuevo Resguardo
-                    </flux:button>
-                @endif
-            </div>
+    @if(!Auth::user()->hasPermission('read_access')) 
+        <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">
+            Nuevo Resguardo
+        </flux:button>
+    @endif
+</div>
 
             <br>
             <flux:separator />
@@ -37,7 +37,7 @@
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 @if($resguardo->estatus == 'Resguardo')
-                                    <flux:badge color="teal" variant="solid" class="inline-block">
+                                    <flux:badge color="teal"  variant="solid" class="inline-block">
                                         {{ $resguardo->estatus }}
                                     </flux:badge>
                                 @else

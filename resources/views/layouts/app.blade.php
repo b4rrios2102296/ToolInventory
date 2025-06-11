@@ -21,37 +21,41 @@
 <body class="min-h-screen">
 
     <!-- Sidebar -->
-    <flux:sidebar sticky stashable>
+    <flux:sidebar sticky stashable style="background-color: #F2F2F2" class="sidebar text-[#2E2E2E]">
 
         <!-- Toggle (mobile) -->
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <!-- Logo / Header -->
+        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -120px;">
+            <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}" style="width: 100; height: 205px;"
+                class="mx-auto" />
+        </div>
+
+
         <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
-            <img src="{{ asset('Images/Simplification1.svg') }}" class="w-15 h-15 mx-auto" />
-            <div class="flex items-center justify-center">
-                <img src="{{ asset('Images/logoGrandVelas.svg') }}" alt="Grand Velas Logo" class="w-8 h-8 mr-2" />
-                <div class="text-left">
-                    <div class="font-bold text-xs">Departamento de Sistemas</div>
-                    <div class="text-xs">Grand Velas Riviera Maya</div>
-                </div>
+            <div style="padding-bottom: -50px; margin-top: -150px;">
+                <img src="{{ asset('Images/Group 64.svg') }}" style="width: 200px; margin-right: 50px;" />
             </div>
         </div>
 
+
         <!-- Navigation -->
-        <flux:navlist>
-            <flux:navlist.item icon="cog" href="{{ route('dashboard') }} ">Dashboard</flux:navlist.item>
-            <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">Resguardos
+        <flux:navlist style="padding-bottom: -50; margin-top: -90px;">
+            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="nav-item">Dashboard</flux:navlist.item>
+
+            <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="nav-item">
+                Resguardos
             </flux:navlist.item>
 
-            <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid">
-                <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas</flux:navlist.item>
+            <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid nav-item-group">
+                <flux:navlist.item href="{{ route('herramientas.index') }}" class="nav-item">Herramientas</flux:navlist.item>
             </flux:navlist.group>
 
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin" class="hidden lg:grid">
-                    <flux:navlist.item href="{{ route('register') }}">Crear Usuario</flux:navlist.item>
-                    <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios </flux:navlist.item>
+                    <flux:navlist.item href="{{ route('register') }}" class="nav-item">Crear Usuario</flux:navlist.item>
+                    <flux:navlist.item href="{{ route('acciones') }}" class="nav-item"> Auditoría de Usuarios </flux:navlist.item>
                 </flux:navlist.group>
             @endif
         </flux:navlist>
