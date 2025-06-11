@@ -28,10 +28,9 @@
 
         <!-- Logo / Header -->
         <div style="padding-bottom: 0; margin-top: -100px; margin-left: -120px;">
-            <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}" style="width: 100; height: 205px;"
-                class="mx-auto" />
+            <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}"
+                style="width: 100px; height: 205px;" class="mx-auto" />
         </div>
-
 
         <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
             <div style="padding-bottom: -50px; margin-top: -150px;">
@@ -49,13 +48,15 @@
             </flux:navlist.item>
 
             <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid nav-item-group">
-                <flux:navlist.item href="{{ route('herramientas.index') }}" class="nav-item">Herramientas</flux:navlist.item>
+                <flux:navlist.item href="{{ route('herramientas.index') }}" class="nav-item">Herramientas
+                </flux:navlist.item>
             </flux:navlist.group>
 
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin" class="hidden lg:grid">
                     <flux:navlist.item href="{{ route('register') }}" class="nav-item">Crear Usuario</flux:navlist.item>
-                    <flux:navlist.item href="{{ route('acciones') }}" class="nav-item"> Auditoría de Usuarios </flux:navlist.item>
+                    <flux:navlist.item href="{{ route('acciones') }}" class="nav-item"> Auditoría de Usuarios
+                    </flux:navlist.item>
                 </flux:navlist.group>
             @endif
         </flux:navlist>
@@ -118,9 +119,7 @@
         @yield('content')
     </flux:main>
     @fluxScripts
-
     @livewireScripts
-    @fluxScripts
 </body>
 
 </html>

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @fluxAppearance
-@section('content')
-    <div class="overflow-x-auto">
+<div class="overflow-x-auto">
         <div class="container mx-auto px-4 py-8">
           <div>
     <h1 class="text-2xl font-bold mb-6 text-center">Últimos Resguardos</h1>
@@ -61,6 +60,4 @@
                     Ver todos los Resguardos
                 </flux:button>
             </div>
-
         </div>
-@endsection
