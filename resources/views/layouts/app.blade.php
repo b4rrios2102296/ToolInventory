@@ -41,24 +41,27 @@
 
         <!-- Navigation -->
         <flux:navlist style="padding-bottom: -50; margin-top: -90px;">
-            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="nav-item">Dashboard</flux:navlist.item>
-
-            <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="nav-item">
-                Resguardos
-            </flux:navlist.item>
-
-            <flux:navlist.group expandable :expanded="false" heading="Inventario" class="hidden lg:grid nav-item-group">
-                <flux:navlist.item href="{{ route('herramientas.index') }}" class="nav-item">Herramientas
+            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}">Dashboard
                 </flux:navlist.item>
-            </flux:navlist.group>
 
-            @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
-                <flux:navlist.group expandable :expanded="false" heading="Admin" class="hidden lg:grid">
-                    <flux:navlist.item href="{{ route('register') }}" class="nav-item">Crear Usuario</flux:navlist.item>
-                    <flux:navlist.item href="{{ route('acciones') }}" class="nav-item"> Auditoría de Usuarios
+                <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">
+                    Resguardos
+                </flux:navlist.item>
+
+                <flux:navlist.group expandable :expanded="false" heading="Inventario">
+                    <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas
                     </flux:navlist.item>
                 </flux:navlist.group>
-            @endif
+
+                @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
+                    <flux:navlist.group expandable :expanded="false" heading="Admin">
+                        <flux:navlist.item href="{{ route('register') }}" >Crear Usuario
+                        </flux:navlist.item>
+                        <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios
+                        </flux:navlist.item>
+                    </flux:navlist.group>
+                @endif
+
         </flux:navlist>
 
         <flux:spacer />

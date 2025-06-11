@@ -67,6 +67,11 @@ body {
     color: #2E2E2E !important;
 }
 
+.sidebar * {
+    color: #2E2E2E !important;
+}
+
+
 
 /* \[:where(&)\]:size-4 {
     @apply size-4;
