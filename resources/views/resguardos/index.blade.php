@@ -7,7 +7,12 @@
             <h1 class="text-2xl font-bold mb-6 text-center">
                 Listado de Resguardos
             </h1>
-            <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">Nuevo Resguardo</flux:button>
+
+            @if(!Auth::user()->hasPermission('read_access'))
+                <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">
+                    Nuevo Resguardo
+                </flux:button>
+            @endif
         </div>
         <br>
         <flux:separator />
@@ -172,7 +177,8 @@
                                     <a href="{{ route('resguardos.show', $resguardo->folio) }}">
                                         <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                     </a>
-                                    @if ($resguardo->estatus == 'Resguardo')
+
+                                    @if ($resguardo->estatus == 'Resguardo' && !auth()->user()->hasPermission('read_access'))
                                         <!-- Trigger Modal for "Cancelar Resguardo" -->
                                         <flux:modal.trigger name="cancelar-resguardo-{{ $resguardo->folio }}">
                                             <flux:menu.item icon="x-circle" variant="danger" kbd="⌘⌫">
@@ -189,6 +195,7 @@
                                     @endif
                                 </flux:menu>
                             </flux:dropdown>
+
                             <!-- Modal for "Cancelar Resguardo" -->
                             <!-- Modal for "Cancelar Resguardo" -->
                             <flux:modal name="cancelar-resguardo-{{ $resguardo->folio }}" class="md:w-96">

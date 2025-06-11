@@ -6,7 +6,11 @@
         <div class="container mx-auto px-4 py-8">
             <div>
                 <h1 class="text-2xl font-bold mb-6 text-center">Listado de Herramientas</h1>
-                <flux:button icon="plus-circle" href="{{ route('herramientas.create') }}">Nueva Herramienta</flux:button>
+                @if(!Auth::user()->hasPermission('read_access'))
+                    <flux:button icon="plus-circle" href="{{ route('herramientas.create') }}">
+                        Nueva Herramienta
+                    </flux:button>
+                @endif
             </div>
             <br>
             <flux:separator />
@@ -143,7 +147,8 @@
                                         <a href="{{ route('herramientas.show', $herramienta->id) }}">
                                             <flux:menu.item icon="eye" kbd="⌘V">Ver</flux:menu.item>
                                         </a>
-                                        @if ($herramienta->estatus == 'Disponible')
+
+                                        @if ($herramienta->estatus == 'Disponible' && !auth()->user()->hasPermission('read_access'))
                                             <a href="{{ route('herramientas.edit', $herramienta->id) }}">
                                                 <flux:menu.item icon="pencil-square" kbd="⌘E">Editar</flux:menu.item>
                                             </a>
@@ -154,6 +159,7 @@
                                                 </flux:menu.item>
                                             </flux:modal.trigger>
                                         @endif
+
                                         @if ($herramienta->estatus == 'Baja' && auth()->user()->hasPermission('user_audit'))
                                             <!-- Trigger Modal for "Eliminar Herramienta" -->
                                             <flux:modal.trigger name="eliminar-herramienta-{{ $herramienta->id }}">
