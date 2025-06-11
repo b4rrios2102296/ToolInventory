@@ -7,32 +7,34 @@ use Illuminate\Database\Seeder;
 use App\Models\Permission;
 use App\Models\Role;
 
-
-namespace Database\Seeders;
-
-use Illuminate\Database\Seeder;
-use App\Models\Permission;
-use App\Models\Role;
-
 class UserRolePermissionSeeder extends Seeder
 {
     public function run()
     {
-        // Buscar los roles
-        $normalRole = Role::where('nombre', 'Normal')->first();
-        $godRole = Role::where('nombre', 'God')->first();
+        // Crear permisos si no existen
+        $basicAccess = Permission::firstOrCreate(
+            ['clave' => 'basic_access'],
+            ['nombre' => 'Acceso básico', 'descripcion' => 'Permiso de acceso básico']
+        );
 
-        // Buscar los permisos
-        $basicAccess = Permission::where('clave', 'basic_access')->first();
-        $userAudit = Permission::where('clave', 'user_audit')->first();
+        $userAudit = Permission::firstOrCreate(
+            ['clave' => 'user_audit'],
+            ['nombre' => 'Auditoría de usuarios', 'descripcion' => 'Ver actividad de usuarios']
+        );
 
-        // Si existen los roles y permisos, asignar SOLO el permiso correspondiente a cada rol
-        if ($normalRole && $basicAccess) {
-            $normalRole->permisos()->sync([$basicAccess->id]); // Solo "basic_access" para "Normal"
-        }
+        $readAccess = Permission::firstOrCreate(
+            ['clave' => 'read_access'],
+            ['nombre' => 'Solo lectura', 'descripcion' => 'Permiso para ver datos sin modificarlos']
+        );
 
-        if ($godRole && $userAudit) {
-            $godRole->permisos()->sync([$userAudit->id]); // Solo "user_audit" para "God"
-        }
+        // Crear roles si no existen
+        $normalRole = Role::firstOrCreate(['nombre' => 'Normal'], ['descripcion' => 'Rol normal']);
+        $godRole = Role::firstOrCreate(['nombre' => 'God'], ['descripcion' => 'Rol avanzado']);
+        $readRole = Role::firstOrCreate(['nombre' => 'Lectura'], ['descripcion' => 'Rol de solo lectura']);
+
+        // Asignar permisos
+        $normalRole->permisos()->sync([$basicAccess->id]);
+        $godRole->permisos()->sync([$userAudit->id]);
+        $readRole->permisos()->sync([$readAccess->id]);
     }
 }
