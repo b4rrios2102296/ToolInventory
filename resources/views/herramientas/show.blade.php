@@ -51,7 +51,7 @@
                                                 ->first();
                                         @endphp
                                         <a href="{{ route('resguardos.show', $resguardo->folio) }}">
-                                            <flux:badge color="teal">
+                                            <flux:badge color="teal" variant="solid">
                                                 Resguardo
                                             </flux:badge>
                                         </a>
@@ -61,7 +61,7 @@
                         @elseif ($herramienta->estatus == 'Baja')
                             <label class="block text-sm font-medium">Estatus</label>
                             <div class="mt-1">
-                                <flux:badge color="zinc">
+                                <flux:badge color="red" variant="solid">
 
                                     {{ $herramienta->estatus }}
                                 </flux:badge>
@@ -69,7 +69,7 @@
                         @else
                             <label class="block text-sm font-medium">Estatus</label>
                             <div class="mt-1">
-                                <flux:badge color="green">
+                                <flux:badge color="green" variant="solid">
                                     {{ $herramienta->estatus }}
                                 </flux:badge>
                             </div>

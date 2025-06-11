@@ -59,7 +59,7 @@
                             @endif
                         </td>
                         <td class="px-4 py-2">
-                            <flux:badge color="{{ $resguardo->estatus == 'Cancelado' ? 'zinc' : 'teal' }}">
+                            <flux:badge variant="solid" color="{{ $resguardo->estatus == 'Cancelado' ? 'red' : 'teal' }}">
                                 @if ($resguardo->estatus == 'Cancelado')
                                     <s>{{ $resguardo->estatus }}</s>
                                 @else

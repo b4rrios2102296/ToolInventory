@@ -49,11 +49,11 @@
                             <td class="px-6 py-4 text-center align-middle">{{ $accion->nombre }} {{ $accion->apellidos }}</td>
                             <td class="px-6 py-4 text-center align-middle">
                                 @if($accion->accion == 'Creado')
-                                    <flux:badge color="teal" class="inline-block">
+                                    <flux:badge color="teal" variant="solid" class="inline-block">
                                         {{ $accion->accion }}
                                     </flux:badge>
                                 @elseif($accion->accion == 'Cancelado')
-                                    <flux:badge color="zinc" class="inline-block">
+                                    <flux:badge color="red" variant="solid" class="inline-block">
                                         {{ $accion->accion }}
                                     </flux:badge>
                                 @else

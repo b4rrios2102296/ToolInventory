@@ -32,7 +32,7 @@
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 @if($resguardo->estatus == 'Resguardo')
-                                    <flux:badge color="teal" class="inline-block">
+                                    <flux:badge color="teal"  variant="solid" class="inline-block">
                                         {{ $resguardo->estatus }}
                                     </flux:badge>
                                 @else

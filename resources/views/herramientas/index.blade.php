@@ -70,15 +70,15 @@
                                     @endphp
                                     @if($resguardo)
                                         <a href="{{ route('resguardos.show', $resguardo->folio) }}">
-                                            <flux:badge color="teal">
+                                            <flux:badge color="teal" variant="solid">
                                                 Resguardo
                                             </flux:badge>
                                         </a>
                                     @else
-                                        <flux:badge color="red">Cancelado</flux:badge>
+                                        <flux:badge variant="solid" color="red">Cancelado</flux:badge>
                                     @endif
                                 @else
-                                    <flux:badge color="{{ $herramienta->estatus == 'Baja' ? 'zinc' : 'green' }}">
+                                    <flux:badge variant="solid" color="{{ $herramienta->estatus == 'Baja' ? 'red' : 'green' }}">
                                         @if($herramienta->estatus == 'Baja')
                                             <s>{{ $herramienta->estatus }}</s>
                                         @else

@@ -27,8 +27,15 @@
                 <!-- Card: Datos del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-6">
                     <h2 class="text-lg font-semibold">Detalles del Resguardo</h2>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Estatus</label>
+                        <flux:badge
+                            color="{{ $resguardo->estatus == 'Cancelado' ? 'red' : ($resguardo->estatus == 'Resguardo' ? 'teal' : 'gray') }}"
+                            variant="solid" class="inline-block">
+                            {{ $resguardo->estatus }}
+                        </flux:badge>
+                    </div>
                     <flux:input label="Folio" :value="$resguardo->folio" readonly class="w-full" />
-                    <flux:input label="Estatus" :value="$resguardo->estatus" readonly class="w-full" />
                     <flux:input label="Realizó Resguardo" :value="($resguardo->aperturo_nombre ?? '') . ' ' . ($resguardo->aperturo_apellidos ?? '')" readonly class="w-full" />
                     <flux:input label="Asignado a" :value="$resguardo->asignado_nombre ?? 'No asignado'" readonly
                         class="w-full" />
@@ -65,9 +72,9 @@
             <div class="flex justify-end gap-4">
                 @if ($resguardo->estatus != 'Cancelado')
                     <!-- <flux:button href="{{ route('resguardos.edit', $resguardo->folio) }}" icon="pencil-square"
-                                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                                Editar
-                            </flux:button>-->
+                                                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                                        Editar
+                                                    </flux:button>-->
                     <flux:button href="{{ route('resguardo.pdf', ['folio' => $resguardo->folio]) }}" icon="document-arrow-down"
                         target="_blank">
                         Descargar PDF 📄
