@@ -41,26 +41,25 @@
 
         <!-- Navigation -->
         <flux:navlist style="padding-bottom: -50; margin-top: -90px;">
-            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}">Dashboard
-                </flux:navlist.item>
+            <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="navlist-bold">Dashboard
+            </flux:navlist.item>
+            <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="navlist-bold">
+                Resguardos
+            </flux:navlist.item>
 
-                <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}">
-                    Resguardos
+            <flux:navlist.group expandable :expanded="false" heading="Inventario">
+                <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas
                 </flux:navlist.item>
+            </flux:navlist.group>
 
-                <flux:navlist.group expandable :expanded="false" heading="Inventario">
-                    <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas
+            @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
+                <flux:navlist.group expandable :expanded="false" heading="Admin">
+                    <flux:navlist.item href="{{ route('register') }}">Crear Usuario
+                    </flux:navlist.item>
+                    <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios
                     </flux:navlist.item>
                 </flux:navlist.group>
-
-                @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
-                    <flux:navlist.group expandable :expanded="false" heading="Admin">
-                        <flux:navlist.item href="{{ route('register') }}" >Crear Usuario
-                        </flux:navlist.item>
-                        <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios
-                        </flux:navlist.item>
-                    </flux:navlist.group>
-                @endif
+            @endif
 
         </flux:navlist>
 
@@ -73,8 +72,8 @@
         </flux:navlist>
 
         <!-- Profile dropdown -->
-        <flux:dropdown position="top" allign="start" class="max-lg:hidden">
-            <flux:profile avatar="" name="{{ Auth::user()->nombre ?? 'Usuario' }}" />
+        <flux:dropdown position="top" allign="start" class="max-lg:hidden dropdown-text">
+            <flux:profile avatar="" name="{{ Auth::user()->nombre ?? 'Usuario' }}" class="dropdown-avatar profile-name" />
             <flux:menu>
                 <flux:menu.radio.group>
                     <flux:menu.radio checked>{{ Auth::user()->nombre ?? 'Usuario' }}</flux:menu.radio>

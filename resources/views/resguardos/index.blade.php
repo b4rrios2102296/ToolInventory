@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @fluxAppearance
-
+@section('content')
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
@@ -280,3 +280,4 @@
         });
     });
 </script>
+@endsection

@@ -54,7 +54,7 @@
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    @apply !mb-0 !leading-tight;
 }
 
 input:focus[data-flux-control],
@@ -62,6 +62,7 @@ textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
     @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
 }
+
 body {
     background-color: #FFFFFF !important;
     color: #2E2E2E !important;
@@ -71,7 +72,22 @@ body {
     color: #2E2E2E !important;
 }
 
+.dropdown-text * {
+    color: #F2F2F2 !important;
+}
 
+
+
+.navlist-bold * {
+    font-weight: bold !important;
+}
+.profile-name * {
+    color: #2E2E2E !important;
+    font-weight: bold !important;
+}
+.dropdown-avatar {
+    color: #F2F2F2 !important;
+}
 
 /* \[:where(&)\]:size-4 {
     @apply size-4;
