@@ -27,14 +27,15 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <!-- Logo / Header -->
-        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -120px;">
+        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -90px;">
             <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}"
-                style="width: 100px; height: 205px;" class="mx-auto" />
+                style="width: 150; height: 240px;" class="mx-auto" />
         </div>
 
+
         <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
-            <div style="padding-bottom: -50px; margin-top: -150px;">
-                <img src="{{ asset('Images/Group 64.svg') }}" style="width: 200px; margin-right: 50px;" />
+            <div style="padding-bottom: -50px; margin-top: -150px; padding-left: 10px;">
+                <img src="{{ asset('Images/Group 64.svg') }}" style="width: 180px; margin-right: 50px;" />
             </div>
         </div>
 
