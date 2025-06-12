@@ -37,13 +37,14 @@
                 <div class=" border rounded-lg shadow p-4 space-y-6">
                     <!-- Buscar Colaborador -->
                     <div>
-                        <div class="flex gap-2">
+                        <div class="flex items-center gap-5 mt-4">
                             <flux:input label="Buscar Colaborador" type="text" id="colaborador-search"
-                                placeholder="Número o nombre"></flux:input>
-                            <flux:button icon="magnifying-glass" id="buscar-btn">
-                                Buscar
-                            </flux:button>
+                                placeholder="Número o nombre" class="flex-grow"></flux:input>
+                            <div class="flex flex-col self-end">
+                                <flux:button icon="magnifying-glass" id="buscar-btn">Buscar</flux:button>
+                            </div>
                         </div>
+
                         <div id="colaborador-error" class="text-red-500 mt-2 hidden"></div>
                     </div>
                     <!-- Datos del Colaborador -->
@@ -75,27 +76,27 @@
                 <!-- Card: Detalles del Resguardo -->
                 <div class="border rounded-lg shadow p-4 space-y-4">
                     <h2 class="text-lg font-semibold">Datos del Resguardo</h2>
-                    <div class="mb-4 flex gap-2">
+                    <div class="mb-4 flex gap-2 items-end">
                         <flux:select id="herramienta-filtro" label="Buscar por ID">
                             <option value="id">ID</option>
                         </flux:select>
                         <flux:input type="text" id="herramienta-search" placeholder="Buscar herramienta...(GVRMT-ID)"
-                            class="flex-1 px-4 py-2 rounded-md"></flux:input>
-                        <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
+                            class="flex-1 px-4  rounded-md"></flux:input>
+                        <div class="flex flex-col self-end">
+                            <flux:button icon="magnifying-glass" id="buscar-herramienta-btn">Buscar</flux:button>
+                        </div>
                     </div>
                     <div id="herramienta-error" class="text-red-500 mt-2 hidden"></div>
-                    <!-- Aquí puedes mostrar los datos de la herramienta encontrada -->
                     <div id="herramienta-result" class="mt-4"></div>
                     <input type="hidden" name="herramienta_id" id="herramienta_id" value="">
-                    <div>
 
+                    <div>
                         <flux:input type="date" name="fecha_captura" class="w-full px-3 py-2 rounded"
                             label="Fecha del Resguardo" value="{{ old('fecha_captura', date('Y-m-d')) }}" required>
                         </flux:input>
                     </div>
-                    <div>
-                    </div>
                 </div>
+
             </div>
 
             <div class="mb-6">

@@ -15,8 +15,7 @@
             @endif
         </div>
         <br>
-        <flux:separator class="separator"/>
-        <flux:separator />
+        <flux:separator/>
         <br>
         <div class="flex justify-between items-center mb-4">
             <div class="flex space-x-2">
