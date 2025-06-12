@@ -15,7 +15,7 @@
             @endif
         </div>
         <br>
-        <flux:separator />
+        <flux:separator class="separator"/>
         <flux:separator />
         <br>
         <div class="flex justify-between items-center mb-4">
@@ -24,7 +24,7 @@
                     <flux:button icon="document-arrow-down" icon:variant="outline"
                         href="{{ route('resguardos.pdf') }}" />
                 </flux:tooltip>
-                <flux:separator vertical />
+                <flux:separator vertical/>
                 <flux:tooltip content="Excel">
                     <flux:button icon="document-chart-bar" icon:variant="outline"
                         href="{{ route('resguardos.excel') }}" />

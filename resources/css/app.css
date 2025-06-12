@@ -2,67 +2,26 @@
 @import '../../vendor/livewire/flux/dist/flux.css';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
-@source '../views';
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
-@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
-
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme {
-
     --font-sans: 'Montserrat', sans-serif;
+    --color-zinc-50: #A4957D;
+    --color-zinc-100: #A4957D;
+    --color-zinc-200: #A4957D;
+    --color-zinc-300: #A4957D;
+    --color-zinc-400: #A4957D;
+    --color-zinc-500: #A4957D;
+    --color-zinc-600: #A4957D;
+    --color-zinc-700: #A4957D;
+    --color-zinc-800: #A4957D;
+    --color-zinc-900: #A4957D;
+    --color-zinc-950: #A4957D;
 
-    --color-zinc-50: #fafafa;
-    --color-zinc-100: #f5f5f5;
-    --color-zinc-200: #e5e5e5;
-    --color-zinc-300: #d4d4d4;
-    --color-zinc-400: #a3a3a3;
-    --color-zinc-500: #737373;
-    --color-zinc-600: #525252;
-    --color-zinc-700: #404040;
-    --color-zinc-800: #262626;
-    --color-zinc-900: #171717;
-    --color-zinc-950: #0a0a0a;
-
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
+    --color-accent: #A4957D;
+    --color-accent-content: #A4957D;
     --color-accent-foreground: var(--color-white);
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
-}
-
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
-}
-
-[data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
-}
-
-[data-flux-label] {
-    @apply !mb-0 !leading-tight;
-}
-
-input:focus[data-flux-control],
-textarea:focus[data-flux-control],
-select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
-}
-
+/* Removed dark mode layer to keep colors static */
 body {
     background-color: #FFFFFF !important;
     color: #2E2E2E !important;
@@ -72,23 +31,70 @@ body {
     color: #2E2E2E !important;
 }
 
+.separator * {
+    background-color: #2E2E2E !important;
+    height: 0.5px
+}
+
+.separator-vertical {
+    background-color: #2E2E2E !important;
+    width: 2px; /* Adjust thickness */
+    height: 100%; /* Full height */
+    display: inline-block;
+}
+
+
 .dropdown-text * {
     color: #F2F2F2 !important;
 }
 
-
+.tbutton {
+    background-color: #A4957D;
+    color: #FFFFFF;
+}
 
 .navlist-bold * {
     font-weight: bold !important;
 }
+
+.navlist-bold:hover * {
+    color: #A4957D !important; /* Hover effect */
+}
+
+.navlist-item:hover * {
+    color: #A4957D !important; /* Hover effect */
+}
+
+.navlist-item * {
+    color: #2E2E2E;
+}
+.navlist-group-admin-heading:hover * {
+    color: #A4957D !important; /* Change text color on hover */
+}
+
+.heading-hover:hover  {
+    color: #A4957D !important; /* Ensure the text color stays static */
+}
+
 .profile-name * {
     color: #2E2E2E !important;
     font-weight: bold !important;
 }
+
 .dropdown-avatar {
     color: #F2F2F2 !important;
 }
 
-/* \[:where(&)\]:size-4 {
+.tooltip * {
+    background-color: #A4957D !important;
+    color: #2E2E2E !important;
+
+}
+
+/* 
+
+\[:where(&)\]
+
+:size-4 {
     @apply size-4;
 } */

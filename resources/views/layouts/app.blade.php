@@ -48,15 +48,15 @@
             </flux:navlist.item>
 
             <flux:navlist.group expandable :expanded="false" heading="Inventario">
-                <flux:navlist.item href="{{ route('herramientas.index') }}">Herramientas
+                <flux:navlist.item class="navlist-item" href="{{ route('herramientas.index') }}">Herramientas
                 </flux:navlist.item>
             </flux:navlist.group>
 
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin">
-                    <flux:navlist.item href="{{ route('register') }}">Crear Usuario
+                    <flux:navlist.item class="navlist-item" href="{{ route('register') }}">Crear Usuario
                     </flux:navlist.item>
-                    <flux:navlist.item href="{{ route('acciones') }}"> Auditoría de Usuarios
+                    <flux:navlist.item class="navlist-item" href="{{ route('acciones') }}"> Auditoría de Usuarios
                     </flux:navlist.item>
                 </flux:navlist.group>
             @endif
