@@ -73,7 +73,10 @@
 
         <!-- Profile dropdown -->
         <flux:dropdown position="top" allign="start" class="max-lg:hidden dropdown-text">
-            <flux:profile avatar="" name="{{ Auth::user()->nombre ?? 'Usuario' }}" class="dropdown-avatar profile-name" />
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <flux:profile name="{{ Auth::user()->nombre ?? 'Usuario' }}"
+                    class="dropdown-avatar profile-name navlist-item" />
+            </div>
             <flux:menu>
                 <flux:menu.radio.group>
                     <flux:menu.radio checked>{{ Auth::user()->nombre ?? 'Usuario' }}</flux:menu.radio>
