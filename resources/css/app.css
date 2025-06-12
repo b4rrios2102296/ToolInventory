@@ -34,6 +34,10 @@ input:-webkit-autofill {
     background-color: var(--input-bg) !important;
     border-color: var(--input-border) !important;
 }
+input[type="search"]::-webkit-search-cancel-button {
+    filter: invert(100%) sepia(0%) saturate(0%) brightness(20%);
+}
+
 
 /* Removed dark mode layer to keep colors static */
 
