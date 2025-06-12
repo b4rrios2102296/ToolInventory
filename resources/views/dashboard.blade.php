@@ -6,16 +6,16 @@
             <div class="space-y-6">
                 <div>
                     <h1 class="text-2xl font-bold mb-6 text-center">Últimos Resguardos</h1>
-                    <flux:separator/>
+                    <flux:separator />
                     <br>
                     <div class="flex space-x-2">
                         @if(!Auth::user()->hasPermission('read_access'))
                             <flux:button icon="plus-circle" href="{{ route('resguardos.create') }}">
                                 Nuevo Resguardo
                             </flux:button>
+                            <flux:separator vertical />
                         @endif
                         <br>
-                        <flux:separator vertical />
                         <br>
                         <flux:button class="justify-center" icon="eye" href="{{ route('resguardos.index') }}">
                             Ver todos los Resguardos
