@@ -54,8 +54,8 @@
                 <tbody>
                     @forelse($herramientas as $herramienta)
                         <tr
-                            class="border-b border-gray-300 last:border-0 text-center {{ $herramienta->estatus == 'Baja' ? 'text-gray-500' : '' }}">
-                            <td class="px-6 py-4 whitespace-normal break-all max-w-xs text-center align-middle">
+                            class="border-b border-gray-300 last:border-0 text-center  {{ $herramienta->estatus == 'Baja' ? 'text-gray-500' : '' }}">
+                            <td class="px-6 py-4 whitespace-normal break-all max-w-xs text-center align-middle herramienta-id">
                                 @if ($herramienta->estatus == 'Baja')
                                     <s>{{ $herramienta->id }}</s>
                                 @else

@@ -151,3 +151,7 @@ body {
     border-radius: 4px;
     /* Keep it squared */
 }
+
+.herramienta-id {
+    white-space: nowrap;
+}
