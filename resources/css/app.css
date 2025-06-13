@@ -37,6 +37,7 @@ input:-webkit-autofill {
     background-color: var(--input-bg) !important;
     border-color: var(--input-border) !important;
 }
+
 input[type="search"]::-webkit-search-cancel-button {
     filter: invert(100%) sepia(0%) saturate(0%) brightness(20%);
 }
@@ -44,7 +45,8 @@ input[type="search"]::-webkit-search-cancel-button {
 h1 {
     font-family: 'Athelas', serif;
     font-weight: bold;
-    font-size: 1.8rem; /* Adjust size as needed */
+    font-size: 1.8rem;
+    /* Adjust size as needed */
 }
 
 
@@ -52,12 +54,14 @@ h1 {
 table {
     box-shadow: 0px 4px 10px rgba(46, 46, 46, 0.25);
     border: 1px solid #2E2E2E;
-    border-radius: 15px; /* Adds rounded corners */
-    overflow: hidden; /* Ensures border follows the curve */
+    border-radius: 15px;
+    /* Adds rounded corners */
+    overflow: hidden;
+    /* Ensures border follows the curve */
 }
 
 .pagination-container * {
-        background-color: #FFFFFF !important;
+    background-color: #FFFFFF !important;
     color: #2E2E2E !important;
 }
 
@@ -151,9 +155,71 @@ body {
 .dropdown-avatar {
     color: #F2F2F2 !important;
 }
+/* resources/css/app.css */
+/* Add after Flux imports */
 
-.tooltip * {
+/* Force light mode on all modals */
+[data-flux-modal] dialog * {
+  color: #2E2E2E !important;
+}
+
+/* Force light mode styles for the modal component */
+[data-flux-modal]  {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important;
+    color: inherit !important;
+}
+
+[data-flux-modal] .text-zinc-400 {
+    color: rgb(161 161 170 / var(--tw-text-opacity)) !important;
+}
+
+[data-flux-modal] .hover\:text-zinc-800:hover {
+    color: rgb(39 39 42 / var(--tw-text-opacity)) !important;
+}
+
+/* If you have any borders in the modal */
+[data-flux-modal] .border,
+[data-flux-modal] .border-t,
+[data-flux-modal] .border-e,
+[data-flux-modal] .border-s {
+    border-color: rgb(229 229 229 / var(--tw-border-opacity)) !important;
+}
+
+/* Style for submit buttons inside the modal */
+
+/* Danger variant submit button style */
+
+
+[data-flux-modal] button[type="submit"][variant="danger"]:hover {
+    background-color: var(--color-red-700) !important; /* Slightly darker red */
+}
+
+/* If you want to style ALL buttons (not recommended if you have different button types) */
+[data-flux-modal] button {
     background-color: #A4957D !important;
-    color: #2E2E2E !important;
+    color: #FFFFFF !important;
+}
 
+
+/* Specific style for your close button */
+[data-flux-modal] .modal-close-btn {
+    background-color: transparent !important;
+    color: #A4957D !important; /* Or whatever color you prefer for close */
+}
+
+
+
+[data-flux-button] {
+    background-color: #A4957D !important; /* Dark background */
+    color: #FFFFFF !important; /* White text */
+    border: 1px solid #A4957D !important; /* Ensure border remains dark */
+}
+
+/* Override any theme switching */
+html.light [data-flux-button],
+html.dark [data-flux-button] {
+    background-color: #A4957D !important;
+    color: #FFFFFF !important;
+    border: 1px solid #A4957D !important;
 }
