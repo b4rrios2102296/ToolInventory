@@ -193,15 +193,36 @@ class HerramientaController extends Controller
     {
         // Validar los datos recibidos
         $validated = $request->validate([
-            'articulo' => 'required|string|max:255', // Añadir esta validación
+            'articulo' => 'required|string|max:255',
             'estatus' => 'nullable|string|in:Disponible,Baja,Resguardo',
             'unidad' => 'required|string|max:45',
             'modelo' => 'required|string|max:100',
             'num_serie' => 'required|string|max:100',
             'observaciones' => 'nullable|string|max:191',
             'costo' => 'required|numeric|min:0|max:100000',
-
+        ], [
+            'articulo.required' => 'El artículo es obligatorio',
+            'articulo.string' => 'El artículo debe ser texto',
+            'articulo.max' => 'El artículo no puede exceder 255 caracteres',
+            'estatus.string' => 'El estatus debe ser texto',
+            'estatus.in' => 'El estatus debe ser Disponible, Baja o Resguardo',
+            'unidad.required' => 'La unidad es obligatoria',
+            'unidad.string' => 'La unidad debe ser texto',
+            'unidad.max' => 'La unidad no puede exceder 45 caracteres',
+            'modelo.required' => 'El modelo es obligatorio',
+            'modelo.string' => 'El modelo debe ser texto',
+            'modelo.max' => 'El modelo no puede exceder 100 caracteres',
+            'num_serie.required' => 'El número de serie es obligatorio',
+            'num_serie.string' => 'El número de serie debe ser texto',
+            'num_serie.max' => 'El número de serie no puede exceder 100 caracteres',
+            'observaciones.string' => 'Las observaciones deben ser texto',
+            'observaciones.max' => 'Las observaciones no pueden exceder 191 caracteres',
+            'costo.required' => 'El costo es obligatorio',
+            'costo.numeric' => 'El costo debe ser un número',
+            'costo.min' => 'El costo no puede ser negativo',
+            'costo.max' => 'El costo no puede exceder 100000',
         ]);
+
         $validated['estatus'] = $validated['estatus'] ?? 'Disponible';
 
         // Insertar los valores en la base de datos
@@ -216,7 +237,6 @@ class HerramientaController extends Controller
             'costo' => isset($validated['costo']) ? (float) $validated['costo'] : 0,
             'updated_at' => Carbon::now(),
         ]);
-
 
         // Redirigir con mensaje de éxito
         return redirect()->route('herramientas.index')->with('success', 'Herramienta creada exitosamente.');
