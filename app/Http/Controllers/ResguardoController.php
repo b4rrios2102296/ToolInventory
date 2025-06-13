@@ -23,6 +23,18 @@ class ResguardoController extends Controller
             'fecha_captura' => 'required|date',
             'comentarios' => 'nullable|string|max:191',
             'estatus' => 'nullable|string|in:Resguardo,Baja',
+        ], [
+            'claveColab.required' => 'El campo clave de colaborador es requerido',
+            'claveColab.string' => 'La clave de colaborador debe ser texto',
+            'herramienta_id.required' => 'El campo herramienta es requerido',
+            'herramienta_id.string' => 'El ID de herramienta debe ser texto',
+            'herramienta_id.exists' => 'La herramienta seleccionada no existe',
+            'fecha_captura.required' => 'El campo fecha de captura es requerido',
+            'fecha_captura.date' => 'La fecha de captura debe ser una fecha válida',
+            'comentarios.string' => 'Los comentarios deben ser texto',
+            'comentarios.max' => 'Los comentarios no pueden exceder 191 caracteres',
+            'estatus.string' => 'El estatus debe ser texto',
+            'estatus.in' => 'El estatus debe ser Resguardo o Baja',
         ]);
 
         $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
@@ -129,9 +141,9 @@ class ResguardoController extends Controller
                         'Sucursal'
                     )
                     ->selectRaw("
-                    LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
-                    LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
-                ")
+                LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+                LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+            ")
                     ->where('claveColab', $resguardo->colaborador_num)
                     ->where('estado', '1')
                     ->first();

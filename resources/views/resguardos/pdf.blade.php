@@ -7,65 +7,53 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            line-height: 1.5;
-            font-size: 7;
+            font-size: 12px;
+            line-height: 1.4;
+            padding: 15px;
+            margin: 0 auto;
+            max-width: 210mm;
+            color: #000;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .header h1 {
-            font-size: 14px;
-            /* Smaller title */
+            font-size: 16px;
             font-weight: bold;
-            margin: 0;
+            margin: 5px 0;
+            text-transform: uppercase;
         }
 
         .header h2 {
-            font-size: 12px;
-            /* Smaller subtitle */
-            margin: 3px 0 0 0;
+            font-size: 14px;
+            margin: 3px 0;
+            text-transform: uppercase;
         }
 
         .header h3 {
-            font-size: 10px;
-            /* Smaller section title */
+            font-size: 12px;
             font-weight: bold;
-            border-bottom: 1px solid #000;
-            padding-bottom: 3px;
-            margin: 3px 0 10px 0;
+            border-bottom: 1px solid #2e2e2e;
+            padding-bottom: 4px;
+            margin: 8px 0 12px 0;
+            text-transform: uppercase;
         }
 
-
         .info-section {
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
 
         .two-columns {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .column {
             width: 48%;
-        }
-
-        .signature-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 40px;
-        }
-
-        .signature-box {
-            width: 45%;
-            border-top: 1px solid #000;
-            padding-top: 5px;
-            text-align: center;
         }
 
         .bold {
@@ -78,10 +66,12 @@
 
         .conditions {
             margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #2e2e2e;
         }
 
         .tool-details {
-            margin-left: 20px;
+            margin-left: 15px;
         }
 
         ul {
@@ -92,56 +82,80 @@
         li {
             margin-bottom: 3px;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 1px solid #2e2e2e;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #2e2e2e;
+        }
+
+        .signature-space {
+            height: 80px;
+            position: relative;
+        }
+
+        .signature-line {
+            border-top: 1px solid #2e2e2e;
+            width: 80%;
+            position: absolute;
+            bottom: 15px;
+            left: 10%;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+        }
+
+        .compact {
+            margin: 5px 0;
+        }
     </style>
 </head>
-<img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}"
-    style="width: 35%; margin-right: 55%; margin-bottom: 50px;">
 
 <body>
-    <div class="header">
-        <h1>Grand Velas Riviera Maya</h1>
-        <h2>TECNOLOGIAS DE LA INFORMACION</h2>
-        <h3>RESGUARDO DE HERRAMIENTA</h3>
+    <div class="logo-container">
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('Images/grand-velas-riviera-maya-mexico-logo-_1_.png'))) }}"
+            class="logo" alt="Grand Velas Logo">
+    </div>
 
+    <div class="header">
+        <h1>GRAND VELAS RIVIERA MAYA</h1>
+        <h2>TECNOLOGÍAS DE LA INFORMACIÓN</h2>
+        <h3>RESGUARDO DE HERRAMIENTA</h3>
     </div>
 
     <div class="two-columns">
         <div class="column">
-            <p><span class="bold">Fecha:</span> <span
-                    class="uppercase">{{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</span></p>
-            <p><span class="bold">Folio de resguardo:</span> <span class="uppercase">{{ $resguardo->folio }}</span></p>
+            <p class="compact"><span class="bold">Fecha:</span> {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</p>
+            <p class="compact"><span class="bold">Folio:</span> {{ $resguardo->folio }}</p>
         </div>
-        <div class="column"></div>
+        <div class="column">
+            <p class="compact"><span class="bold">Colaborador:</span> {{ $colaborador->claveColab ?? 'N/A' }}</p>
+        </div>
     </div>
 
     <div class="info-section">
-        <p><span class="bold">NOMBRE COMPLETO:</span> <span
-                class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</span></p>
+        <p class="compact"><span class="bold">Nombre:</span> <span class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</span></p>
+        <p class="compact"><span class="bold">Puesto:</span> <span class="uppercase">{{ $colaborador->Puesto ?? 'No especificado' }}</span></p>
+        <p class="compact"><span class="bold">Área:</span> <span class="uppercase">{{ $colaborador->area_limpia ?? 'No especificado' }}</span></p>
+        <p class="compact"><span class="bold">Ubicación:</span> <span class="uppercase">{{ $colaborador->sucursal_limpia ?? 'No especificado' }}</span></p>
     </div>
 
-    <div class="info-section">
-        <p><span class="bold">N. COLABORADOR:</span> <span
-                class="uppercase">{{ $colaborador->claveColab ?? 'No disponible' }}</span></p>
-    </div>
-
-    <div class="info-section">
-        <p><span class="bold">PUESTO:</span> <span
-                class="uppercase">{{ $colaborador->Puesto ?? 'No especificado' }}</span></p>
-    </div>
-
-    <div class="info-section">
-        <p><span class="bold">AMBIENTE:</span> <span
-                class="uppercase">{{ $colaborador->sucursal_limpia ?? 'No especificado' }}</span></p>
-    </div>
-
-    <div class="info-section">
-        <p><span class="bold">DEPARTAMENTO:</span> <span
-                class="uppercase">{{ $colaborador->area_limpia ?? 'No especificado' }}</span></p>
-    </div>
-    <p class="bold">Comentarios</p>
-    <p>
-        {{ $resguardo->comentarios }}
-    </p>
+    <p class="bold">Comentarios:</p>
+    <p>{{ $resguardo->comentarios ?: 'Ninguno' }}</p>
 
     <div class="conditions">
         <p>El presente resguardo ampara la responsabilidad del colaborador para con la empresa
@@ -154,67 +168,42 @@
 
         @if($herramienta)
             <div class="tool-details">
-                <ul style="list-style-type: disc; padding-left: 20px;">
-                    <li><span class="bold">ID:</span> <span class="uppercase">{{ $herramienta->id }}</span></li>
-                    <li><span class="bold">NOMBRE DEL ARTÍCULO:</span> <span
-                            class="uppercase">{{ $herramienta->articulo }}</span></li>
-                    <li><span class="bold">NUM SERIE:</span> <span class="uppercase">{{ $herramienta->num_serie }}</span>
-                    </li>
-                    <li><span class="bold">MODELO:</span> <span class="uppercase">{{ $herramienta->modelo }}</span></li>
-                    <li><span class="bold">COSTO:</span> <span class="uppercase">
-                            {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
-                        </span></li>
+                <ul>
+                    <li><span class="bold">Artículo:</span> {{ $herramienta->articulo }}</li>
+                    <li><span class="bold">Modelo/Serie:</span> {{ $herramienta->modelo }} / {{ $herramienta->num_serie }}</li>
+                    <li><span class="bold">Valor:</span> {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</li>
                 </ul>
             </div>
         @else
             <p>No hay herramienta registrada</p>
         @endif
+    </div>
 
-        <p class="bold">COSTO TOTAL DE RESGUARDO:</p>
-        <p class="uppercase">{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</p>
-    </div>
     <div class="conditions">
-        <p class="bold uppercase" style="text-align: center; ">EL COLABORADOR DECLARA HABER RECIBIDO LA HERRAMIENTA AQUÍ
-            MENCIONADA, SE COMPROMETE A
-            CUIDARLA Y
-            UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU
-            FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
+        <p class="bold" style="text-align: center;">DECLARACIÓN DE RESPONSABILIDAD</p>
+        <p>EL COLABORADOR DECLARA HABER RECIBIDO LA HERRAMIENTA AQUÍ MENCIONADA, SE COMPROMETE A CUIDARLA Y UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
-    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid #000;">
+
+    <table>
         <tr>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
-                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">RECIBIDO POR</p>
-                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
-                    {{ $colaborador->nombreCompleto ?? 'No disponible' }}
-                </p>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
-                <p style="font-size: 9px;">FIRMA</p>
-            </th>
-            <th style="width: 50%; text-align: center; border: 1px solid #000; padding: 5px;">
-                <p class="bold uppercase" style="font-size: 10px; margin-bottom: 5px;">ENTREGADO POR</p>
-                <p class="uppercase" style="font-size: 9px; margin-bottom: 5px;">
-                    {{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}
-                </p>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <hr style="width: 80%; margin: 5px auto; border: 0.5px solid #000;">
-                <p style="font-size: 9px;">FIRMA</p>
-            </th>
+            <td style="width:50%">
+                <p class="bold">RECIBIDO POR</p>
+                <p class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</p>
+                <div class="signature-space">
+                    <div class="signature-line"></div>
+                </div>
+                <p>Firma</p>
+            </td>
+            <td style="width:50%">
+                <p class="bold">ENTREGADO POR</p>
+                <p class="uppercase">{{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}</p>
+                <div class="signature-space">
+                    <div class="signature-line"></div>
+                </div>
+                <p>Firma</p>
+            </td>
         </tr>
     </table>
-
-
-
-
-
 </body>
 
 </html>
