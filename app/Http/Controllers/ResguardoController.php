@@ -10,6 +10,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResguardosExport;
 use Illuminate\Support\Facades\Auth;
+use Storage;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
@@ -27,7 +28,7 @@ class ResguardoController extends Controller
         $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
 
         try {
-            return DB::connection('toolinventory')->transaction(function () use ($validated) {
+            return DB::connection('toolinventory')->transaction(function () use ($validated, $request) {
                 // First, check if the tool exists and is available
                 $herramienta = DB::connection('toolinventory')
                     ->table('herramientas')
@@ -70,14 +71,6 @@ class ResguardoController extends Controller
                     'unidad' => $herramienta->unidad,
                     'costo' => $herramienta->costo ?? 0,
                 ]);
-                DB::connection('toolinventory')->table('user_actions')->insert([
-                    'user_id' => auth()->id(),
-                    'resguardo_id' => $folio,
-                    'accion' => 'Creado',
-                    'comentarios' => $validated['comentarios'],
-                    'created_at' => now(),
-                ]);
-
 
                 // Create the resguardo
                 DB::connection('toolinventory')->table('resguardos')->insert([
@@ -93,14 +86,68 @@ class ResguardoController extends Controller
                     'updated_at' => now(),
                 ]);
 
+                // Log user action
+                DB::connection('toolinventory')->table('user_actions')->insert([
+                    'user_id' => auth()->id(),
+                    'resguardo_id' => $folio,
+                    'accion' => 'Creado',
+                    'comentarios' => $validated['comentarios'],
+                    'created_at' => now(),
+                ]);
+
                 // Update the tool status to "Resguardo"
                 DB::connection('toolinventory')
                     ->table('herramientas')
                     ->where('id', $validated['herramienta_id'])
                     ->update(['estatus' => 'Resguardo', 'updated_at' => now()]);
 
-                return redirect()->route('resguardos.index')
-                    ->with('success', "Resguardo $folio creado exitosamente");
+                // Generate PDF stream
+                $resguardo = DB::connection('toolinventory')
+                    ->table('resguardos')
+                    ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
+                    ->select(
+                        'resguardos.*',
+                        'aperturo.nombre as aperturo_nombre',
+                        'aperturo.apellidos as aperturo_apellidos'
+                    )
+                    ->where('folio', $folio)
+                    ->first();
+
+                $detalles = json_decode($resguardo->detalles_resguardo, true) ?? [];
+                $herramienta = DB::connection('toolinventory')
+                    ->table('herramientas')
+                    ->where('id', $detalles['id'] ?? null)
+                    ->first();
+
+                $colaborador = DB::connection('sqlsrv')
+                    ->table('colaborador')
+                    ->select(
+                        'claveColab',
+                        'nombreCompleto',
+                        'Puesto',
+                        'Area',
+                        'Sucursal'
+                    )
+                    ->selectRaw("
+                    LTRIM(RTRIM(RIGHT(Area, LEN(Area) - CHARINDEX('-', Area)))) AS area_limpia,
+                    LTRIM(RTRIM(RIGHT(Sucursal, LEN(Sucursal) - CHARINDEX('-', Sucursal)))) AS sucursal_limpia
+                ")
+                    ->where('claveColab', $resguardo->colaborador_num)
+                    ->where('estado', '1')
+                    ->first();
+
+                $pdf = Pdf::loadView('resguardos.pdf', [
+                    'resguardo' => $resguardo,
+                    'herramienta' => $herramienta,
+                    'detalles' => $detalles,
+                    'colaborador' => $colaborador
+                ]);
+
+                // Store the PDF in storage
+                $pdfPath = "resguardos/{$folio}.pdf";
+                Storage::put($pdfPath, $pdf->output());
+
+                return $pdf->stream("resguardo_{$folio}.pdf");
             });
         } catch (\Exception $e) {
             Log::error('Error creating resguardo: ' . $e->getMessage());
@@ -109,8 +156,6 @@ class ResguardoController extends Controller
                 ->withInput();
         }
     }
-
-
     protected function generarFolio()
     {
         $ultimo = DB::connection('toolinventory')
@@ -183,6 +228,7 @@ class ResguardoController extends Controller
 
         return view('resguardos.create', compact('herramientas'));
     }
+
 
     public function buscarColaborador(Request $request)
     {
