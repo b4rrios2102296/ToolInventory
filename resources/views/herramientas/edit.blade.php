@@ -72,7 +72,8 @@
                     </flux:select>
                     <flux:input label="Número de Serie" name="num_serie" :value="$herramienta->num_serie"
                         class="w-full" />
-                    <flux:input label="Costo" name="costo" type="number" :value="$herramienta->costo" class="w-full" />
+                    <flux:input label="Costo" name="costo" type="number" :value="$herramienta->costo" class="w-full"
+                        placeholder="Ingrese el costo en MXN" />
                 </div>
 
 
