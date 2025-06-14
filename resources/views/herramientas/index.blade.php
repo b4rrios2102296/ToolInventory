@@ -203,8 +203,10 @@
                                     @method('DELETE')
                                     <div class="flex mt-4">
                                         <flux:spacer />
-                                        <flux:button type="submit" variant="danger">Eliminar</flux:button>
-                                    </div>
+                                        <flux:button type="submit" variant="danger"
+                                            style="all:unset !important; background-color:#dc2626 !important; color:white !important; padding:0.5rem 1.25rem !important; border-radius:0.375rem !important;">
+                                            Eliminar
+                                        </flux:button>
                                 </form>
                             </div>
                         </flux:modal>
