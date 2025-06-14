@@ -155,3 +155,93 @@ body {
 .herramienta-id {
     white-space: nowrap;
 }
+
+/* ===== FORCE LIGHT MODE GLOBALLY ===== */
+:root, [data-theme="light"], [data-mode="light"] {
+  --flux-text-color: #2E2E2E !important;
+  --flux-heading-color: #2E2E2E !important;
+  --flux-bg-color: #ffffff !important;
+}
+
+/* ===== MODAL CORE STYLES ===== */
+[data-flux-modal] {
+  color: #2E2E2E !important;
+  background-color: white !important;
+}
+
+[data-flux-modal] * {
+  color: inherit !important;
+}
+
+/* ===== HEADING STYLES ===== */
+[data-flux-modal] flux-heading,
+[data-flux-modal] [data-flux-component="heading"],
+[data-flux-modal] h2 {
+  color: #2E2E2E !important;
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* ===== BODY TEXT STYLES ===== */
+[data-flux-modal] flux-text,
+[data-flux-modal] [data-flux-component="text"],
+[data-flux-modal] p {
+  color: #2E2E2E !important;
+  margin-bottom: 1rem !important;
+}
+
+/* ===== DANGER BUTTON (ELIMINAR) ===== */
+[data-flux-modal] [data-flux-button][variant="danger"] {
+  background-color: #dc2626 !important; /* Red-600 */
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0.375rem !important;
+}
+
+[data-flux-modal] [data-flux-button][variant="danger"]:hover {
+  background-color: #b91c1c !important; /* Red-700 */
+}
+
+/* ===== CONFIRM BUTTON ===== */
+[data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"]) {
+  background-color: #A4957D !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1.25rem !important;
+  border-radius: 0.375rem !important;
+}
+
+[data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"]):hover {
+  background-color: #8C7A5D !important;
+}
+
+/* ===== TEXT INPUT STYLES ===== */
+[data-flux-modal] textarea,
+[data-flux-modal] input {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.375rem !important;
+  padding: 0.5rem !important;
+  color: #2E2E2E !important;
+  background-color: white !important;
+}
+
+/* ===== LABEL STYLES ===== */
+[data-flux-modal] [data-flux-label],
+[data-flux-modal] label {
+  color: #2E2E2E !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.25rem !important;
+  display: block !important;
+}
+
+/* ===== CLOSE BUTTON ===== */
+[data-flux-modal] [data-flux-button][alt="Close modal"] {
+  color: #71717a !important;
+  background: transparent !important;
+}
+
+[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
+  color: #2E2E2E !important;
+}
