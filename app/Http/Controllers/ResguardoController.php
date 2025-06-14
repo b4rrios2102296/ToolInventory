@@ -646,7 +646,7 @@ class ResguardoController extends Controller
         // Generate PDF
         $pdf = PDF::loadView('resguardos.listapdf', compact('resguardos'));
 
-        return $pdf->download("listado_resguardos.pdf");
+        return $pdf->download("listado_resguardos_de_herramientas.pdf");
     }
 
 
