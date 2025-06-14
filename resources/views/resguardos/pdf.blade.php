@@ -135,14 +135,14 @@
         }
 
         .logo {
-            width: 150px;
+            width: 250px;
             height: auto;
         }
 
         .compact {
             margin: 5px 0;
         }
-        
+
         .colaborador-id {
             margin-top: 10px;
             margin-bottom: 10px;
@@ -162,7 +162,8 @@
 
     <div class="header-row">
         <div class="date-container">
-            <p class="compact"><span class="bold">Fecha:</span> {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</p>
+            <p class="compact"><span class="bold">Fecha:</span>
+                {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</p>
         </div>
         <div class="folio-container">
             <p class="compact"><span class="bold-folio">Folio:</span> {{ $resguardo->folio }}</p>
@@ -172,7 +173,8 @@
     <div class="info-section">
         <p class="compact"><span class="bold">Nombre:</span> <span
                 class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</span></p>
-        <p class="colaborador-id"><span class="bold"> Número de Colaborador:</span> {{ $colaborador->claveColab ?? 'N/A' }}</p>
+        <p class="colaborador-id"><span class="bold"> Número de Colaborador:</span>
+            {{ $colaborador->claveColab ?? 'N/A' }}</p>
         <p class="compact"><span class="bold">Puesto:</span> <span
                 class="uppercase">{{ $colaborador->Puesto ?? 'No especificado' }}</span></p>
         <p class="compact"><span class="bold">Área:</span> <span
@@ -200,7 +202,7 @@
                     <li><span class="bold">Modelo/Serie:</span> {{ $herramienta->modelo }} / {{ $herramienta->num_serie }}
                     </li>
                     <li><span class="bold">Valor:</span>
-                        {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</li>
+                        {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}
                 </ul>
             </div>
         @else
