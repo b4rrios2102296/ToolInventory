@@ -34,7 +34,7 @@
         }
 
         .header h3 {
-            font-size: 12px;
+            font-size: 15px;
             font-weight: bold;
             border-bottom: 1px solid #2e2e2e;
             padding-bottom: 4px;
@@ -44,6 +44,21 @@
 
         .info-section {
             margin-bottom: 8px;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .date-container {
+            text-align: left;
+        }
+
+        .folio-container {
+            text-align: right;
+            margin-top: -35px;
         }
 
         .two-columns {
@@ -57,6 +72,10 @@
         }
 
         .bold {
+            font-weight: bold;
+        }
+
+        .bold-folio {
             font-weight: bold;
         }
 
@@ -90,7 +109,8 @@
             border: 1px solid #2e2e2e;
         }
 
-        th, td {
+        th,
+        td {
             padding: 8px;
             text-align: center;
             border: 1px solid #2e2e2e;
@@ -122,6 +142,11 @@
         .compact {
             margin: 5px 0;
         }
+        
+        .colaborador-id {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 
@@ -132,26 +157,28 @@
     </div>
 
     <div class="header">
-        <h1>GRAND VELAS RIVIERA MAYA</h1>
-        <h2>TECNOLOGÍAS DE LA INFORMACIÓN</h2>
         <h3>RESGUARDO DE HERRAMIENTA</h3>
     </div>
 
-    <div class="two-columns">
-        <div class="column">
+    <div class="header-row">
+        <div class="date-container">
             <p class="compact"><span class="bold">Fecha:</span> {{ \Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y') }}</p>
-            <p class="compact"><span class="bold">Folio:</span> {{ $resguardo->folio }}</p>
         </div>
-        <div class="column">
-            <p class="compact"><span class="bold">Colaborador:</span> {{ $colaborador->claveColab ?? 'N/A' }}</p>
+        <div class="folio-container">
+            <p class="compact"><span class="bold-folio">Folio:</span> {{ $resguardo->folio }}</p>
         </div>
     </div>
 
     <div class="info-section">
-        <p class="compact"><span class="bold">Nombre:</span> <span class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</span></p>
-        <p class="compact"><span class="bold">Puesto:</span> <span class="uppercase">{{ $colaborador->Puesto ?? 'No especificado' }}</span></p>
-        <p class="compact"><span class="bold">Área:</span> <span class="uppercase">{{ $colaborador->area_limpia ?? 'No especificado' }}</span></p>
-        <p class="compact"><span class="bold">Ubicación:</span> <span class="uppercase">{{ $colaborador->sucursal_limpia ?? 'No especificado' }}</span></p>
+        <p class="compact"><span class="bold">Nombre:</span> <span
+                class="uppercase">{{ $colaborador->nombreCompleto ?? 'No disponible' }}</span></p>
+        <p class="colaborador-id"><span class="bold"> Número de Colaborador:</span> {{ $colaborador->claveColab ?? 'N/A' }}</p>
+        <p class="compact"><span class="bold">Puesto:</span> <span
+                class="uppercase">{{ $colaborador->Puesto ?? 'No especificado' }}</span></p>
+        <p class="compact"><span class="bold">Área:</span> <span
+                class="uppercase">{{ $colaborador->area_limpia ?? 'No especificado' }}</span></p>
+        <p class="compact"><span class="bold">Ambiente:</span> <span
+                class="uppercase">{{ $colaborador->sucursal_limpia ?? 'No especificado' }}</span></p>
     </div>
 
     <p class="bold">Comentarios:</p>
@@ -170,8 +197,10 @@
             <div class="tool-details">
                 <ul>
                     <li><span class="bold">Artículo:</span> {{ $herramienta->articulo }}</li>
-                    <li><span class="bold">Modelo/Serie:</span> {{ $herramienta->modelo }} / {{ $herramienta->num_serie }}</li>
-                    <li><span class="bold">Valor:</span> {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</li>
+                    <li><span class="bold">Modelo/Serie:</span> {{ $herramienta->modelo }} / {{ $herramienta->num_serie }}
+                    </li>
+                    <li><span class="bold">Valor:</span>
+                        {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</li>
                 </ul>
             </div>
         @else
@@ -181,7 +210,9 @@
 
     <div class="conditions">
         <p class="bold" style="text-align: center;">DECLARACIÓN DE RESPONSABILIDAD</p>
-        <p>EL COLABORADOR DECLARA HABER RECIBIDO LA HERRAMIENTA AQUÍ MENCIONADA, SE COMPROMETE A CUIDARLA Y UTILIZARLA CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU FIRMA SE RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
+        <p>EL COLABORADOR DECLARA HABER RECIBIDO LA HERRAMIENTA AQUÍ MENCIONADA, SE COMPROMETE A CUIDARLA Y UTILIZARLA
+            CORRECTAMENTE, TAMBIÉN A DEVOLVERLA CUANDO POR ALGÚN MOTIVO TENGA QUE DEJAR DE LABORAR, CON SU FIRMA SE
+            RESPONSABILIZA POR ALGUNA HERRAMIENTA EXTRAVIADA</p>
     </div>
 
     <table>
@@ -196,7 +227,9 @@
             </td>
             <td style="width:50%">
                 <p class="bold">ENTREGADO POR</p>
-                <p class="uppercase">{{ $resguardo->aperturo_nombre ?? 'No disponible' }} {{ $resguardo->aperturo_apellidos ?? '' }}</p>
+                <p class="uppercase">{{ $resguardo->aperturo_nombre ?? 'No disponible' }}
+                    {{ $resguardo->aperturo_apellidos ?? '' }}
+                </p>
                 <div class="signature-space">
                     <div class="signature-line"></div>
                 </div>
