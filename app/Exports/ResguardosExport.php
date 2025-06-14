@@ -50,7 +50,7 @@ class ResguardosExport implements FromCollection, WithHeadings
                 "Artículo: " . ($herramienta->articulo ?? 'N/A') . "\n" .
                 "Modelo: " . ($herramienta->modelo ?? 'N/A') . "\n" .
                 "Número de Serie: " . ($herramienta->num_serie ?? 'N/A') . "\n" .
-                "Costo: $" . number_format($herramienta->costo ?? 0, 2);
+                "Costo: $" . number_format($herramienta->costo ?? 0, 2) . " MXN";
         }
 
 

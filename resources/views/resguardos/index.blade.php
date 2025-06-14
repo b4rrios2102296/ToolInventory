@@ -146,11 +146,11 @@
                                         <div>
                                             @if ($resguardo->estatus == 'Cancelado')
                                                 <s><span class="font-semibold">Costo:</span>
-                                                    {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</s>
-                                            @else
+                                                 {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) . ' MXN' : 'N/A' }}</s>
+                                                @else
                                                 <span class="font-semibold">Costo:</span>
-                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}
-                                            @endif
+                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) . ' MXN' : 'N/A' }}
+                                                @endif
                                         </div>
                                     @endforeach
                                 </ul>

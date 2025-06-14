@@ -636,7 +636,8 @@ class ResguardoController extends Controller
                 "<strong>Artículo:</strong> " . ($herramienta->articulo ?? 'N/A') . "<br>" .
                 "<strong>Modelo:</strong> " . ($herramienta->modelo ?? 'N/A') . "<br>" .
                 "<strong>Núm. Serie:</strong> " . ($herramienta->num_serie ?? 'N/A') . "<br>" .
-                "<strong>Costo:</strong> $" . number_format($herramienta->costo ?? 0, 2);
+                "<strong>Costo:</strong> $" . number_format($herramienta->costo ?? 0, 2) . " MXN";
+
 
         }
 

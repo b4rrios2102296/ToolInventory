@@ -53,7 +53,7 @@
                         <strong>Modelo:</strong> {{ $herramienta->modelo ?? 'N/A' }} <br>
                         <strong>Número de Serie:</strong> {{ $herramienta->num_serie ?? 'N/A' }}
                     </td>
-                    <td>${{ number_format($herramienta->costo, 2) }}</td>
+                    <td>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}
                     <td>{{ $herramienta->observaciones }}</td> <!-- Display Observaciones -->
                 </tr>
             @endforeach

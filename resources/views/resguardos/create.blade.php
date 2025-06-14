@@ -200,7 +200,7 @@
         <strong>Modelo:</strong> ${data.modelo}<br>
         <strong>Número de Serie:</strong> ${data.num_serie}<br>
         <strong>Artículo:</strong> ${data.articulo}<br>
-        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) : 'N/A'}<br> <!-- Adding costo here -->
+        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) + ' MXN' : 'N/A'}<br>
     </div>
 `;
                     // Asigna el id al input oculto

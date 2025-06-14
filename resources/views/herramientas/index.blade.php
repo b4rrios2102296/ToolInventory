@@ -120,9 +120,9 @@
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 @if ($herramienta->estatus == 'Baja')
-                                    <s>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</s>
+                                    <s>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}</s>
                                 @else
-                                    {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                                    {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
