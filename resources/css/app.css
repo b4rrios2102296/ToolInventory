@@ -285,3 +285,99 @@ body {
 [data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
   color: #2E2E2E !important;
 }
+
+/* ===== TEXT INPUT STYLES ===== */
+[data-flux-modal] textarea,
+[data-flux-modal] input {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.375rem !important;
+  padding: 0.5rem !important;
+  color: #2E2E2E !important;
+  background-color: white !important;
+}
+
+/* ===== LABEL STYLES ===== */
+[data-flux-modal] [data-flux-label],
+[data-flux-modal] label {
+  color: #2E2E2E !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.25rem !important;
+  display: block !important;
+}
+
+/* ===== CLOSE BUTTON ===== */
+[data-flux-modal] [data-flux-button][alt="Close modal"] {
+  color: #71717a !important;
+  background: transparent !important;
+}
+
+[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
+  color: #2E2E2E !important;
+}
+
+/* ===== DROPDOWN MENU STYLES ===== */
+/* ===== TEXT INPUT STYLES ===== */
+[data-flux-modal] textarea,
+[data-flux-modal] input {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 0.375rem !important;
+  padding: 0.5rem !important;
+  color: #2E2E2E !important;
+  background-color: white !important;
+}
+
+/* ===== LABEL STYLES ===== */
+[data-flux-modal] [data-flux-label],
+[data-flux-modal] label {
+  color: #2E2E2E !important;
+  font-weight: 500 !important;
+  margin-bottom: 0.25rem !important;
+  display: block !important;
+}
+
+/* ===== CLOSE BUTTON ===== */
+[data-flux-modal] [data-flux-button][alt="Close modal"] {
+  color: #71717a !important;
+  background: transparent !important;
+}
+
+[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
+  color: #2E2E2E !important;
+}
+
+
+
+/* Asegurar que el dropdown también mantenga su estilo en modo claro */
+[data-flux-dropdown] [data-flux-menu] {
+    background: #FFFFFF !important;
+    border: 1px solid #2E2E2E !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Asegurar que el dropdown también mantenga su estilo en modo claro */
+
+
+
+
+/* Force light mode styles */
+[data-flux-menu-item] {
+    transition: all 0.3s ease !important;
+    color: #2E2E2E !important;
+    background-color: #FFFFFF !important; /* Force white background */
+}
+
+/* Ensure hover works properly */
+[data-flux-menu-item]:hover {
+    background-color: #F2F2F2 !important;
+    transition: all 0.3s ease !important;
+    color: #2E2E2E !important;
+}
+
+/* Ensure icons are always visible */
+[data-flux-menu-item] [data-flux-icon] {
+    opacity: 1 !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: inline-block !important;
+    filter: none !important; /* Prevent dark mode filters */
+}
