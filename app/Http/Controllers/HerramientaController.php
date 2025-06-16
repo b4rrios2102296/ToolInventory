@@ -233,7 +233,7 @@ class HerramientaController extends Controller
             'unidad' => $validated['unidad'],
             'modelo' => $validated['modelo'],
             'num_serie' => $validated['num_serie'],
-            'observaciones' => $validated['observaciones'] ?? null,
+            'observaciones' => trim($validated['observaciones']) !== '' ? $validated['observaciones'] : 'N/A',
             'costo' => isset($validated['costo']) ? (float) $validated['costo'] : 0,
             'updated_at' => Carbon::now(),
         ]);

@@ -92,7 +92,7 @@ class ResguardoController extends Controller
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
                     'fecha_captura' => Carbon::parse($validated['fecha_captura']),
-                    'comentarios' => $validated['comentarios'],
+                    'comentarios' => trim($validated['comentarios']) !== '' ? $validated['comentarios'] : 'N/A',
                     'detalles_resguardo' => $detalles_resguardo,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -103,7 +103,7 @@ class ResguardoController extends Controller
                     'user_id' => auth()->id(),
                     'resguardo_id' => $folio,
                     'accion' => 'Creado',
-                    'comentarios' => $validated['comentarios'],
+                    'comentarios' => trim($validated['comentarios']) !== '' ? $validated['comentarios'] : 'N/A',
                     'created_at' => now(),
                 ]);
 
