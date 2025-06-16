@@ -14,7 +14,6 @@
             </div>
             <br>
             <flux:separator />
-            <flux:separator />
             <br>
             <div class="flex justify-between items-center mb-4">
                 <div class="flex space-x-2">
@@ -55,8 +54,8 @@
                 <tbody>
                     @forelse($herramientas as $herramienta)
                         <tr
-                            class="border-b border-gray-300 last:border-0 text-center {{ $herramienta->estatus == 'Baja' ? 'text-gray-500' : '' }}">
-                            <td class="px-6 py-4 whitespace-normal break-all max-w-xs text-center align-middle">
+                            class="border-b border-gray-300 last:border-0 text-center  {{ $herramienta->estatus == 'Baja' ? 'text-gray-500' : '' }}">
+                            <td class="px-6 py-4 whitespace-normal break-all max-w-xs text-center align-middle herramienta-id">
                                 @if ($herramienta->estatus == 'Baja')
                                     <s>{{ $herramienta->id }}</s>
                                 @else
@@ -121,9 +120,9 @@
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
                                 @if ($herramienta->estatus == 'Baja')
-                                    <s>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}</s>
+                                    <s>{{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}</s>
                                 @else
-                                    {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) : 'N/A' }}
+                                    {{ $herramienta->costo ? '$' . number_format($herramienta->costo, 2) . ' MXN' : 'N/A' }}
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-center align-middle">
@@ -204,8 +203,10 @@
                                     @method('DELETE')
                                     <div class="flex mt-4">
                                         <flux:spacer />
-                                        <flux:button type="submit" variant="danger">Eliminar</flux:button>
-                                    </div>
+                                        <flux:button type="submit" variant="danger"
+                                            style="all:unset !important; background-color:#dc2626 !important; color:white !important; padding:0.5rem 1.25rem !important; border-radius:0.375rem !important;">
+                                            Eliminar
+                                        </flux:button>
                                 </form>
                             </div>
                         </flux:modal>

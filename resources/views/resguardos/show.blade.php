@@ -4,7 +4,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
-                <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
+                <flux:button icon="arrow-left" onclick="window.history.back()">Volver</flux:button>
             </div>
 
             <h1 class="text-2xl font-bold flex-1 text-center">Información de Resguardo #{{ $resguardo->folio }}</h1>
@@ -36,7 +36,9 @@
                         </flux:badge>
                     </div>
                     <flux:input label="Folio" :value="$resguardo->folio" readonly class="w-full" />
-                    <flux:input label="Realizó Resguardo" :value="($resguardo->aperturo_nombre ?? '') . ' ' . ($resguardo->aperturo_apellidos ?? '')" readonly class="w-full" />
+                    <flux:input label="Realizó Resguardo"
+                        :value="($resguardo->aperturo_nombre ?? '') . ' ' . ($resguardo->aperturo_apellidos ?? '')" readonly
+                        class="w-full" />
                     <flux:input label="Asignado a" :value="$resguardo->asignado_nombre ?? 'No asignado'" readonly
                         class="w-full" />
                     <flux:input label="Colaborador" :value="$resguardo->colaborador_num" readonly class="w-full" />
@@ -57,7 +59,7 @@
                         <strong>Número de Serie:</strong> {{ $detalles['num_serie'] ?? 'N/A' }}<br>
                         <strong>Artículo:</strong> {{ $detalles['articulo'] ?? 'N/A' }}<br>
                         <strong>Costo:</strong>
-                        {{ isset($detalles['costo']) ? '$' . number_format($detalles['costo'], 2) : 'N/A' }}<br>
+                        {{ isset($detalles['costo']) ? '$' . number_format($detalles['costo'], 2) . ' MXN' : 'N/A' }}<br>
                     @else
                         <p class="text-gray-500">No hay detalles disponibles.</p>
                     @endif
@@ -72,9 +74,9 @@
             <div class="flex justify-end gap-4">
                 @if ($resguardo->estatus != 'Cancelado')
                     <!-- <flux:button href="{{ route('resguardos.edit', $resguardo->folio) }}" icon="pencil-square"
-                                                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                                                        Editar
-                                                    </flux:button>-->
+                                                                        class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                                                        Editar
+                                                                    </flux:button>-->
                     <flux:button href="{{ route('resguardo.pdf', ['folio' => $resguardo->folio]) }}" icon="document-arrow-down"
                         target="_blank">
                         Descargar PDF 📄

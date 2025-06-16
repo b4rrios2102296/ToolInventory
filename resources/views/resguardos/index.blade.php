@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @fluxAppearance
-
+@section('content')
 <div class="overflow-x-auto">
     <div class="container mx-auto px-4 py-8">
         <div>
@@ -15,8 +15,7 @@
             @endif
         </div>
         <br>
-        <flux:separator />
-        <flux:separator />
+        <flux:separator/>
         <br>
         <div class="flex justify-between items-center mb-4">
             <div class="flex space-x-2">
@@ -24,7 +23,7 @@
                     <flux:button icon="document-arrow-down" icon:variant="outline"
                         href="{{ route('resguardos.pdf') }}" />
                 </flux:tooltip>
-                <flux:separator vertical />
+                <flux:separator vertical/>
                 <flux:tooltip content="Excel">
                     <flux:button icon="document-chart-bar" icon:variant="outline"
                         href="{{ route('resguardos.excel') }}" />
@@ -147,11 +146,11 @@
                                         <div>
                                             @if ($resguardo->estatus == 'Cancelado')
                                                 <s><span class="font-semibold">Costo:</span>
-                                                    {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}</s>
-                                            @else
+                                                 {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) . ' MXN' : 'N/A' }}</s>
+                                                @else
                                                 <span class="font-semibold">Costo:</span>
-                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) : 'N/A' }}
-                                            @endif
+                                                {{ $detalle->costo ? '$' . number_format($detalle->costo, 2) . ' MXN' : 'N/A' }}
+                                                @endif
                                         </div>
                                     @endforeach
                                 </ul>
@@ -227,7 +226,7 @@
                                         </flux:text>
                                         <div class="flex mt-4">
                                             <flux:spacer />
-                                            <flux:button type="submit" variant="danger">Eliminar</flux:button>
+                                            <flux:button type="submit" variant="danger" style="all:unset !important; background-color:#dc2626 !important; color:white !important; padding:0.5rem 1.25rem !important; border-radius:0.375rem !important;">Eliminar</flux:button>
                                         </div>
                                     </form>
                                 </div>
@@ -280,3 +279,4 @@
         });
     });
 </script>
+@endsection

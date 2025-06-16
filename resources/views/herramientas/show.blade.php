@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
@@ -81,7 +82,8 @@
                     <flux:input label="Unidad" :value="$herramienta->unidad" readonly class="w-full" />
                     <flux:input label="Modelo" :value="$herramienta->modelo" readonly class="w-full" />
                     <flux:input label="Número de Serie" :value="$herramienta->num_serie" readonly class="w-full" />
-                    <flux:input label="Costo" :value="number_format($herramienta->costo, 2)" readonly class="w-full" />
+                    <flux:input label="Costo" :value="'$' . number_format($herramienta->costo, 2) . ' MXN'" readonly
+                        class="w-full" />
                 </div>
 
                 <!-- Card: Observaciones -->

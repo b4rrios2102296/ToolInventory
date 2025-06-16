@@ -17,6 +17,12 @@ class Login extends Component
         'password' => 'required|min:8',
     ];
 
+    protected $messages = [
+        'nombre_usuario.required' => 'El nombre de usuario es obligatorio',
+        'password.required' => 'La contraseña es obligatoria',
+        'password.min' => 'La contraseña debe tener al menos 8 caracteres',
+    ];
+
     public function render()
     {
         return view('livewire.auth.login')
@@ -27,20 +33,28 @@ class Login extends Component
     {
         $this->validate();
 
-        // Buscar usuario por nombre de usuario
         $user = Usuario::where('nombre_usuario', $this->nombre_usuario)->first();
 
-        if ($user && Hash::check($this->password, $user->password)) {
-            Auth::login($user, $this->remember);
-            return redirect()->intended('/dashboard');
+        if (!$user) {
+            $this->addError('nombre_usuario', 'Credenciales incorrectas');
+            return;
         }
 
-        $this->addError('nombre_usuario', 'Credenciales incorrectas.');
+        if (!Hash::check($this->password, $user->password)) {
+            $this->addError('password', 'Contraseña incorrecta');
+            return;
+        }
+
+        Auth::login($user, $this->remember);
+        
+        return redirect()->intended('/dashboard')
+            ->with('success', '¡Bienvenido de nuevo!');
     }
 
     public function logout()
     {
         Auth::logout();
-        return redirect('/')->with('status', 'Has cerrado sesión exitosamente.');
+        return redirect('/')
+            ->with('status', 'Has cerrado sesión exitosamente.');
     }
 }

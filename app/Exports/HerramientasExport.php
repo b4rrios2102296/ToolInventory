@@ -24,6 +24,9 @@ class HerramientasExport implements FromCollection, WithHeadings
             ->orderByRaw("CAST(SUBSTRING_INDEX(herramientas.id, '-', -1) AS UNSIGNED) DESC")
             ->get()
             ->map(function ($herramienta) {
+                // Format cost with currency
+                $herramienta->costo = '$' . number_format($herramienta->costo, 2) . ' MXN';
+
                 // If the status is "Baja", include specific observations
                 $herramienta->observaciones = $herramienta->estatus === 'Baja'
                     ? "Dado de Baja: " . ($herramienta->observaciones ?? 'Sin observaciones')
@@ -31,6 +34,7 @@ class HerramientasExport implements FromCollection, WithHeadings
 
                 return $herramienta;
             });
+
     }
 
 

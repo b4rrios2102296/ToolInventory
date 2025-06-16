@@ -3,7 +3,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center mb-4">
         <div class="ml-4 mt-2">
-            <flux:button icon="arrow-left" href="{{ url()->previous() }}">Volver</flux:button>
+                <flux:button icon="arrow-left" onclick="window.history.back()">Volver</flux:button>
         </div>
 
         <h1 class="text-2xl font-bold flex-1 text-center">Registro de Herramientas</h1>

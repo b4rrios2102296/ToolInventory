@@ -1,5 +1,9 @@
-<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-    <h1 class="text-2xl font-bold mb-6 text-center">Registro de Usuario</h1>
+<div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md">
+    <div class="flex items-center mb-4">
+        <flux:text class="text-2xl font-bold flex-1 text-center" style="color: #2E2E2E; font-family: 'Athelas', serif;">
+            Registro de Usuario
+        </flux:text>
+    </div>
 
     @if(session('message'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -7,55 +11,95 @@
         </div>
     @endif
 
-    <form wire:submit.prevent="register">
-        <div class="mb-4">
-            <label for="numero_colaborador" class="block text-gray-700 mb-2">N° Colaborador</label>
-            <input wire:model="numero_colaborador" type="number" id="numero_colaborador" 
-                   class="w-full px-3 py-2 border rounded-lg @error('numero_colaborador') border-red-500 @enderror">
-            @error('numero_colaborador') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+    <form wire:submit.prevent="register" class="space-y-5">
+        <div>
+            <flux:input 
+                type="number" 
+                wire:model="numero_colaborador" 
+                label="N° Colaborador" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            @error('numero_colaborador')
+            @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="nombre" class="block text-gray-700 mb-2">Nombre</label>
-            <input wire:model="nombre" type="text" id="nombre" 
-                   class="w-full px-3 py-2 border rounded-lg @error('nombre') border-red-500 @enderror">
-            @error('nombre') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <div>
+            <flux:input 
+                type="text" 
+                wire:model="nombre" 
+                label="Nombre" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            @error('nombre')
+            @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="apellidos" class="block text-gray-700 mb-2">Apellidos</label>
-            <input wire:model="apellidos" type="text" id="apellidos" 
-                   class="w-full px-3 py-2 border rounded-lg @error('apellidos') border-red-500 @enderror">
-            @error('apellidos') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <div>
+            <flux:input 
+                type="text" 
+                wire:model="apellidos" 
+                label="Apellidos" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            @error('apellidos')
+            @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="nombre_usuario" class="block text-gray-700 mb-2">Usuario</label>
-            <input wire:model="nombre_usuario" type="text" id="nombre_usuario" 
-                   class="w-full px-3 py-2 border rounded-lg @error('nombre_usuario') border-red-500 @enderror">
-            @error('nombre_usuario') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <div>
+            <flux:input 
+                type="text" 
+                wire:model="nombre_usuario" 
+                label="Nombre de Usuario" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            @error('nombre_usuario')
+            @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="password" class="block text-gray-700 mb-2">Contraseña</label>
-            <input wire:model="password" type="password" id="password" 
-                   class="w-full px-3 py-2 border rounded-lg @error('password') border-red-500 @enderror">
-            @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <div>
+            <flux:input 
+                type="password" 
+                wire:model="password" 
+                label="Contraseña" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            @error('password')
+            @enderror
         </div>
 
-        <div class="mb-6">
-            <label for="password_confirmation" class="block text-gray-700 mb-2">Confirmar Contraseña</label>
-            <input wire:model="password_confirmation" type="password" id="password_confirmation" 
-                   class="w-full px-3 py-2 border rounded-lg">
+        <div>
+            <flux:input 
+                type="password" 
+                wire:model="password_confirmation" 
+                label="Confirmar Contraseña" 
+                class="w-full"
+                label-class="text-gray-700 mb-2 text-lg"
+                input-class="px-5 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
         </div>
 
-        <button type="submit" 
-                class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">
-            Registrar
-        </button>
-    </form>
-
+        <div class="pt-3">
+            <flux:button 
+                type="submit"
+                class="w-full justify-center"
+                style="background-color: #A4957D; font-family: 'Montserrat', sans-serif;"
+                button-class="px-5 py-3 text-lg font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors"
+            >
+                Registrar
+            </flux:button>
     <div class="mt-4 text-center">
-        <a href="{{ route('dashboard') }}" class="text-blue-500 hover:underline">Regresar </a>
+        <a href="{{ route('dashboard') }}" class="text-zinc-500 hover:underline">Regresar </a>
     </div>
+        </div>
+    </form>
 </div>
