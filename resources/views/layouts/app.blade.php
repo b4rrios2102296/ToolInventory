@@ -5,17 +5,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ config('app.name') }} </title>
+    <!-- Cache Control - Obligatorio para favicons -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>{{ config('app.name') }}</title>
+    
+    <!-- Favicon con versionado - PRIMER BLOQUE (ESENCIAL) -->
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v={{ time() }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}?v={{ time() }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}?v={{ time() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v={{ time() }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}?v={{ time() }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Fuentes y estilos -->
+    <!-- Fuentes y estilos (conservando tu configuración original) -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
     <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
     <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
-
 </head>
 
 <body class="min-h-screen">
