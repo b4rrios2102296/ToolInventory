@@ -5,18 +5,54 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ config('app.name') }} </title>
+    <!-- Cache Control - Obligatorio para favicons -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <title>{{ config('app.name') }}</title>
+    
+    <!-- Favicon con versionado - PRIMER BLOQUE (ESENCIAL) -->
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v={{ time() }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}?v={{ time() }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}?v={{ time() }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v={{ time() }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}?v={{ time() }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Fuentes y estilos -->
+    <!-- Fuentes y estilos (conservando tu configuración original) -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
+
+    
     <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
     <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
-
 </head>
+
+<script>
+  document.documentElement.classList.add('preload');
+  window.addEventListener('DOMContentLoaded', () => {
+    document.documentElement.classList.remove('preload');
+  });
+
+  // Interceptar formularios
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const transition = document.getElementById('page-transition');
+        transition.classList.add('active');
+        
+        // Pequeño delay para que se vea la transición
+        e.preventDefault();
+        setTimeout(() => {
+            this.submit();
+        }, 300);
+    });
+});
+</script>
+
 
 <body class="min-h-screen">
 
@@ -27,19 +63,19 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <!-- Logo / Header -->
-        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -120px;">
+        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -90px;">
             <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}"
-                style="width: 100px; height: 205px;" class="mx-auto" />
+              class="mx-auto logo-img" />
         </div>
 
         <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
             <div style="padding-bottom: -50px; margin-top: -150px;">
-                <img src="{{ asset('Images/Group 64.svg') }}" style="width: 200px; margin-right: 50px;" />
+                <img src="{{ asset('Images/Group 64.svg') }}" class="icon-img" />
             </div>
         </div>
 
         <!-- Navigation -->
-        <flux:navlist style="padding-bottom: -50; margin-top: -90px;">
+        <flux:navlist style="padding-bottom: -50; margin-top: -95px;">
             <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="navlist-bold">Dashboard
             </flux:navlist.item>
             <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="navlist-bold">

@@ -118,13 +118,13 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Colaborador
         const buscarBtn = document.getElementById('buscar-btn');
         const searchInput = document.getElementById('colaborador-search');
         const errorDiv = document.getElementById('colaborador-error');
         const claveColabInput = document.getElementById('claveColab');
 
-        buscarBtn.addEventListener('click', function (e) {
-            e.preventDefault();
+        function buscarColaborador() {
             const searchValue = searchInput.value.trim();
 
             if (searchValue.length < 2) {
@@ -141,16 +141,13 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
+                    if (data.error) throw new Error(data.error);
 
                     claveColabInput.value = data.claveColab;
                     document.getElementById('nombreCompleto').value = data.nombreCompleto;
                     document.getElementById('Puesto').value = data.Puesto || 'No especificado';
                     document.getElementById('sucursal_limpia').value = data.sucursal_limpia || 'No especificada';
                     document.getElementById('area_limpia').value = data.area_limpia || 'No especificada';
-
                 })
                 .catch(error => {
                     errorDiv.textContent = error.message;
@@ -160,57 +157,73 @@
                     document.getElementById('Puesto').value = '';
                     document.getElementById('sucursal_limpia').value = '';
                     document.getElementById('area_limpia').value = '';
-
                 });
+        }
+
+        buscarBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            buscarColaborador();
         });
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+
+        searchInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buscarColaborador();
+            }
+        });
+
+        // Herramienta
         const buscarHerramientaBtn = document.getElementById('buscar-herramienta-btn');
         const filtroSelect = document.getElementById('herramienta-filtro');
-        const searchInput = document.getElementById('herramienta-search');
-        const errorDiv = document.getElementById('herramienta-error');
+        const herramientaInput = document.getElementById('herramienta-search');
+        const herramientaError = document.getElementById('herramienta-error');
         const resultDiv = document.getElementById('herramienta-result');
 
-        buscarHerramientaBtn.addEventListener('click', function (e) {
-            e.preventDefault();
+        function buscarHerramienta() {
             const filtro = filtroSelect.value;
-            const valor = searchInput.value.trim();
+            const valor = herramientaInput.value.trim();
 
             if (!valor) {
-                errorDiv.textContent = 'Ingrese un valor para buscar';
-                errorDiv.classList.remove('hidden');
+                herramientaError.textContent = 'Ingrese un valor para buscar';
+                herramientaError.classList.remove('hidden');
                 return;
             }
 
-            errorDiv.classList.add('hidden');
+            herramientaError.classList.add('hidden');
             resultDiv.innerHTML = '';
 
             fetch(`/herramientas/buscar?filtro=${encodeURIComponent(filtro)}&valor=${encodeURIComponent(valor)}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        throw new Error(data.error);
-                    }
-                    // Muestra los datos de la herramienta encontrada, incluyendo costo
+                    if (data.error) throw new Error(data.error);
+
                     resultDiv.innerHTML = `
-    <div class="p-4 border rounded">
-        <strong>ID:</strong> ${data.id}<br>
-        <strong>Modelo:</strong> ${data.modelo}<br>
-        <strong>Número de Serie:</strong> ${data.num_serie}<br>
-        <strong>Artículo:</strong> ${data.articulo}<br>
-        <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) + ' MXN' : 'N/A'}<br>
-    </div>
-`;
-                    // Asigna el id al input oculto
+                        <div class="p-4 border rounded">
+                            <strong>ID:</strong> ${data.id}<br>
+                            <strong>Modelo:</strong> ${data.modelo}<br>
+                            <strong>Número de Serie:</strong> ${data.num_serie}<br>
+                            <strong>Artículo:</strong> ${data.articulo}<br>
+                            <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) + ' MXN' : 'N/A'}<br>
+                        </div>
+                    `;
                     document.getElementById('herramienta_id').value = data.id;
                 })
                 .catch(error => {
-                    errorDiv.textContent = error.message;
-                    errorDiv.classList.remove('hidden');
+                    herramientaError.textContent = error.message;
+                    herramientaError.classList.remove('hidden');
                 });
+        }
 
+        buscarHerramientaBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            buscarHerramienta();
+        });
+
+        herramientaInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                buscarHerramienta();
+            }
         });
     });
 </script>

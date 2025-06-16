@@ -45,13 +45,12 @@
         <tbody>
             @foreach ($acciones as $accion)
                 <tr>
-                    <td>{{ $accion->id }}</td> <!-- Mostrar el ID -->
+                    <td>{{ $accion->id }}</td>
                     <td>{{ $accion->usuario_nombre_completo }}</td>
-                    <td>{{ $accion->accion }}</td>
+                    <td>{{ $accion->accion ?? 'N/A' }}</td>
                     <td>{{ $accion->resguardo_id }}</td>
-                    <td>{{ $accion->comentarios }}</td>
+                    <td>{{ trim($accion->comentarios) !== '' ? $accion->comentarios : 'N/A' }}</td>
                     <td>{{ $accion->fecha_hora ?? 'Fecha no disponible' }}</td>
-                    </td>
                 </tr>
             @endforeach
         </tbody>
