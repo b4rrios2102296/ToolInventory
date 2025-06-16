@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,7 +8,26 @@
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|athelas:400" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        // Aplicar la clase lo antes posible
+        document.documentElement.classList.add('preload');
+        window.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.remove('preload');
+        });
+    </script>
     <style>
+        html.preload body,
+        body.preload {
+            opacity: 0;
+            background-color: #000;
+            /* Evita flash blanco */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
         body {
             background-image: url('/Images/workshop-4863393_1280.jpg');
             background-size: cover;
@@ -18,6 +38,7 @@
             padding: 0;
             min-height: 100vh;
         }
+
         body::before {
             content: '';
             position: absolute;
@@ -28,6 +49,7 @@
             background-color: rgba(0, 0, 0, 0.7);
             z-index: -1;
         }
+
         .auth-container {
             display: flex;
             flex-direction: column;
@@ -37,18 +59,22 @@
             padding: 2rem;
             width: 100%;
         }
+
         .brand-logo {
             width: 500px;
             margin-bottom: 1.5rem;
         }
+
         .auth-card {
-            width: 300px; /* Smaller than logo */
+            width: 300px;
+            /* Smaller than logo */
             margin-top: 1.5rem;
             background: transparent;
             backdrop-filter: none;
             border: none;
             padding: 0;
         }
+
         .auth-button {
             display: block;
             width: 100%;
@@ -64,6 +90,7 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+
         .auth-button:hover {
             background-color: #8a7c66;
             border-color: #8a7c66;
@@ -71,10 +98,11 @@
         }
     </style>
 </head>
+
 <body>
     <div class="auth-container">
         <img src="{{ asset('Images/TLW.svg') }}" alt="ToolInventory Logo" class="brand-logo" />
-        
+
         <div class="auth-card">
             @if (Route::has('login'))
                 <nav class="flex flex-col gap-4">
@@ -92,4 +120,5 @@
         </div>
     </div>
 </body>
+
 </html>

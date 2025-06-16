@@ -4,160 +4,162 @@
 @import url('https://fonts.googleapis.com/css2?family=Athelas&display=swap');
 
 @theme {
-    --font-sans: 'Montserrat', sans-serif;
-    --font-serif: 'Athelas', serif;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-serif: 'Athelas', serif;
 
-    --color-zinc-50: #A4957D;
-    --color-zinc-100: #A4957D;
-    --color-zinc-200: #A4957D;
-    --color-zinc-300: #A4957D;
-    --color-zinc-400: #A4957D;
-    --color-zinc-500: #2E2E2E;
-    --color-zinc-600: #A4957D;
-    --color-zinc-700: #A4957D;
-    --color-zinc-800: #A4957D;
-    --color-zinc-900: #A4957D;
-    --color-zinc-950: #A4957D;
+  --color-zinc-50: #A4957D;
+  --color-zinc-100: #A4957D;
+  --color-zinc-200: #A4957D;
+  --color-zinc-300: #A4957D;
+  --color-zinc-400: #A4957D;
+  --color-zinc-500: #2E2E2E;
+  --color-zinc-600: #A4957D;
+  --color-zinc-700: #A4957D;
+  --color-zinc-800: #A4957D;
+  --color-zinc-900: #A4957D;
+  --color-zinc-950: #A4957D;
 
-    --color-accent: #A4957D;
-    --color-accent-content: #A4957D;
-    --color-accent-foreground: var(--color-white);
+  --color-accent: #A4957D;
+  --color-accent-content: #A4957D;
+  --color-accent-foreground: var(--color-white);
 
 }
 
 :root {
-    --input-bg: #F2F2F2;
-    --input-text: #2E2E2E;
-    --input-border: #2E2E2E;
+  --input-bg: #F2F2F2;
+  --input-text: #2E2E2E;
+  --input-border: #2E2E2E;
 }
 
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
-    -webkit-text-fill-color: var(--input-text) !important;
-    background-color: var(--input-bg) !important;
-    border-color: var(--input-border) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
+  -webkit-text-fill-color: var(--input-text) !important;
+  background-color: var(--input-bg) !important;
+  border-color: var(--input-border) !important;
 }
 
 input[type="search"]::-webkit-search-cancel-button {
-    filter: invert(100%) sepia(0%) saturate(0%) brightness(20%);
+  filter: invert(100%) sepia(0%) saturate(0%) brightness(20%);
 }
 
 h1 {
-    font-family: 'Athelas', serif;
-    font-weight: bold;
-    font-size: 1.8rem;
-    /* Adjust size as needed */
+  font-family: 'Athelas', serif;
+  font-weight: bold;
+  font-size: 1.8rem;
+  /* Adjust size as needed */
 }
 
 
 
 table {
-    box-shadow: 0px 4px 10px rgba(46, 46, 46, 0.25);
-    border: 1px solid #2E2E2E;
-    border-radius: 15px;
-    /* Adds rounded corners */
-    overflow: hidden;
-    /* Ensures border follows the curve */
+  box-shadow: 0px 4px 10px rgba(46, 46, 46, 0.25);
+  border: 1px solid #2E2E2E;
+  border-radius: 15px;
+  /* Adds rounded corners */
+  overflow: hidden;
+  /* Ensures border follows the curve */
 }
 
 .pagination-container * {
-    background-color: #FFFFFF !important;
-    color: #2E2E2E !important;
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
 }
 
 
 /* Removed dark mode layer to keep colors static */
 
 body {
-    background-color: #FFFFFF !important;
-    color: #2E2E2E !important;
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
 }
 
 
 /* Standard menu items—only text color changes on hover */
 
 .sidebar * {
-    color: #2E2E2E !important;
+  color: #2E2E2E !important;
 }
 
 .separator * {
-    background-color: #2E2E2E !important;
-    height: 0.5px
+  background-color: #2E2E2E !important;
+  height: 0.5px
 }
 
 .separator-vertical {
-    background-color: #2E2E2E !important;
-    width: 2px;
-    /* Adjust thickness */
-    height: 100%;
-    /* Full height */
-    display: inline-block;
+  background-color: #2E2E2E !important;
+  width: 2px;
+  /* Adjust thickness */
+  height: 100%;
+  /* Full height */
+  display: inline-block;
 }
 
 
 .dropdown-text * {
-    color: #F2F2F2 !important;
+  color: #F2F2F2 !important;
 }
 
 .tbutton {
-    background-color: #A4957D;
-    color: #FFFFFF;
+  background-color: #A4957D;
+  color: #FFFFFF;
 }
 
 .navlist-bold * {
-    font-weight: bold !important;
+  font-weight: bold !important;
 }
 
 .navlist-bold:hover * {
-    color: #A4957D !important;
-    /* Hover effect */
+  color: #A4957D !important;
+  /* Hover effect */
 }
 
 .navlist-item:hover * {
-    color: #A4957D !important;
-    /* Hover effect */
+  color: #A4957D !important;
+  /* Hover effect */
 }
 
 .navlist-item * {
-    color: #2E2E2E;
+  color: #2E2E2E;
 }
 
 .navlist-group-admin-heading:hover * {
-    color: #A4957D !important;
-    /* Change text color on hover */
+  color: #A4957D !important;
+  /* Change text color on hover */
 }
 
 .heading-hover:hover {
-    color: #A4957D !important;
-    /* Ensure the text color stays static */
+  color: #A4957D !important;
+  /* Ensure the text color stays static */
 }
 
 .profile-name * {
-    color: #2E2E2E !important;
-    font-weight: bold !important;
+  color: #2E2E2E !important;
+  font-weight: bold !important;
 }
 
 .initial-bg {
-    background-color: #2E2E2E !important;
-    color: #F2F2F2 !important;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    /* Adjust size */
-    height: 30px;
-    /* Adjust size */
-    border-radius: 4px;
-    /* Keep it squared */
+  background-color: #2E2E2E !important;
+  color: #F2F2F2 !important;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  /* Adjust size */
+  height: 30px;
+  /* Adjust size */
+  border-radius: 4px;
+  /* Keep it squared */
 }
 
 .herramienta-id {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 /* ===== FORCE LIGHT MODE GLOBALLY ===== */
-:root, [data-theme="light"], [data-mode="light"] {
+:root,
+[data-theme="light"],
+[data-mode="light"] {
   --flux-text-color: #2E2E2E !important;
   --flux-heading-color: #2E2E2E !important;
   --flux-bg-color: #ffffff !important;
@@ -193,7 +195,8 @@ body {
 
 /* ===== DANGER BUTTON PROTECTION ===== */
 [data-flux-modal] [data-flux-button][variant="danger"] {
-  background-color: #dc2626 !important; /* Force red-600 */
+  background-color: #dc2626 !important;
+  /* Force red-600 */
   color: white !important;
   border: none !important;
   padding: 0.5rem 1.25rem !important;
@@ -204,7 +207,8 @@ body {
 }
 
 [data-flux-modal] [data-flux-button][variant="danger"]:hover {
-  background-color: #b91c1c !important; /* Force red-700 on hover */
+  background-color: #b91c1c !important;
+  /* Force red-700 on hover */
   /* Important: Disable any gradient or other effects */
   background-image: none !important;
 }
@@ -221,7 +225,8 @@ body {
 [data-flux-modal] [data-flux-button][variant="danger"],
 [data-flux-modal] [data-flux-button][type="danger"],
 [data-flux-modal] [data-flux-button].danger {
-  all: unset !important; /* Complete reset */
+  all: unset !important;
+  /* Complete reset */
   background: #dc2626 !important;
   color: white !important;
   padding: 0.5rem 1.25rem !important;
@@ -239,7 +244,7 @@ body {
   background: #b91c1c !important;
 }
 
-[data-flux-modal]  {
+[data-flux-modal] {
   --danger-bg: #dc2626 !important;
   --danger-text: white !important;
 }
@@ -349,9 +354,9 @@ body {
 
 /* Asegurar que el dropdown también mantenga su estilo en modo claro */
 [data-flux-dropdown] [data-flux-menu] {
-    background: #FFFFFF !important;
-    border: 1px solid #2E2E2E !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  background: #FFFFFF !important;
+  border: 1px solid #2E2E2E !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Asegurar que el dropdown también mantenga su estilo en modo claro */
@@ -361,32 +366,45 @@ body {
 
 /* Force light mode styles */
 [data-flux-menu-item] {
-    transition: all 0.3s ease !important;
-    color: #2E2E2E !important;
-    background-color: #FFFFFF !important; /* Force white background */
+  transition: all 0.3s ease !important;
+  color: #2E2E2E !important;
+  background-color: #FFFFFF !important;
+  /* Force white background */
 }
 
 /* Ensure hover works properly */
 [data-flux-menu-item]:hover {
-    background-color: #F2F2F2 !important;
-    transition: all 0.3s ease !important;
-    color: #2E2E2E !important;
+  background-color: #F2F2F2 !important;
+  transition: all 0.3s ease !important;
+  color: #2E2E2E !important;
 }
 
 /* Ensure icons are always visible */
 [data-flux-menu-item] [data-flux-icon] {
-    opacity: 1 !important;
-    width: 16px !important;
-    height: 16px !important;
-    display: inline-block !important;
-    filter: none !important; /* Prevent dark mode filters */
+  opacity: 1 !important;
+  width: 16px !important;
+  height: 16px !important;
+  display: inline-block !important;
+  filter: none !important;
+  /* Prevent dark mode filters */
 }
+
 .logo-img {
-    width: 150px;
-    height: 205px;
+  width: 150px;
+  height: 205px;
 }
 
 .icon-img {
-    width: 125px;
-    margin-right: 50px;
+  width: 125px;
+  margin-right: 50px;
+}
+
+.logged-user {
+  color: #2E2E2E !important;
+  background-color: #F2F2F2;
+}
+
+html.preload body {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 }
