@@ -8,24 +8,61 @@
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|athelas:400" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script>
-        // Aplicar la clase lo antes posible
-        document.documentElement.classList.add('preload');
-        window.addEventListener('DOMContentLoaded', () => {
-            document.documentElement.classList.remove('preload');
-        });
-    </script>
-    <style>
-        html.preload body,
-        body.preload {
-            opacity: 0;
-            background-color: #000;
-            /* Evita flash blanco */
-            transition: opacity 0.3s ease-in-out;
+<script>
+    // Interceptar clicks en enlaces
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[href]');
+        if (!link) return;
+        
+        // Ignorar enlaces externos o con target="_blank"
+        if (link.target === '_blank' || 
+            link.hostname !== window.location.hostname) {
+            return;
         }
-
-        [x-cloak] {
-            display: none !important;
+        
+        e.preventDefault();
+        const exitOverlay = document.createElement('div');
+        exitOverlay.className = 'page-exit';
+        document.body.appendChild(exitOverlay);
+        
+        // Forzar repaint
+        void exitOverlay.offsetWidth;
+        
+        // Activar transición
+        exitOverlay.classList.add('active');
+        
+        // Navegar después de la transición
+        setTimeout(() => {
+            window.location.href = link.href;
+        }, 100);
+    });
+</script>
+    <style>
+     .page-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff; /* Usa tu color de fondo principal */
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        
+        .page-transition.active {
+            opacity: 1;
+        }
+        
+        /* Animación de entrada */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        body {
+            animation: fadeIn 0.4s ease-out;
         }
 
         body {
@@ -97,6 +134,8 @@
             transform: translateY(-2px);
         }
     </style>
+        @stack('styles')
+
 </head>
 
 <body>

@@ -37,6 +37,20 @@
   window.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.remove('preload');
   });
+
+  // Interceptar formularios
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        const transition = document.getElementById('page-transition');
+        transition.classList.add('active');
+        
+        // Pequeño delay para que se vea la transición
+        e.preventDefault();
+        setTimeout(() => {
+            this.submit();
+        }, 300);
+    });
+});
 </script>
 
 
