@@ -381,3 +381,12 @@ body {
     display: inline-block !important;
     filter: none !important; /* Prevent dark mode filters */
 }
+.logo-img {
+    width: 150px;
+    height: 205px;
+}
+
+.icon-img {
+    width: 125px;
+    margin-right: 50px;
+}

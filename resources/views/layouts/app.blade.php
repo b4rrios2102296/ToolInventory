@@ -39,19 +39,19 @@
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <!-- Logo / Header -->
-        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -120px;">
+        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -90px;">
             <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}"
-                style="width: 100px; height: 205px;" class="mx-auto" />
+              class="mx-auto logo-img" />
         </div>
 
         <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
             <div style="padding-bottom: -50px; margin-top: -150px;">
-                <img src="{{ asset('Images/Group 64.svg') }}" style="width: 200px; margin-right: 50px;" />
+                <img src="{{ asset('Images/Group 64.svg') }}" class="icon-img" />
             </div>
         </div>
 
         <!-- Navigation -->
-        <flux:navlist style="padding-bottom: -50; margin-top: -90px;">
+        <flux:navlist style="padding-bottom: -50; margin-top: -95px;">
             <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="navlist-bold">Dashboard
             </flux:navlist.item>
             <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="navlist-bold">
