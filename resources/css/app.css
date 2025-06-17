@@ -445,36 +445,9 @@ html.preload body {
 }
 
 
+
 /* Íconos normales */
 [data-flux-menu-item] [data-flux-menu-item-icon] * {
   color: #2E2E2E;
 }
 
-/* Variante danger - FORZANDO ESTILOS CON SELECTORES MUY ESPECÍFICOS */
-[data-flux-menu-item][variant="danger"],
-[data-flux-menu-item].danger {
-  color: #2E2E2E !important;
-}
-
-[data-flux-menu] [data-flux-menu-item][variant="danger"]:hover,
-[data-flux-menu] [data-flux-menu-item].danger:hover {
-  background-color: #FEE2E2 !important;
-  color: #B91C1C !important;
-}
-
-[data-flux-menu] [data-flux-menu-item][variant="danger"]:hover [data-flux-menu-item-icon],
-[data-flux-menu] [data-flux-menu-item].danger:hover [data-flux-menu-item-icon] * {
-  color: #B91C1C !important;
-}
-
-/* Para el estado data-active (que usa Flux internamente) */
-[data-flux-menu] [data-flux-menu-item][variant="danger"][data-active],
-[data-flux-menu] [data-flux-menu-item].danger[data-active] * {
-  background-color: #FEE2E2 !important;
-  color: #B91C1C !important;
-}
-
-[data-flux-menu] [data-flux-menu-item][variant="danger"][data-active] [data-flux-menu-item-icon],
-[data-flux-menu] [data-flux-menu-item].danger[data-active] [data-flux-menu-item-icon] * {
-  color: #B91C1C !important;
-}
