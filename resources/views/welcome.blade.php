@@ -8,63 +8,65 @@
     <title>ToolInventory</title>
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600|athelas:400" rel="stylesheet" />
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v={{ time() }}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-<script>
-    // Interceptar clicks en enlaces
-    document.addEventListener('click', function(e) {
-        const link = e.target.closest('a[href]');
-        if (!link) return;
-        
-        // Ignorar enlaces externos o con target="_blank"
-        if (link.target === '_blank' || 
-            link.hostname !== window.location.hostname) {
-            return;
-        }
-        
-        e.preventDefault();
-        const exitOverlay = document.createElement('div');
-        exitOverlay.className = 'page-exit';
-        document.body.appendChild(exitOverlay);
-        
-        // Forzar repaint
-        void exitOverlay.offsetWidth;
-        
-        // Activar transición
-        exitOverlay.classList.add('active');
-        
-        // Navegar después de la transición
-        setTimeout(() => {
-            window.location.href = link.href;
-        }, 100);
-    });
-</script>
+    <script>
+        // Interceptar clicks en enlaces
+        document.addEventListener('click', function (e) {
+            const link = e.target.closest('a[href]');
+            if (!link) return;
+
+            // Ignorar enlaces externos o con target="_blank"
+            if (link.target === '_blank' ||
+                link.hostname !== window.location.hostname) {
+                return;
+            }
+
+            e.preventDefault();
+            const exitOverlay = document.createElement('div');
+            exitOverlay.className = 'page-exit';
+            document.body.appendChild(exitOverlay);
+
+            // Forzar repaint
+            void exitOverlay.offsetWidth;
+
+            // Activar transición
+            exitOverlay.classList.add('active');
+
+            // Navegar después de la transición
+            setTimeout(() => {
+                window.location.href = link.href;
+            }, 100);
+        });
+
+          document.addEventListener('contextmenu', function (e) {
+    if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+    }
+  });
+    </script>
     <style>
-     .page-transition {
+        .page-transition {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #fff; /* Usa tu color de fondo principal */
+            background: #fff;
+            /* Usa tu color de fondo principal */
             z-index: 9999;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
         }
-        
+
         .page-transition.active {
             opacity: 1;
         }
-        
+
         /* Animación de entrada */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        body {
-            animation: fadeIn 0.4s ease-out;
-        }
+
+
 
         body {
             background-image: url('/Images/workshop-4863393_1280.jpg');
@@ -99,9 +101,11 @@
         }
 
         .brand-logo {
-            width: 500px;
-            margin-bottom: 1.5rem;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
+
 
         .auth-card {
             width: 300px;
@@ -135,13 +139,16 @@
             transform: translateY(-2px);
         }
     </style>
-        @stack('styles')
+    @stack('styles')
 
 </head>
 
-<body>
+<body class="min-h-screen flex items-center justify-center">
     <div class="auth-container">
-        <img src="{{ asset('Images/TLW.svg') }}" alt="ToolInventory Logo" class="brand-logo" />
+        <div>
+            <img src="{{ asset('Images/TLW.svg') }}" alt="ToolInventory Logo" class="brand-logo" />
+
+        </div>
 
         <div class="auth-card">
             @if (Route::has('login'))
