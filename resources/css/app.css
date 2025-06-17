@@ -440,14 +440,122 @@ html.preload body {
 
 [data-flux-menu-item]:not(.danger):hover * {
   color: #2E2E2E !important;
+  background-color: transparent !important;
 
   
 }
 
+/* Cambia el color del texto principal */
+[data-flux-navmenu-item] {
+    color: #2E2E2E !important;
+}
 
+/* Cambia el color del ícono */
+[data-flux-navmenu-item] [data-flux-menu-item-icon] {
+    color: #2E2E2E !important;
+}
 
+/* Cambia el color de cualquier texto secundario */
+[data-flux-navmenu-item] .text-zinc-400 {
+    color: #2E2E2E !important;
+}
+
+/* Cambia el color al hacer hover (opcional) */
+[data-flux-navmenu-item]:hover {
+    color: #2E2E2E !important;
+}
+
+[data-flux-navmenu-item]:hover [data-flux-menu-item-icon] * {
+    color: #2E2E2E !important;
+    background-color: red !important;
+}
+
+[data-flux-navmenu-item] svg {
+    color: #2E2E2E !important;
+    fill: #2E2E2E !important;
+}
 /* Íconos normales */
 [data-flux-menu-item] [data-flux-menu-item-icon] * {
   color: #2E2E2E;
 }
 
+/* Estilos para el contenedor del grupo de radio */
+[data-flux-menu-radio-group] {
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
+}
+
+/* Estilos para los items de radio individuales */
+[data-flux-menu-radio] {
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
+}
+
+/* Estilo hover para los items */
+[data-flux-menu-radio]:hover {
+  background-color: #F2F2F2 !important;
+  color: #2E2E2E !important;
+}
+
+/* Estilo para el item seleccionado (checked) */
+[data-flux-menu-radio][data-checked] {
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
+}
+
+/* Si hay íconos u otros elementos dentro */
+[data-flux-menu-radio] [data-flux-menu-item-icon] {
+  color: #2E2E2E !important;
+}
+
+[data-flux-menu] [data-flux-menu-radio-group],
+[data-flux-menu] [data-flux-menu-radio] {
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
+}
+
+[data-flux-menu] [data-flux-menu-radio]:hover {
+  background-color: #F2F2F2 !important;
+}
+
+.custom-radio-group,
+.custom-radio-item {
+  background-color: #FFFFFF !important;
+  color: #2E2E2E !important;
+}
+
+.custom-radio-item:hover {
+  background-color: #F2F2F2 !important;
+}
+
+/* Color del ícono en el radio item */
+[data-flux-menu-radio] [data-flux-menu-item-icon] {
+  color: #2E2E2E !important;
+}
+
+/* Color del ícono en hover (si es necesario) */
+[data-flux-menu-radio]:hover [data-flux-menu-item-icon] {
+  color: #2E2E2E !important;
+}
+
+/* Color del ícono cuando está seleccionado (checked) */
+[data-flux-menu-radio][data-checked] [data-flux-menu-item-icon] {
+  color: #2E2E2E !important;
+}
+
+/* Aplica a SVG (si Flux usa íconos SVG) */
+[data-flux-menu-radio] svg {
+  color: #2E2E2E !important;
+  fill: #2E2E2E !important;       /* Para íconos rellenos */
+}
+
+/* O si usa una clase específica para el ícono (ej: `.flux-icon`) */
+[data-flux-menu-radio] .flux-icon {
+  color: #2E2E2E !important;
+  
+}
+[data-flux-menu-item] .flux-icon:hover *{
+  color: #2E2E2E !important;
+  
+}
+/* Elimina el fondo del KBD y sus elementos hijos en hover */
