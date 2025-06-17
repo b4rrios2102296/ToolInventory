@@ -414,3 +414,46 @@ html.preload body {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
 }
+
+
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+    background-color: #F2F2F2; /* Match sidebar background */
+}
+
+/* Main Logo */
+.main-logo-wrapper {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.main-logo {
+    width: 225px;
+    height: auto;
+    max-width: 100%;
+}
+
+/* Secondary Logo */
+.secondary-logo-wrapper {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.secondary-logo {
+    width: 125px;
+    height: auto;
+    position: relative;
+    left: 10; /* Moves right by 30px */
+}
+
+/* Navlist adjustments */
+.main-navlist {
+    margin-top: -45px;
+    width: 100%;
+}

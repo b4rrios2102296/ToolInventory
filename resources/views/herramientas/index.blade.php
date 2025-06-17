@@ -226,7 +226,6 @@
             @endif
         </div>
     </div>
-@endsection
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -256,3 +255,4 @@
         });
     });
 </script>
+@endsection

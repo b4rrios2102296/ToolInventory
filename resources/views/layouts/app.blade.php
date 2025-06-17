@@ -9,9 +9,9 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    
+
     <title>{{ config('app.name') }}</title>
-    
+
     <!-- Favicon con versionado - PRIMER BLOQUE (ESENCIAL) -->
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}?v={{ time() }}" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}?v={{ time() }}">
@@ -26,31 +26,31 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet" />
     <script src="https://cdn.usefathom.com/script.js" data-site="KGGYBJLC" defer></script>
 
-    
+
     <!--<link rel="preload" as="style" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" /> -->
     <!-- <link rel="stylesheet" href="https://fluxui.dev/build/assets/app-Cu53mo6u.css" data-navigate-track="reload" /> -->
     @fluxAppearance
 </head>
 
 <script>
-  document.documentElement.classList.add('preload');
-  window.addEventListener('DOMContentLoaded', () => {
-    document.documentElement.classList.remove('preload');
-  });
-
-  // Interceptar formularios
-document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function(e) {
-        const transition = document.getElementById('page-transition');
-        transition.classList.add('active');
-        
-        // Pequeño delay para que se vea la transición
-        e.preventDefault();
-        setTimeout(() => {
-            this.submit();
-        }, 300);
+    document.documentElement.classList.add('preload');
+    window.addEventListener('DOMContentLoaded', () => {
+        document.documentElement.classList.remove('preload');
     });
-});
+
+    // Interceptar formularios
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const transition = document.getElementById('page-transition');
+            transition.classList.add('active');
+
+            // Pequeño delay para que se vea la transición
+            e.preventDefault();
+            setTimeout(() => {
+                this.submit();
+            }, 300);
+        });
+    });
 </script>
 
 
@@ -63,19 +63,22 @@ document.querySelectorAll('form').forEach(form => {
         <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
         <!-- Logo / Header -->
-        <div style="padding-bottom: 0; margin-top: -100px; margin-left: -90px;">
-            <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}"
-              class="mx-auto logo-img" />
-        </div>
+        <!-- Replace your current logo sections with this -->
+        <div class="logo-container">
+            <!-- Main logo -->
+            <div class="main-logo-wrapper">
+                <img src="{{ asset('Images/grand-velas-riviera-maya-mexico-logo.svg') }}" class="main-logo"
+                    alt="GRAND VELAS" />
+            </div>
 
-        <div class="flex flex-col items-center justify-center space-y-2 mb-8 mt-2 text-center">
-            <div style="padding-bottom: -50px; margin-top: -150px;">
-                <img src="{{ asset('Images/Group 64.svg') }}" class="icon-img" />
+            <!-- Secondary logo -->
+            <div class="secondary-logo-wrapper">
+                <img src="{{ asset('Images/Group 64.svg') }}" class="secondary-logo" alt="ToolInventory" />
             </div>
         </div>
 
         <!-- Navigation -->
-        <flux:navlist style="padding-bottom: -50; margin-top: -95px;">
+        <flux:navlist class="main-navlist">
             <flux:navlist.item icon="cog" href="{{ route('dashboard') }}" class="navlist-bold">Dashboard
             </flux:navlist.item>
             <flux:navlist.item icon="square-3-stack-3d" href="{{ route('resguardos.index') }}" class="navlist-bold">

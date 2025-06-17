@@ -1,4 +1,6 @@
 @extends('layouts.app')
+@fluxAppearance
+@section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex items-center mb-4">
         <div class="ml-4 mt-2">
@@ -227,3 +229,4 @@
         });
     });
 </script>
+@endsection
