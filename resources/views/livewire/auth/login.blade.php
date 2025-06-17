@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md">
-    <flux:text class="text-2xl font-bold mb-6 text-center" style="color: #2E2E2E; font-family: 'Athelas', serif;">
-        Iniciar Sesión
-    </flux:text>
+<flux:text class="text-2xl font-bold mb-6 text-center" style="color: #2E2E2E; font-family: 'Montserrat', sans-serif;">
+Iniciar Sesión
+</flux:text>
 
     @if(session('error'))
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">

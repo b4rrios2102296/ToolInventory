@@ -1,6 +1,6 @@
 <div class="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md">
     <div class="flex items-center mb-4">
-        <flux:text class="text-2xl font-bold flex-1 text-center" style="color: #2E2E2E; font-family: 'Athelas', serif;">
+        <flux:text class="text-2xl font-bold mb-6 text-center" style="color: #2E2E2E; font-family: 'Montserrat', sans-serif;">
             Registro de Usuario
         </flux:text>
     </div>
