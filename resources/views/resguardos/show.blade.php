@@ -42,7 +42,7 @@
                         class="w-full" />
                     <flux:input label="Asignado a" :value="$resguardo->asignado_nombre ?? 'No asignado'" readonly
                         class="w-full" />
-                    <flux:input label="Colaborador" :value="$resguardo->colaborador_num" readonly class="w-full" />
+                    <flux:input label="# Colaborador" :value="$resguardo->colaborador_num" readonly class="w-full" />
                     <flux:input label="Fecha de Resguardo"
                         :value="\Carbon\Carbon::parse($resguardo->fecha_captura)->format('d/m/Y')" readonly
                         class="w-full" />
