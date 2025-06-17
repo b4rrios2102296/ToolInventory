@@ -53,6 +53,7 @@ h1 {
 
 
 
+
 table {
   box-shadow: 0px 4px 10px rgba(46, 46, 46, 0.25);
   border: 1px solid #2E2E2E;
@@ -323,7 +324,6 @@ body {
 }
 
 /* ===== DROPDOWN MENU STYLES ===== */
-/* ===== TEXT INPUT STYLES ===== */
 [data-flux-modal] textarea,
 [data-flux-modal] input {
   border: 1px solid #e5e7eb !important;
@@ -354,42 +354,7 @@ body {
 
 
 
-/* Asegurar que el dropdown también mantenga su estilo en modo claro */
-[data-flux-dropdown] [data-flux-menu] {
-  background: #FFFFFF !important;
-  border: 1px solid #2E2E2E !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
 
-/* Asegurar que el dropdown también mantenga su estilo en modo claro */
-
-
-
-
-/* Force light mode styles */
-[data-flux-menu-item] {
-  transition: all 0.3s ease !important;
-  color: #2E2E2E !important;
-  background-color: #FFFFFF !important;
-  /* Force white background */
-}
-
-/* Ensure hover works properly */
-[data-flux-menu-item]:hover {
-  background-color: #F2F2F2 !important;
-  transition: all 0.3s ease !important;
-  color: #2E2E2E !important;
-}
-
-/* Ensure icons are always visible */
-[data-flux-menu-item] [data-flux-icon] {
-  opacity: 1 !important;
-  width: 16px !important;
-  height: 16px !important;
-  display: inline-block !important;
-  filter: none !important;
-  /* Prevent dark mode filters */
-}
 
 .logo-img {
   width: 225px;
@@ -460,4 +425,56 @@ html.preload body {
 .main-navlist {
   margin-top: -45px;
   width: 100%;
+}
+/* Estilo base del menú */
+[data-flux-menu] {
+  background-color: #FFFFFF;
+  color: #2E2E2E;
+  border: 1px solid #2E2E2E;
+}
+
+/* Items normales */
+[data-flux-menu-item]  {
+  color: #2E2E2E;
+}
+
+[data-flux-menu-item]:not(.danger):hover * {
+  color: #2E2E2E !important;
+
+  
+}
+
+
+/* Íconos normales */
+[data-flux-menu-item] [data-flux-menu-item-icon] * {
+  color: #2E2E2E;
+}
+
+/* Variante danger - FORZANDO ESTILOS CON SELECTORES MUY ESPECÍFICOS */
+[data-flux-menu-item][variant="danger"],
+[data-flux-menu-item].danger {
+  color: #2E2E2E !important;
+}
+
+[data-flux-menu] [data-flux-menu-item][variant="danger"]:hover,
+[data-flux-menu] [data-flux-menu-item].danger:hover {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+}
+
+[data-flux-menu] [data-flux-menu-item][variant="danger"]:hover [data-flux-menu-item-icon],
+[data-flux-menu] [data-flux-menu-item].danger:hover [data-flux-menu-item-icon] * {
+  color: #B91C1C !important;
+}
+
+/* Para el estado data-active (que usa Flux internamente) */
+[data-flux-menu] [data-flux-menu-item][variant="danger"][data-active],
+[data-flux-menu] [data-flux-menu-item].danger[data-active] * {
+  background-color: #FEE2E2 !important;
+  color: #B91C1C !important;
+}
+
+[data-flux-menu] [data-flux-menu-item][variant="danger"][data-active] [data-flux-menu-item-icon],
+[data-flux-menu] [data-flux-menu-item].danger[data-active] [data-flux-menu-item-icon] * {
+  color: #B91C1C !important;
 }
