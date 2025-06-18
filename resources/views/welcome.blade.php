@@ -104,6 +104,7 @@
             pointer-events: none;
             user-select: none;
             -webkit-user-drag: none;
+               width: 700px;
         }
 
 
@@ -144,6 +145,10 @@
 </head>
 
 <body class="min-h-screen flex items-center justify-center">
+<div>
+    <img src="{{ asset('Images/Assets-velasresorts9.png') }}" style="position: absolute; top: 20px; left: 20px; width: 150px; height: auto;" />
+</div>
+
     <div class="auth-container">
         <div>
             <img src="{{ asset('Images/TLW.svg') }}" alt="ToolInventory Logo" class="brand-logo" />
