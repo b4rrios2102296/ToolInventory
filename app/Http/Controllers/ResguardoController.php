@@ -148,25 +148,26 @@ class ResguardoController extends Controller
                     ->where('estado', '1')
                     ->first();
 
-            $pdf = Pdf::loadView('resguardos.pdf', [
-                'resguardo' => $resguardo,
-                'herramienta' => $herramienta,
-                'detalles' => $detalles,
-                'colaborador' => $colaborador
-            ]);
-            
-            $pdfPath = "resguardos/{$folio}.pdf";
-            Storage::put($pdfPath, $pdf->output());
-
-            // Redirigir al index con datos para abrir PDF
-            return redirect()
-                ->route('resguardos.index')
-                ->with([
-                    'success' => 'Resguardo creado correctamente',
-                    'open_pdf' => true,
-                    'pdf_url' => route('resguardos.viewPDF', $folio),
-                    'folio' => $folio
+                $pdf = Pdf::loadView('resguardos.pdf', [
+                    'resguardo' => $resguardo,
+                    'herramienta' => $herramienta,
+                    'detalles' => $detalles,
+                    'colaborador' => $colaborador
                 ]);
+
+                $pdfPath = "resguardos/{$folio}.pdf";
+                Storage::put($pdfPath, $pdf->output());
+
+                // Redirigir al index con datos para abrir PDF
+                return redirect()
+                    ->route('resguardos.show', $folio)
+                    ->with([
+                        'from_create' => true,  // Nueva bandera
+                        'success' => 'Resguardo creado correctamente',
+                        'open_pdf' => true,
+                        'pdf_url' => route('resguardos.viewPDF', $folio),
+                        'folio' => $folio
+                    ]);
 
             });
         } catch (\Exception $e) {

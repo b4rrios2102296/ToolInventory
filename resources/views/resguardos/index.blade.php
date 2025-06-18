@@ -279,24 +279,4 @@
         });
     });
 </script>
-@if(session('open_pdf'))
-<script>
-    // Verificar si SweetAlert2 está cargado
-    if (typeof Swal !== 'undefined') {
-        Swal.fire({
-            toast: true,
-            position: 'top-end',
-            icon: 'success',
-            title: '{{ session('success') }}',
-            showConfirmButton: false,
-            timer: 3000
-        });
-    } else {
-        console.log('Resguardo {{ session('folio') }} creado correctamente');
-    }
-
-    // Abrir PDF en nueva pestaña
-    window.open("{{ session('pdf_url') }}", '_blank');
-</script>
-@endif
 @endsection
