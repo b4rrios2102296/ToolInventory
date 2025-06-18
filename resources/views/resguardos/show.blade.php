@@ -2,7 +2,7 @@
 @fluxAppearance
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-1">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
                 <flux:button icon="arrow-left" onclick="window.history.back()">Volver</flux:button>
