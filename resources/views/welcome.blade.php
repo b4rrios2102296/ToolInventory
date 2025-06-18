@@ -39,11 +39,11 @@
             }, 100);
         });
 
-          document.addEventListener('contextmenu', function (e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-    }
-  });
+        document.addEventListener('contextmenu', function (e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
     </script>
     <style>
         .page-transition {
@@ -104,24 +104,27 @@
             pointer-events: none;
             user-select: none;
             -webkit-user-drag: none;
-               width: 700px;
+            width: 900px;
         }
 
 
         .auth-card {
+            align-items: center;
             width: 300px;
             /* Smaller than logo */
-            margin-top: 1.5rem;
+            margin-top: -5.4rem;
             background: transparent;
             backdrop-filter: none;
             border: none;
             padding: 0;
+            margin-bottom: 30px;
         }
 
         .auth-button {
+            align-items: center;
             display: block;
             width: 100%;
-            padding: 0.8rem;
+            padding: 0.9rem;
             text-align: center;
             color: white;
             background-color: #A4957D;
@@ -145,9 +148,10 @@
 </head>
 
 <body class="min-h-screen flex items-center justify-center">
-<div>
-    <img src="{{ asset('Images/Assets-velasresorts9.png') }}" style="position: absolute; top: 20px; left: 20px; width: 150px; height: auto;" />
-</div>
+    <div>
+        <img src="{{ asset('Images/Assets-velasresorts9.png') }}"
+            style="position: absolute; top: 20px; left: 20px; width: 150px; height: auto;" />
+    </div>
 
     <div class="auth-container">
         <div>
