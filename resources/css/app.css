@@ -240,7 +240,52 @@ body {
   color: #71717a !important;
   background: transparent !important;
 }
+[data-flux-modal],
+[data-flux-modal] dialog,
+[data-flux-modal] *:not([data-flux-button]):not([data-flux-button] *) {
+  background-color: white !important;
+  color: #2E2E2E !important;
+}
 
+/* Bordes (si el modal los usa) */
+[data-flux-modal] {
+  border-color: #e5e7eb !important;
+}
+
+/* ===== COMPONENTES INTERNOS ===== */
+/* Títulos */
+[data-flux-modal] h2,
+[data-flux-modal] [data-flux-component="heading"] {
+  color: inherit !important;
+}
+
+/* Botón primario (Confirmar) */
+[data-flux-modal] [data-flux-button][variant="primary"] {
+  background-color: #2E2E2E !important;
+  color: white !important;
+}
+
+/* Botón de cerrar */
+[data-flux-modal] [data-flux-button][alt="Close modal"] {
+  color: #71717a !important;
+  background: transparent !important;
+}
+
+/* Inputs/Textareas */
+[data-flux-modal] input,
+[data-flux-modal] textarea {
+  background-color: white !important;
+  border-color: #e5e7eb !important;
+}
+
+/* ===== BLOQUEO DEL DARK MODE ===== */
+/* Anula cualquier estilo oscuro heredado */
+.dark [data-flux-modal],
+[data-mode="dark"] [data-flux-modal],
+[data-theme="dark"] [data-flux-modal] {
+  --flux-bg-color: white !important;
+  --flux-text-color: #2E2E2E !important;
+}
 
 
 /* ===== INPUTS Y TEXTAREAS ===== */
