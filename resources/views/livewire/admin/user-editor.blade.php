@@ -1,101 +1,174 @@
 @extends('layouts.app')
+@fluxAppearance
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    @if(auth()->user()->hasPermission('user_audit'))
-        <h1 class="text-2xl font-bold mb-6">Editor de Usuarios</h1>
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex items-center mb-4">
+            <div class="ml-4 mt-2">
+                @if(request()->has('selected'))
+                    <flux:button icon="arrow-left" href="{{ route('admin.user-editor') }}">
+                        Volver
+                    </flux:button>
+                @endif
+            </div>
+            <h1 class="text-2xl font-bold flex-1 text-center">Editor de Usuarios</h1>
+        </div>
 
-        @if(session()->has('success'))
+        @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
                 {{ session('success') }}
             </div>
         @endif
 
-        @if(session()->has('error'))
+        @if(session('error'))
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                 {{ session('error') }}
             </div>
         @endif
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- User List -->
-            <div class="bg-white p-6 rounded-lg shadow">
+        <!-- Filtro de búsqueda -->
+        <div class="mb-6">
+            <form action="{{ route('admin.user-editor') }}" method="GET">
+                <div class="flex items-center">
+                    <flux:input type="search" name="search" placeholder="Buscar usuarios..." value="{{ request('search') }}"
+                        class="flex-1" icon="magnifying-glass" />
+                    <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Buscar
+                    </button>
+                    @if(request('search'))
+                        <a href="{{ route('admin.user-editor') }}"
+                            class="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                            Limpiar
+                        </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Lista de usuarios -->
+            <div class="bg-white rounded shadow p-6">
                 <h2 class="text-xl font-semibold mb-4">Lista de Usuarios</h2>
                 <ul class="divide-y divide-gray-200">
-                    @foreach($users as $u)
-                        <li class="py-4 hover:bg-gray-50 px-2 cursor-pointer {{ request('selected') == $u->id ? 'bg-blue-50' : '' }}">
+                    @forelse($users as $u)
+                        <li
+                            class="py-4 px-2 hover:bg-gray-50 cursor-pointer {{ request('selected') == $u->id ? 'bg-blue-50' : '' }}">
                             <a href="?selected={{ $u->id }}">
-                                <div class="ml-4">
-                                    <p class="text-sm font-medium text-gray-900">{{ $u->nombre }} {{ $u->apellidos }}</p>
-                                    <p class="text-xs text-gray-400">Rol: {{ $u->role->nombre ?? 'Sin rol' }}</p>
-                                </div>
+                                <p class="text-sm font-medium text-gray-900">{{ $u->nombre }} {{ $u->apellidos }}</p>
+                                <p class="text-xs text-gray-400">Rol: {{ $u->role->nombre ?? 'Sin rol' }}</p>
                             </a>
                         </li>
-                    @endforeach
+                    @empty
+                        <li class="py-4 px-2 text-center text-gray-500">
+                            No se encontraron usuarios
+                        </li>
+                    @endforelse
                 </ul>
+
+                <!-- Paginación -->
+                @if($users->hasPages())
+                    <div class="mt-4">
+                        {{ $users->appends(request()->query())->links() }}
+                    </div>
+                @endif
             </div>
 
-            <!-- User Editor -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                @if(request()->has('selected') && $selectedUser = \App\Models\Usuario::find(request('selected')))
+            <!-- Editor de usuario -->
+            @if(request()->has('selected') && $selectedUser = \App\Models\Usuario::find(request('selected')))
+                <div class="bg-white rounded shadow p-6">
                     <h2 class="text-xl font-semibold mb-4">Editar Usuario</h2>
-                    <form method="POST" action="{{ route('admin.user-update', ['usuario' => $selectedUser->id]) }}">
+                    <form method="POST" action="{{ route('admin.user-update', ['usuario' => $selectedUser->id]) }}"
+                        class="space-y-4">
                         @csrf
                         @method('PUT')
 
-                        <!-- Campos del formulario -->
-                        <div class="mb-4">
-                            <label for="numero_colaborador" class="block font-medium">Número de Colaborador</label>
-                            <input type="number" name="numero_colaborador" value="{{ $selectedUser->numero_colaborador }}" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="numero_colaborador">Número de Colaborador</flux:label>
+                            <flux:input id="numero_colaborador" name="numero_colaborador" type="number"
+                                value="{{ $selectedUser->numero_colaborador }}" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="nombre" class="block font-medium">Nombre</label>
-                            <input type="text" name="nombre" value="{{ $selectedUser->nombre }}" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="nombre">Nombre</flux:label>
+                            <flux:input id="nombre" name="nombre" value="{{ $selectedUser->nombre }}" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="apellidos" class="block font-medium">Apellidos</label>
-                            <input type="text" name="apellidos" value="{{ $selectedUser->apellidos }}" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="apellidos">Apellidos</flux:label>
+                            <flux:input id="apellidos" name="apellidos" value="{{ $selectedUser->apellidos }}" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="nombre_usuario" class="block font-medium">Nombre de Usuario</label>
-                            <input type="text" name="nombre_usuario" value="{{ $selectedUser->nombre_usuario }}" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="nombre_usuario">Nombre de Usuario</flux:label>
+                            <flux:input id="nombre_usuario" name="nombre_usuario" value="{{ $selectedUser->nombre_usuario }}" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="password" class="block font-medium">Nueva Contraseña</label>
-                            <input type="password" name="password" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="password">Nueva Contraseña</flux:label>
+                            <flux:input id="password" name="password" type="password" />
                         </div>
 
-                        <div class="mb-4">
-                            <label for="password_confirmation" class="block font-medium">Confirmar Contraseña</label>
-                            <input type="password" name="password_confirmation" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="password_confirmation">Confirmar Contraseña</flux:label>
+                            <flux:input id="password_confirmation" name="password_confirmation" type="password" />
                         </div>
 
-                        <div class="mb-6">
-                            <label for="rol_id" class="block font-medium">Rol</label>
-                            <select name="rol_id" class="w-full border rounded px-3 py-2">
+                        <div>
+                            <flux:label for="rol_id">Rol</flux:label>
+                            <flux:select name="rol_id" id="rol_id" class="w-full">
                                 @foreach($roles as $rol)
                                     <option value="{{ $rol->id }}" {{ $selectedUser->rol_id == $rol->id ? 'selected' : '' }}>
                                         {{ $rol->nombre }}
                                     </option>
                                 @endforeach
-                            </select>
+                            </flux:select>
                         </div>
 
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Actualizar Usuario
-                        </button>
+                        <div class="flex justify-end gap-4">
+                            @if($selectedUser->id !== auth()->id())
+                                <flux:modal.trigger name="eliminar-usuario-{{ $selectedUser->id }}">
+                                    <flux:button icon="trash" variant="danger">
+                                        Eliminar
+                                    </flux:button>
+                                </flux:modal.trigger>
+
+                            @endif
+                            <flux:button icon="document-check" type="submit"
+                                class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                Actualizar Usuario
+                            </flux:button>
+                        </div>
                     </form>
-                @endif
-            </div>
+
+                    <!-- Modal para eliminar usuario -->
+                    <flux:modal name="eliminar-usuario-{{ $selectedUser->id }}" class="md:w-96">
+                        <div class="space-y-6">
+                            <flux:heading size="lg">Eliminar Usuario</flux:heading>
+                            <flux:text class="mt-2">
+                                ¿Estás seguro de que deseas eliminar a {{ $selectedUser->nombre }}? Esta acción no se puede
+                                deshacer.
+                            </flux:text>
+
+                            <form action="{{ route('admin.user-delete', $selectedUser->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <div class="flex justify-end gap-4 mt-4">
+                                    <flux:button href="{{ route('admin.user-editor') }}" variant="outline">
+                                        Cancelar
+                                    </flux:button>
+
+                                    <flux:button type="submit" variant="danger"
+                                        style="background-color:#dc2626 !important; color:white !important">
+                                        Confirmar
+                                    </flux:button>
+                                </div>
+                            </form>
+                        </div>
+                    </flux:modal>
+
+
+                </div>
+            @endif
         </div>
-    @else
-        <div class="bg-white p-6 rounded-lg shadow text-center py-8">
-            <p class="text-red-500">No tienes acceso a esta vista.</p>
-        </div>
-    @endif
-</div>
+    </div>
 @endsection

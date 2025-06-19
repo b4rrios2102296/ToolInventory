@@ -204,7 +204,7 @@
                                     <div class="flex mt-4">
                                         <flux:spacer />
                                         <flux:button type="submit" variant="danger"
-                                            style="all:unset !important; background-color:#dc2626 !important; color:white !important; padding:0.5rem 1.25rem !important; border-radius:0.375rem !important;">
+                                            style="background-color:#dc2626 !important; color:white !important">
                                             Eliminar
                                         </flux:button>
                                 </form>
@@ -227,32 +227,32 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchInput');
-        let searchTimer;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimer;
 
-        searchInput.addEventListener('input', function () {
-            clearTimeout(searchTimer);
+            searchInput.addEventListener('input', function () {
+                clearTimeout(searchTimer);
 
-            searchTimer = setTimeout(function () {
-                const searchValue = searchInput.value;
+                searchTimer = setTimeout(function () {
+                    const searchValue = searchInput.value;
 
-                fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newTable = doc.querySelector('tbody');
-                        const newPagination = doc.querySelector('.pagination');
+                    fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newTable = doc.querySelector('tbody');
+                            const newPagination = doc.querySelector('.pagination');
 
-                        document.querySelector('tbody').innerHTML = newTable.innerHTML;
-                        if (newPagination) {
-                            document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
-                        }
-                    });
-            }, 500);
+                            document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                            if (newPagination) {
+                                document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                            }
+                        });
+                }, 500);
+            });
         });
-    });
-</script>
+    </script>
 @endsection

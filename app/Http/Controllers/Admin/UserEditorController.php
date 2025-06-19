@@ -16,6 +16,7 @@ class UserEditorController extends Controller
     public function index()
     {
 
+
         if (!auth()->user()->hasPermission('user_audit')) {
             dd([
                 'user' => auth()->user(),
@@ -24,10 +25,12 @@ class UserEditorController extends Controller
             ]);
         }
 
-        $users = Usuario::all();
-        $roles = Role::all();
+        $users = \App\Models\Usuario::with('role')->paginate(10); // 10 users per page
+        $roles = \App\Models\Role::all();
 
         return view('livewire.admin.user-editor', compact('users', 'roles'));
+
+
     }
 
     public function update(Request $request, Usuario $usuario)
@@ -59,5 +62,18 @@ class UserEditorController extends Controller
 
         return redirect()->route('admin.user-editor', ['selected' => $usuario->id])
             ->with('success', 'Usuario actualizado correctamente.');
+    }
+
+    public function destroy(Usuario $usuario)
+    {
+        // Prevent deleting yourself
+        if ($usuario->id == auth()->id()) {
+            return back()->with('error', 'No puedes eliminarte a ti mismo');
+        }
+
+        $usuario->delete();
+
+        return redirect()->route('admin.user-editor')
+            ->with('success', 'Usuario eliminado correctamente');
     }
 }

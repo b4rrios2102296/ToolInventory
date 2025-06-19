@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
 
             Route::put('/user-editor/update/{usuario}', [UserEditorController::class, 'update'])
                 ->name('admin.user-update');
+
+            Route::delete('/users/{usuario}', [UserEditorController::class, 'destroy'])
+                ->name('admin.user-delete');
         });
 
 
