@@ -2,12 +2,26 @@
 @fluxAppearance
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center mb-4">
-            <div class="ml-4 mt-2">
-                <flux:button icon="arrow-left" onclick="window.history.back()">Volver</flux:button>
-            </div>
-
+<div class="flex items-center mb-4">
+    <div class="ml-4 mt-2">
+        @if(session('from_create'))
+            <flux:button 
+                href="{{ route('resguardos.index') }}" 
+                icon="arrow-left"
+                class="flex items-center"
+            >
+                Volver al Listado
+            </flux:button>
+        @else
+            <flux:button 
+                onclick="window.history.back()" 
+                icon="arrow-left"
+                class="flex items-center"
+            >
+                Volver
+            </flux:button>
+        @endif
+    </div>
             <h1 class="text-2xl font-bold flex-1 text-center">Información de Resguardo #{{ $resguardo->folio }}</h1>
         </div>
 
@@ -88,3 +102,23 @@
         </div>
     </div>
 @endsection
+@if(session('open_pdf'))
+<script>
+    // Verificar si SweetAlert2 está cargado
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000
+        });
+    } else {
+        console.log('Resguardo {{ session('folio') }} creado correctamente');
+    }
+
+    // Abrir PDF en nueva pestaña
+    window.open("{{ session('pdf_url') }}", '_blank');
+</script>
+@endif

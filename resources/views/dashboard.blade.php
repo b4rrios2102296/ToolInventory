@@ -2,7 +2,7 @@
 @fluxAppearance
 @section('content')
     <div class="overflow-x-auto">
-        <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 py-1">
             <div class="space-y-6">
                 <div>
                     <h1 class="text-2xl font-bold mb-6 text-center">Últimos Resguardos</h1>

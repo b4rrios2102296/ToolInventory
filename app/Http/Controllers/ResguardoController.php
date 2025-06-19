@@ -155,11 +155,20 @@ class ResguardoController extends Controller
                     'colaborador' => $colaborador
                 ]);
 
-                // Store the PDF in storage
                 $pdfPath = "resguardos/{$folio}.pdf";
                 Storage::put($pdfPath, $pdf->output());
 
-                return $pdf->stream("resguardo_{$folio}.pdf");
+                // Redirigir al index con datos para abrir PDF
+                return redirect()
+                    ->route('resguardos.show', $folio)
+                    ->with([
+                        'from_create' => true,  // Nueva bandera
+                        'success' => 'Resguardo creado correctamente',
+                        'open_pdf' => true,
+                        'pdf_url' => route('resguardos.viewPDF', $folio),
+                        'folio' => $folio
+                    ]);
+
             });
         } catch (\Exception $e) {
             Log::error('Error creating resguardo: ' . $e->getMessage());

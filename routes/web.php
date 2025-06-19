@@ -31,7 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/herramientas/pdf', [HerramientaController::class, 'generarPDF'])->name('herramientas.pdf');
     Route::get('/herramientas/excel', [HerramientaController::class, 'generarExcel'])->name('herramientas.excel');
     Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas.index');
-
+Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'viewPDF'])
+    ->name('resguardos.viewPDF');
     // Exportaciones para todos los usuarios autenticados
     Route::resource('herramientas', HerramientaController::class)->only(['index', 'create', 'store']);
     Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
