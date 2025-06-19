@@ -24,30 +24,42 @@ class Usuario extends Authenticatable
         'activo',
     ];
 
-protected $hidden = [
-    'password',
-    'remember_token',
-];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
     // In your User model (app/Models/User.php or app/Models/Usuario.php)
 
 
 
-public function role()
-{
-    return $this->belongsTo(Role::class, 'rol_id');
-}
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'rol_id');
+    }
 
-public function permissions()
-{
-    // Relación a través del rol
-    return $this->role ? $this->role->permisos() : collect();
-}
+    public function permissions()
+    {
+        // Relación a través del rol
+        return $this->role ? $this->role->permisos() : collect();
+    }
 
-public function hasPermission(string $clave): bool
-{
-    // Busca el permiso por clave en los permisos del rol
-    return $this->role && $this->role->permisos->where('clave', $clave)->isNotEmpty();
-}
+    // Método existente (sin cambios)
+    public function hasPermission(string $clave): bool
+    {
+        // Verifica si el permiso existe en los permisos del rol
+        return $this->role && $this->role->permisos->where('clave', $clave)->isNotEmpty();
+    }
 
+    // Añade este método para compatibilidad con @can y middleware
+   public function can($ability, $arguments = [])
+{
+    // Para compatibilidad con @can y Gate
+    if ($this->hasPermission($ability)) {
+        return true;
+    }
+    
+    // Opcional: lógica adicional si necesitas
+    return parent::can($ability, $arguments);
+}
 }

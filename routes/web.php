@@ -10,9 +10,7 @@ use App\Http\Controllers\UserActionsController;
 use Illuminate\Contracts\View\View;
 use App\Http\Controllers\UserActionsPDFController;
 use App\Http\Controllers\DashboardController;
-
-
-
+use App\Http\Controllers\Admin\UserEditorController;
 
 Route::get('/', fn(): View => view('welcome'))->name('home');
 Route::get('/test', fn(): View => view('livewire.test'))->name('test');
@@ -31,8 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/herramientas/pdf', [HerramientaController::class, 'generarPDF'])->name('herramientas.pdf');
     Route::get('/herramientas/excel', [HerramientaController::class, 'generarExcel'])->name('herramientas.excel');
     Route::get('/herramientas', [HerramientaController::class, 'index'])->name('herramientas.index');
-Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'viewPDF'])
-    ->name('resguardos.viewPDF');
+    Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'viewPDF'])
+        ->name('resguardos.viewPDF');
     // Exportaciones para todos los usuarios autenticados
     Route::resource('herramientas', HerramientaController::class)->only(['index', 'create', 'store']);
     Route::get('/herramientas/buscar', [HerramientaController::class, 'buscarHerramienta'])->name('herramientas.buscar');
@@ -57,7 +55,6 @@ Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'viewPDF'])
 
 
 
-
     // Colaboradores
     Route::get('/colaboradores', [ColaboradorController::class, 'index'])->name('colaboradores');
 
@@ -66,8 +63,18 @@ Route::get('/resguardos/{folio}/pdf', [ResguardoController::class, 'viewPDF'])
     Route::post('/logout', [Login::class, 'logout'])->name('logout');
 
     // Rutas solo para administradores
-    Route::middleware('permission:user_audit')->group(function () {
-        Route::get('/user-audit', [UserActionsController::class, 'index'])->middleware(['auth', 'permission:user_audit']);
+    Route::middleware(['auth', 'check.permission:user_audit'])->group(function () {
+        Route::get('/user-audit', [UserActionsController::class, 'index']);
+
+        Route::prefix('admin')->group(function () {
+            Route::get('/user-editor', [UserEditorController::class, 'index'])
+                ->name('admin.user-editor');
+
+            Route::put('/user-editor/update/{usuario}', [UserEditorController::class, 'update'])
+                ->name('admin.user-update');
+        });
+
+
         Route::get('/acciones', [UserActionsController::class, 'index'])->name('acciones');
         Route::get('/register', Register::class)->name('register');
         Route::delete('/resguardos/{folio}', [ResguardoController::class, 'destroy'])->name('resguardos.delete');
