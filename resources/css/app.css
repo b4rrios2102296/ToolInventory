@@ -168,93 +168,53 @@ body {
   --flux-bg-color: #ffffff !important;
 }
 
-/* ===== MODAL CORE STYLES ===== */
-[data-flux-modal] {
+/* ===== RESET PARA FORZAR MODO LIGHT ===== */
+[data-flux-modal] dialog *{
   color: #2E2E2E !important;
-  background-color: white !important;
+}
+[data-flux-modal] button *{
+  color: #ffffff !important;
+}
+[data-flux-modal] button *{
+  color: #ffffff !important;
 }
 
-[data-flux-modal] * {
-  color: inherit !important;
+
+
+/* Opcional: Si necesitas que algunos elementos hijos hereden el color (pero no todos) */
+[data-flux-modal] flux-heading,
+[data-flux-modal] [data-flux-component="heading"],
+[data-flux-modal] h2,
+[data-flux-modal] flux-text,
+[data-flux-modal] [data-flux-component="text"],
+[data-flux-modal] p {
+  color: inherit !important; /* Hereda del dialog */
 }
 
-/* ===== HEADING STYLES ===== */
+/* ===== ESTILOS BASE DEL MODAL ===== */
+[data-flux-modal] {
+  border-color: transparent !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ===== TÍTULOS Y TEXTOS ===== */
 [data-flux-modal] flux-heading,
 [data-flux-modal] [data-flux-component="heading"],
 [data-flux-modal] h2 {
-  color: #2E2E2E !important;
   font-size: 1.25rem !important;
   font-weight: 600 !important;
   margin-bottom: 0.5rem !important;
 }
 
-/* ===== BODY TEXT STYLES ===== */
 [data-flux-modal] flux-text,
 [data-flux-modal] [data-flux-component="text"],
 [data-flux-modal] p {
-  color: #2E2E2E !important;
   margin-bottom: 1rem !important;
 }
 
-/* ===== DANGER BUTTON PROTECTION ===== */
-[data-flux-modal] [data-flux-button][variant="danger"] {
-  background-color: #dc2626 !important;
-  /* Force red-600 */
-  color: white !important;
-  border: none !important;
-  padding: 0.5rem 1.25rem !important;
-  border-radius: 0.375rem !important;
-  /* Reset any conflicting styles */
-  background-image: none !important;
-  box-shadow: none !important;
-}
-
-[data-flux-modal] [data-flux-button][variant="danger"]:hover {
-  background-color: #b91c1c !important;
-  /* Force red-700 on hover */
-  /* Important: Disable any gradient or other effects */
-  background-image: none !important;
-}
-
-/* ===== PRIMARY BUTTON STYLES (ONLY FOR NON-DANGER) ===== */
-[data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"]) {
-  background-color: #A4957D !important;
-  color: white !important;
-  /* Ensure these don't apply to danger button */
-}
-
-/* ===== NUCLEAR OPTION FOR DANGER BUTTON ===== */
-/* If the above isn't working, try this more aggressive approach */
-[data-flux-modal] [data-flux-button][variant="danger"],
-[data-flux-modal] [data-flux-button][type="danger"],
-[data-flux-modal] [data-flux-button].danger {
-  all: unset !important;
-  /* Complete reset */
-  background: #dc2626 !important;
-  color: white !important;
-  padding: 0.5rem 1.25rem !important;
-  border-radius: 0.375rem !important;
-  cursor: pointer !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-weight: 500 !important;
-}
-
-[data-flux-modal] [data-flux-button][variant="danger"]:hover,
-[data-flux-modal] [data-flux-button][type="danger"]:hover,
-[data-flux-modal] [data-flux-button].danger:hover {
-  background: #b91c1c !important;
-}
-
-[data-flux-modal] {
-  --danger-bg: #dc2626 !important;
-  --danger-text: white !important;
-}
-
-/* ===== CONFIRM BUTTON ===== */
-[data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"]) {
-  background-color: #A4957D !important;
+/* ===== BOTÓN PRIMARIO (CONFIRMAR) ===== */
+[data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"])  {
+  background-color: #A4957D !important; /* Color oscuro para contraste */
   color: white !important;
   border: none !important;
   padding: 0.5rem 1.25rem !important;
@@ -262,94 +222,42 @@ body {
 }
 
 [data-flux-modal] [data-flux-button]:not([variant="danger"]):not([alt="Close modal"]):hover {
-  background-color: #8C7A5D !important;
+  background-color: #A4957D !important; /* Tonos oscuros para hover */
 }
 
-/* ===== TEXT INPUT STYLES ===== */
+/* ===== BOTÓN DE PELIGRO (EJ. "ELIMINAR") ===== */
+[data-flux-modal] [data-flux-button][variant="danger"] {
+  background-color: #dc2626 !important;
+  color: white !important;
+}
+
+[data-flux-modal] [data-flux-button][variant="danger"]:hover {
+  background-color: #b91c1c !important;
+}
+
+/* ===== BOTÓN DE CERRAR ===== */
+[data-flux-modal] [data-flux-button][alt="Close modal"] * {
+  color: #71717a !important;
+  background: transparent !important;
+}
+
+
+
+/* ===== INPUTS Y TEXTAREAS ===== */
 [data-flux-modal] textarea,
 [data-flux-modal] input {
   border: 1px solid #e5e7eb !important;
   border-radius: 0.375rem !important;
   padding: 0.5rem !important;
-  color: #2E2E2E !important;
   background-color: white !important;
 }
 
-/* ===== LABEL STYLES ===== */
+/* ===== ETIQUETAS ===== */
 [data-flux-modal] [data-flux-label],
 [data-flux-modal] label {
-  color: #2E2E2E !important;
   font-weight: 500 !important;
   margin-bottom: 0.25rem !important;
   display: block !important;
-}
-
-/* ===== CLOSE BUTTON ===== */
-[data-flux-modal] [data-flux-button][alt="Close modal"] {
-  color: #71717a !important;
-  background: transparent !important;
-}
-
-[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
-  color: #2E2E2E !important;
-}
-
-/* ===== TEXT INPUT STYLES ===== */
-[data-flux-modal] textarea,
-[data-flux-modal] input {
-  border: 1px solid #e5e7eb !important;
-  border-radius: 0.375rem !important;
-  padding: 0.5rem !important;
-  color: #2E2E2E !important;
-  background-color: white !important;
-}
-
-/* ===== LABEL STYLES ===== */
-[data-flux-modal] [data-flux-label],
-[data-flux-modal] label {
-  color: #2E2E2E !important;
-  font-weight: 500 !important;
-  margin-bottom: 0.25rem !important;
-  display: block !important;
-}
-
-/* ===== CLOSE BUTTON ===== */
-[data-flux-modal] [data-flux-button][alt="Close modal"] {
-  color: #71717a !important;
-  background: transparent !important;
-}
-
-[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
-  color: #2E2E2E !important;
-}
-
-/* ===== DROPDOWN MENU STYLES ===== */
-[data-flux-modal] textarea,
-[data-flux-modal] input {
-  border: 1px solid #e5e7eb !important;
-  border-radius: 0.375rem !important;
-  padding: 0.5rem !important;
-  color: #2E2E2E !important;
-  background-color: white !important;
-}
-
-/* ===== LABEL STYLES ===== */
-[data-flux-modal] [data-flux-label],
-[data-flux-modal] label {
-  color: #2E2E2E !important;
-  font-weight: 500 !important;
-  margin-bottom: 0.25rem !important;
-  display: block !important;
-}
-
-/* ===== CLOSE BUTTON ===== */
-[data-flux-modal] [data-flux-button][alt="Close modal"] {
-  color: #71717a !important;
-  background: transparent !important;
-}
-
-[data-flux-modal] [data-flux-button][alt="Close modal"]:hover {
-  color: #2E2E2E !important;
 }
 
 
