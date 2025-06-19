@@ -21,6 +21,9 @@ class Register extends Component
         'apellidos' => 'required|string|max:100',
         'nombre_usuario' => 'required|string|max:50|unique:usuarios',
         'password' => 'required|string|min:8|confirmed',
+        'rol_id' => 'required|exists:roles,id',
+
+
     ];
 
     protected $messages = [
@@ -41,6 +44,8 @@ class Register extends Component
         'password.string' => 'La contraseña debe ser texto',
         'password.min' => 'La contraseña debe tener al menos 8 caracteres',
         'password.confirmed' => 'Las contraseñas no coinciden',
+        'rol_id.required' => 'Seleccionar un rol es obligatorio',
+
     ];
 
     public function render()
@@ -59,12 +64,20 @@ class Register extends Component
             'apellidos' => $this->apellidos,
             'nombre_usuario' => $this->nombre_usuario,
             'password' => Hash::make($this->password),
-            'rol_id' => 2, // Rol por defecto (Normal)
+            'rol_id' => $this->rol_id,
             'activo' => true,
         ]);
-
         session()->flash('message', 'Registro exitoso. Por favor inicia sesión.');
 
         return redirect()->to('/login');
     }
+
+    public $rol_id;
+    public $roles = [];
+
+    public function mount()
+    {
+        $this->roles = \App\Models\Role::all();
+    }
+
 }
