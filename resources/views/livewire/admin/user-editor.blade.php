@@ -1,4 +1,4 @@
- @extends('layouts.app')
+@extends('layouts.app')
 @fluxAppearance
 
 @section('content')
@@ -39,17 +39,32 @@
 
 
 
-        @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                {{ session('success') }}
-            </div>
-        @endif
+    @if(session('success') || session('error'))
+        <div id="toast-container">
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-        @if(session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                {{ session('error') }}
-            </div>
-        @endif
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
+
+        <script>
+            setTimeout(function () {
+                const toast = document.getElementById('toast-container');
+                if (toast) {
+                    toast.style.transition = 'opacity 0.5s ease';
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 500); // elimina después de la animación
+                }
+            }, 3000);
+        </script>
+    @endif
 
 
 
@@ -68,7 +83,7 @@
                                 <p class="text-xs text-gray-400">
                                     Rol: {{ $u->role->nombre ?? 'Sin rol' }}
                                 </p>
-                               
+
                             </a>
                         </li>
                     @empty
@@ -136,11 +151,14 @@
 
                         <div class="flex justify-end gap-4">
                             @if($selectedUser->id !== auth()->id())
-                                <flux:modal.trigger name="eliminar-usuario-{{ $selectedUser->id }}">
-                                    <flux:button icon="trash" variant="danger">
-                                        Eliminar
-                                    </flux:button>
-                                </flux:modal.trigger>
+                                <flux:tooltip content="Eliminar Usuario">
+                                    <flux:modal.trigger name="eliminar-usuario-{{ $selectedUser->id }}">
+                                        <flux:button icon="trash" variant="danger">
+                                            Eliminar
+                                        </flux:button>
+                                    </flux:modal.trigger>
+                                </flux:tooltip>
+
                             @endif
                             <flux:button icon="document-check" type="submit"
                                 class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">

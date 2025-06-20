@@ -36,6 +36,7 @@ class UserEditorController extends Controller
         $roles = Role::all();
 
         return view('livewire.admin.user-editor', compact('users', 'roles'));
+        
     }
 
     public function update(Request $request, Usuario $usuario)
@@ -80,5 +81,7 @@ class UserEditorController extends Controller
 
         return redirect()->route('admin.user-editor')
             ->with('success', 'Usuario eliminado correctamente');
+
+            
     }
 }

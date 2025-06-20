@@ -2,6 +2,38 @@
 @fluxAppearance
 
 @section('content')
+
+
+
+    @if(session('success') || session('error'))
+        <div id="toast-container">
+            @if(session('success'))
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>
+
+        <script>
+            setTimeout(function () {
+                const toast = document.getElementById('toast-container');
+                if (toast) {
+                    toast.style.transition = 'opacity 0.5s ease';
+                    toast.style.opacity = '0';
+                    setTimeout(() => toast.remove(), 500); // elimina después de la animación
+                }
+            }, 3000);
+        </script>
+    @endif
+
+
+
     <div class="overflow-x-auto">
         <div class="container mx-auto px-4 py-8">
             <div>

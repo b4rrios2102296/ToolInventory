@@ -67,9 +67,9 @@ class Register extends Component
             'rol_id' => $this->rol_id,
             'activo' => true,
         ]);
-        session()->flash('message', 'Registro exitoso. Por favor inicia sesión.');
+        session()->flash('success', 'Usuario registrado correctamente.');
+        return redirect()->route('admin.user-editor');
 
-        return redirect()->to('/login');
     }
 
     public $rol_id;
