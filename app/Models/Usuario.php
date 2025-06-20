@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Permission;
+use Carbon\Carbon;
 
 
 
@@ -22,6 +23,7 @@ class Usuario extends Authenticatable
         'password',
         'rol_id',
         'activo',
+        'ultimo_acceso',
     ];
 
     protected $hidden = [
@@ -52,14 +54,21 @@ class Usuario extends Authenticatable
     }
 
     // Añade este método para compatibilidad con @can y middleware
-   public function can($ability, $arguments = [])
-{
-    // Para compatibilidad con @can y Gate
-    if ($this->hasPermission($ability)) {
-        return true;
+    public function can($ability, $arguments = [])
+    {
+        // Para compatibilidad con @can y Gate
+        if ($this->hasPermission($ability)) {
+            return true;
+        }
+
+        // Opcional: lógica adicional si necesitas
+        return parent::can($ability, $arguments);
     }
-    
-    // Opcional: lógica adicional si necesitas
-    return parent::can($ability, $arguments);
-}
+
+
+    public function estaEnLinea()
+    {
+        return $this->ultimo_acceso && Carbon::parse($this->ultimo_acceso)->gt(now()->subMinutes(3));
+    }
+
 }

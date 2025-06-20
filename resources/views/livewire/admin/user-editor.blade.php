@@ -2,8 +2,8 @@
 @fluxAppearance
 
 @section('content')
-    <div class="container mx-auto px-4 py-8">
-        <div class="flex items-center mb-4">
+    <div class="container mx-auto max-w-screen-xl px-4 py-4">
+        <div class="flex items-center mb-2">
             <div class="ml-4 mt-2">
                 @if(request()->has('selected'))
                     <flux:button icon="arrow-left" href="{{ route('admin.user-editor') }}">
@@ -26,7 +26,6 @@
             </div>
         @endif
 
-        <!-- Filtro de búsqueda -->
         <div class="mb-6">
             <form action="{{ route('admin.user-editor') }}" method="GET">
                 <div class="flex items-center">
@@ -46,16 +45,26 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Lista de usuarios -->
             <div class="bg-white rounded shadow p-6">
                 <h2 class="text-xl font-semibold mb-4">Lista de Usuarios</h2>
                 <ul class="divide-y divide-gray-200">
                     @forelse($users as $u)
                         <li
-                            class="py-4 px-2 hover:bg-gray-50 cursor-pointer {{ request('selected') == $u->id ? 'bg-blue-50' : '' }}">
+                            class="py-2 px-2 hover:bg-gray-50 cursor-pointer {{ request('selected') == $u->id ? 'bg-blue-50' : '' }}">
                             <a href="?selected={{ $u->id }}">
-                                <p class="text-sm font-medium text-gray-900">{{ $u->nombre }} {{ $u->apellidos }}</p>
-                                <p class="text-xs text-gray-400">Rol: {{ $u->role->nombre ?? 'Sin rol' }}</p>
+                                <p class="text-sm font-medium text-gray-900">
+                                    {{ $u->nombre }} {{ $u->apellidos }}
+                                </p>
+                                <p class="text-xs text-gray-400">
+                                    Rol: {{ $u->role->nombre ?? 'Sin rol' }}
+                                </p>
+                                <p class="text-xs flex items-center mt-1">
+                                    <span
+                                        class="w-2 h-2 rounded-full mr-2 {{ $u->estaEnLinea() ? 'bg-green-500' : 'bg-gray-400' }}"></span>
+                                    <span class="{{ $u->estaEnLinea() ? 'text-green-600' : 'text-gray-500' }}">
+                                        {{ $u->estaEnLinea() ? 'En línea' : 'Desconectado' }}
+                                    </span>
+                                </p>
                             </a>
                         </li>
                     @empty
@@ -64,8 +73,6 @@
                         </li>
                     @endforelse
                 </ul>
-
-                <!-- Paginación -->
                 @if($users->hasPages())
                     <div class="mt-4">
                         {{ $users->appends(request()->query())->links() }}
@@ -73,7 +80,6 @@
                 @endif
             </div>
 
-            <!-- Editor de usuario -->
             @if(request()->has('selected') && $selectedUser = \App\Models\Usuario::find(request('selected')))
                 <div class="bg-white rounded shadow p-6">
                     <h2 class="text-xl font-semibold mb-4">Editar Usuario</h2>
@@ -131,7 +137,6 @@
                                         Eliminar
                                     </flux:button>
                                 </flux:modal.trigger>
-
                             @endif
                             <flux:button icon="document-check" type="submit"
                                 class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
@@ -140,7 +145,6 @@
                         </div>
                     </form>
 
-                    <!-- Modal para eliminar usuario -->
                     <flux:modal name="eliminar-usuario-{{ $selectedUser->id }}" class="md:w-96">
                         <div class="space-y-6">
                             <flux:heading size="lg">Eliminar Usuario</flux:heading>
@@ -156,17 +160,13 @@
                                     <flux:button href="{{ route('admin.user-editor') }}" variant="outline">
                                         Cancelar
                                     </flux:button>
-
-                                    <flux:button type="submit" variant="danger"
-                                        style="background-color:#dc2626 !important; color:white !important">
+                                    <flux:button type="submit" variant="danger" class="bg-red-600 text-white">
                                         Confirmar
                                     </flux:button>
                                 </div>
                             </form>
                         </div>
                     </flux:modal>
-
-
                 </div>
             @endif
         </div>
