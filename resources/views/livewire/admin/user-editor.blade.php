@@ -1,18 +1,43 @@
-@extends('layouts.app')
+ @extends('layouts.app')
 @fluxAppearance
 
 @section('content')
     <div class="container mx-auto max-w-screen-xl px-4 py-4">
-        <div class="flex items-center mb-2">
-            <div class="ml-4 mt-2">
+
+        {{-- Título --}}
+        <div class="mb-2">
+            <h1 class="text-2xl font-bold text-center">Editor de Usuarios</h1>
+        </div>
+
+        {{-- Separador --}}
+        <flux:separator />
+        <br>
+
+        {{-- Controles: Volver, Crear Usuario, Búsqueda --}}
+        <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+            <div class="flex items-center space-x-2">
                 @if(request()->has('selected'))
                     <flux:button icon="arrow-left" href="{{ route('admin.user-editor') }}">
                         Volver
                     </flux:button>
+                    <flux:separator vertical />
+                @endif
+                @if (request()->routeIs('admin.user-editor'))
+                    <flux:button icon="user-plus" href="{{ route('register') }}">
+                        Crear Usuario
+                    </flux:button>
                 @endif
             </div>
-            <h1 class="text-2xl font-bold flex-1 text-center">Editor de Usuarios</h1>
+
+            <div class="w-full sm:w-auto mt-2 sm:mt-0">
+                <form action="{{ route('admin.user-editor') }}" method="GET" class="flex items-center space-x-2">
+                    <flux:input id="searchInput" type="search" name="search" placeholder="Buscar usuarios..."
+                        value="{{ request('search') }}" class="w-64" icon="magnifying-glass" />
+                </form>
+            </div>
         </div>
+
+
 
         @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -26,13 +51,8 @@
             </div>
         @endif
 
-        <div class="mb-6">
-            <form action="{{ route('admin.user-editor') }}" method="GET">
-                <div class="flex items-center">
-                    <flux:input id="searchInput" type="search" name="search" placeholder="Buscar usuarios..."
-                        value="{{ request('search') }}" class="flex-1" icon="magnifying-glass" />
-            </form>
-        </div>
+
+
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white rounded shadow p-6">
@@ -48,13 +68,7 @@
                                 <p class="text-xs text-gray-400">
                                     Rol: {{ $u->role->nombre ?? 'Sin rol' }}
                                 </p>
-                                <p class="text-xs flex items-center mt-1">
-                                    <span
-                                        class="w-2 h-2 rounded-full mr-2 {{ $u->estaEnLinea() ? 'bg-green-500' : 'bg-gray-400' }}"></span>
-                                    <span class="{{ $u->estaEnLinea() ? 'text-green-600' : 'text-gray-500' }}">
-                                        {{ $u->estaEnLinea() ? 'En línea' : 'Desconectado' }}
-                                    </span>
-                                </p>
+                               
                             </a>
                         </li>
                     @empty
