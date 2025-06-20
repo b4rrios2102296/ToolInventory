@@ -29,18 +29,8 @@
         <div class="mb-6">
             <form action="{{ route('admin.user-editor') }}" method="GET">
                 <div class="flex items-center">
-                    <flux:input type="search" name="search" placeholder="Buscar usuarios..." value="{{ request('search') }}"
-                        class="flex-1" icon="magnifying-glass" />
-                    <button type="submit" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                        Buscar
-                    </button>
-                    @if(request('search'))
-                        <a href="{{ route('admin.user-editor') }}"
-                            class="ml-2 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
-                            Limpiar
-                        </a>
-                    @endif
-                </div>
+                    <flux:input id="searchInput" type="search" name="search" placeholder="Buscar usuarios..."
+                        value="{{ request('search') }}" class="flex-1" icon="magnifying-glass" />
             </form>
         </div>
 
@@ -160,7 +150,8 @@
                                     <flux:button href="{{ route('admin.user-editor') }}" variant="outline">
                                         Cancelar
                                     </flux:button>
-                                    <flux:button type="submit" variant="danger" class="bg-red-600 text-white">
+                                    <flux:button type="submit" variant="danger" class="bg-red-600 text-white"
+                                        style="background-color:#dc2626 !important; color:white !important">
                                         Confirmar
                                     </flux:button>
                                 </div>
@@ -171,4 +162,40 @@
             @endif
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimer;
+
+            if (searchInput) {
+                searchInput.addEventListener('input', function () {
+                    clearTimeout(searchTimer);
+
+                    searchTimer = setTimeout(function () {
+                        const searchValue = searchInput.value;
+
+                        fetch(`{{ route('admin.user-editor') }}?search=${encodeURIComponent(searchValue)}`)
+                            .then(response => response.text())
+                            .then(html => {
+                                const parser = new DOMParser();
+                                const doc = parser.parseFromString(html, 'text/html');
+
+                                const newList = doc.querySelector('ul.divide-y');
+                                const pagination = doc.querySelector('.pagination');
+                                const oldList = document.querySelector('ul.divide-y');
+
+                                if (newList && oldList) {
+                                    oldList.innerHTML = newList.innerHTML;
+                                }
+
+                                if (pagination && document.querySelector('.pagination')) {
+                                    document.querySelector('.pagination').innerHTML = pagination.innerHTML;
+                                }
+                            });
+                    }, 400);
+                });
+            }
+        });
+    </script>
+
 @endsection

@@ -13,24 +13,29 @@ use Illuminate\Support\Facades\Hash;
 class UserEditorController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-
-
         if (!auth()->user()->hasPermission('user_audit')) {
-            dd([
-                'user' => auth()->user(),
-                'permissions' => auth()->user()->permissions(),
-                'has_user_audit' => auth()->user()->hasPermission('user_audit')
-            ]);
+            abort(403, 'No tienes permisos para ver esta sección.');
         }
 
-        $users = \App\Models\Usuario::with('role')->paginate(10); // 10 users per page
-        $roles = \App\Models\Role::all();
+        $search = $request->input('search');
+
+        $query = Usuario::with('role');
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('numero_colaborador', 'like', "%{$search}%")
+                    ->orWhere('nombre', 'like', "%{$search}%")
+                    ->orWhere('apellidos', 'like', "%{$search}%")
+                    ->orWhere('nombre_usuario', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->paginate(10)->appends(['search' => $search]);
+        $roles = Role::all();
 
         return view('livewire.admin.user-editor', compact('users', 'roles'));
-
-
     }
 
     public function update(Request $request, Usuario $usuario)
