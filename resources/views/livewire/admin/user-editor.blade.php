@@ -38,33 +38,60 @@
         </div>
 
 
+        @if(session('success') || session('error'))
+            <div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
+                @if(session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </div>
 
-    @if(session('success') || session('error'))
-        <div id="toast-container">
-            @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const toastContainer = document.getElementById('toast-container');
+                    const toastMessages = document.querySelectorAll('.toast-message');
 
-            @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                    {{ session('error') }}
-                </div>
-            @endif
-        </div>
+                    // Animación de entrada
+                    toastContainer.style.opacity = '0';
+                    toastContainer.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        toastContainer.style.opacity = '1';
+                        toastContainer.style.transform = 'translateX(0)';
+                    }, 100);
 
-        <script>
-            setTimeout(function () {
-                const toast = document.getElementById('toast-container');
-                if (toast) {
-                    toast.style.transition = 'opacity 0.5s ease';
-                    toast.style.opacity = '0';
-                    setTimeout(() => toast.remove(), 500); // elimina después de la animación
-                }
-            }, 3000);
-        </script>
-    @endif
+                    // Auto-cierre después de 5 segundos
+                    setTimeout(() => {
+                        toastMessages.forEach(message => {
+                            message.style.opacity = '0';
+                            message.style.transform = 'translateX(100%)';
+                            message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        });
+                        setTimeout(() => toastContainer.remove(), 500);
+                    }, 5000);
+
+                    // Cierre manual al hacer clic
+                    toastMessages.forEach(message => {
+                        message.addEventListener('click', function () {
+                            this.style.opacity = '0';
+                            this.style.transform = 'translateX(100%)';
+                            setTimeout(() => {
+                                if (toastContainer.querySelectorAll('.toast-message').length === 1) {
+                                    toastContainer.remove();
+                                } else {
+                                    this.remove();
+                                }
+                            }, 500);
+                        });
+                    });
+                });
+            </script>
+        @endif
 
 
 

@@ -17,68 +17,59 @@
         <h1 class="text-2xl font-bold flex-1 text-center">Información de Resguardo #{{ $resguardo->folio }}</h1>
     </div>
     @if(session('success') || session('error'))
-        <div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
-            @if(session('success') || session('error'))
-                <div id="toast-container" class="fixed top-4 right-4 z-50 transition-opacity duration-300">
-                    @if(session('success'))
-                        <div class="toast-message bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-2 shadow">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-                    @if(session('error'))
-                        <div class="toast-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-2 shadow">
-                            {{ session('error') }}
-                        </div>
-                    @endif
-                </div>
-            @endif
-
+<div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+            {{ session('success') }}
         </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const toastContainer = document.getElementById('toast-container');
-                const toastMessages = document.querySelectorAll('.toast-message');
-
-                // Mostrar animación de entrada
-                toastContainer.style.opacity = '0';
-                toastContainer.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    toastContainer.style.opacity = '1';
-                    toastContainer.style.transform = 'translateX(0)';
-                }, 100);
-
-                // Ocultar después de 5 segundos
-                setTimeout(() => {
-                    toastMessages.forEach(message => {
-                        message.style.opacity = '0';
-                        message.style.transform = 'translateX(100%)';
-                        message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    });
-
-                    // Eliminar el contenedor después de la animación
-                    setTimeout(() => {
-                        toastContainer.remove();
-                    }, 500);
-                }, 5000); // 5000ms = 5 segundos
-
-                // Opcional: Cerrar al hacer click
-                toastMessages.forEach(message => {
-                    message.addEventListener('click', function () {
-                        this.style.opacity = '0';
-                        this.style.transform = 'translateX(100%)';
-                        setTimeout(() => {
-                            if (toastContainer.querySelectorAll('.toast-message').length === 1) {
-                                toastContainer.remove();
-                            } else {
-                                this.remove();
-                            }
-                        }, 500);
-                    });
-                });
-            });
-        </script>
     @endif
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+            {{ session('error') }}
+        </div>
+    @endif
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastContainer = document.getElementById('toast-container');
+        const toastMessages = document.querySelectorAll('.toast-message');
+
+        // Animación de entrada
+        toastContainer.style.opacity = '0';
+        toastContainer.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            toastContainer.style.opacity = '1';
+            toastContainer.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Auto-cierre después de 5 segundos
+        setTimeout(() => {
+            toastMessages.forEach(message => {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(100%)';
+                message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            setTimeout(() => toastContainer.remove(), 500);
+        }, 5000);
+
+        // Cierre manual al hacer clic
+        toastMessages.forEach(message => {
+            message.addEventListener('click', function() {
+                this.style.opacity = '0';
+                this.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toastContainer.querySelectorAll('.toast-message').length === 1) {
+                        toastContainer.remove();
+                    } else {
+                        this.remove();
+                    }
+                }, 500);
+            });
+        });
+    });
+</script>
+@endif
 
     <div class="rounded-lg shadow-md p-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
