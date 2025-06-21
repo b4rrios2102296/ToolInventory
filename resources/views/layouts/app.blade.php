@@ -41,7 +41,7 @@
 
     // Interceptar formularios
     document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', function (e) {
             const transition = document.getElementById('page-transition');
             transition.classList.add('active');
 
@@ -93,13 +93,12 @@
 
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin">
-                    <flux:navlist.item class="navlist-item" href="{{ route('register') }}">Crear Usuario
-                    </flux:navlist.item>
                     <flux:navlist.item class="navlist-item" href="{{ route('acciones') }}"> Auditoría de Usuarios
+                    </flux:navlist.item>
+                    <flux:navlist.item class="navlist-item" href="{{ route('admin.user-editor') }}">Usuarios
                     </flux:navlist.item>
                 </flux:navlist.group>
             @endif
-
         </flux:navlist>
 
         <flux:spacer />

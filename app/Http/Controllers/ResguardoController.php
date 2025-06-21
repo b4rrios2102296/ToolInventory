@@ -11,51 +11,41 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ResguardosExport;
 use Illuminate\Support\Facades\Auth;
 use Storage;
+use Illuminate\Validation\ValidationException;
 class ResguardoController extends Controller
 {
     public function store(Request $request)
     {
         Log::debug('Resguardo store method called', $request->all());
 
-        $validated = $request->validate([
-            'claveColab' => 'required|string',
-            'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
-            'fecha_captura' => 'required|date',
-            'comentarios' => 'nullable|string|max:191',
-            'estatus' => 'nullable|string|in:Resguardo,Baja',
-        ], [
-            'claveColab.required' => 'El campo clave de colaborador es requerido',
-            'claveColab.string' => 'La clave de colaborador debe ser texto',
-            'herramienta_id.required' => 'El campo herramienta es requerido',
-            'herramienta_id.string' => 'El ID de herramienta debe ser texto',
-            'herramienta_id.exists' => 'La herramienta seleccionada no existe',
-            'fecha_captura.required' => 'El campo fecha de captura es requerido',
-            'fecha_captura.date' => 'La fecha de captura debe ser una fecha válida',
-            'comentarios.string' => 'Los comentarios deben ser texto',
-            'comentarios.max' => 'Los comentarios no pueden exceder 191 caracteres',
-            'estatus.string' => 'El estatus debe ser texto',
-            'estatus.in' => 'El estatus debe ser Resguardo o Baja',
-        ]);
-
-        $validated['estatus'] = $validated['estatus'] ?? 'Resguardo';
-
         try {
+            $validated = $request->validate([
+                'claveColab' => 'required|string',
+                'herramienta_id' => 'required|string|exists:toolinventory.herramientas,id',
+                'fecha_captura' => 'required|date',
+                'comentarios' => 'nullable|string|max:191',
+                'estatus' => 'nullable|string|in:Resguardo,Baja',
+            ], [
+                'claveColab.required' => 'El campo clave de colaborador es requerido',
+                'herramienta_id.required' => 'Debe seleccionar una herramienta',
+                'fecha_captura.required' => 'La fecha de resguardo es obligatoria',
+                // ... otros mensajes personalizados
+            ]);
+
             return DB::connection('toolinventory')->transaction(function () use ($validated, $request) {
-                // First, check if the tool exists and is available
+                // Verificar disponibilidad de herramienta
                 $herramienta = DB::connection('toolinventory')
                     ->table('herramientas')
                     ->where('id', $validated['herramienta_id'])
                     ->where('estatus', 'Disponible')
-                    ->lockForUpdate() // Lock the row for update
+                    ->lockForUpdate()
                     ->first();
 
                 if (!$herramienta) {
-                    return redirect()->back()
-                        ->withErrors(['herramienta_id' => 'La herramienta no está disponible o no existe'])
-                        ->withInput();
+                    throw new \Exception('La herramienta no está disponible o ya fue asignada');
                 }
 
-                // Check the collaborator
+                // Verificar colaborador
                 $colaborador = DB::connection('sqlsrv')
                     ->table('colaborador')
                     ->where('claveColab', $validated['claveColab'])
@@ -63,16 +53,14 @@ class ResguardoController extends Controller
                     ->first();
 
                 if (!$colaborador) {
-                    return redirect()->back()
-                        ->withErrors(['claveColab' => 'El colaborador no existe en la base de datos externa.'])
-                        ->withInput();
+                    throw new \Exception('El colaborador no existe o no está activo');
                 }
 
+                // Crear resguardo
                 $usuario = DB::connection('toolinventory')
                     ->table('usuarios')
                     ->where('id', auth()->id())
                     ->firstOrFail();
-
                 $folio = $this->generarFolio();
 
                 $detalles_resguardo = json_encode([
@@ -84,10 +72,9 @@ class ResguardoController extends Controller
                     'costo' => $herramienta->costo ?? 0,
                 ]);
 
-                // Create the resguardo
                 DB::connection('toolinventory')->table('resguardos')->insert([
                     'folio' => $folio,
-                    'estatus' => $validated['estatus'],
+                    'estatus' => $validated['estatus'] ?? 'Resguardo',
                     'colaborador_num' => $colaborador->claveColab,
                     'aperturo_users_id' => $usuario->id,
                     'asigno_users_id' => $usuario->id,
@@ -98,7 +85,7 @@ class ResguardoController extends Controller
                     'updated_at' => now(),
                 ]);
 
-                // Log user action
+                // Actualizar estado de herramienta
                 DB::connection('toolinventory')->table('user_actions')->insert([
                     'user_id' => auth()->id(),
                     'resguardo_id' => $folio,
@@ -106,14 +93,12 @@ class ResguardoController extends Controller
                     'comentarios' => trim($validated['comentarios']) !== '' ? $validated['comentarios'] : 'N/A',
                     'created_at' => now(),
                 ]);
-
-                // Update the tool status to "Resguardo"
                 DB::connection('toolinventory')
                     ->table('herramientas')
                     ->where('id', $validated['herramienta_id'])
-                    ->update(['estatus' => 'Resguardo', 'updated_at' => now()]);
+                    ->update(['estatus' => 'Resguardo']);
 
-                // Generate PDF stream
+                // Generar PDF
                 $resguardo = DB::connection('toolinventory')
                     ->table('resguardos')
                     ->leftJoin('usuarios as aperturo', 'resguardos.aperturo_users_id', '=', 'aperturo.id')
@@ -147,8 +132,8 @@ class ResguardoController extends Controller
                     ->where('claveColab', $resguardo->colaborador_num)
                     ->where('estado', '1')
                     ->first();
-
                 $pdf = Pdf::loadView('resguardos.pdf', [
+                    // datos para la vista
                     'resguardo' => $resguardo,
                     'herramienta' => $herramienta,
                     'detalles' => $detalles,
@@ -170,13 +155,17 @@ class ResguardoController extends Controller
                     ]);
 
             });
+        } catch (ValidationException $e) {
+            // Errores de validación automáticos
+            return back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             Log::error('Error creating resguardo: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Ocurrió un error al crear el resguardo')
+            return back()
+                ->with('error', 'Error al crear resguardo: ' . $e->getMessage())
                 ->withInput();
         }
     }
+
     protected function generarFolio()
     {
         $ultimo = DB::connection('toolinventory')

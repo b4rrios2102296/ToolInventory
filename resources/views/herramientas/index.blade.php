@@ -2,6 +2,66 @@
 @fluxAppearance
 
 @section('content')
+
+
+
+@if(session('success') || session('error'))
+<div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
+    @if(session('success'))
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if(session('error'))
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
+            {{ session('error') }}
+        </div>
+    @endif
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const toastContainer = document.getElementById('toast-container');
+        const toastMessages = document.querySelectorAll('.toast-message');
+
+        // Animación de entrada
+        toastContainer.style.opacity = '0';
+        toastContainer.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            toastContainer.style.opacity = '1';
+            toastContainer.style.transform = 'translateX(0)';
+        }, 100);
+
+        // Auto-cierre después de 5 segundos
+        setTimeout(() => {
+            toastMessages.forEach(message => {
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(100%)';
+                message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            setTimeout(() => toastContainer.remove(), 500);
+        }, 5000);
+
+        // Cierre manual al hacer clic
+        toastMessages.forEach(message => {
+            message.addEventListener('click', function() {
+                this.style.opacity = '0';
+                this.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (toastContainer.querySelectorAll('.toast-message').length === 1) {
+                        toastContainer.remove();
+                    } else {
+                        this.remove();
+                    }
+                }, 500);
+            });
+        });
+    });
+</script>
+@endif
+
+
+
     <div class="overflow-x-auto">
         <div class="container mx-auto px-4 py-8">
             <div>
@@ -204,7 +264,7 @@
                                     <div class="flex mt-4">
                                         <flux:spacer />
                                         <flux:button type="submit" variant="danger"
-                                            style="all:unset !important; background-color:#dc2626 !important; color:white !important; padding:0.5rem 1.25rem !important; border-radius:0.375rem !important;">
+                                            style="background-color:#dc2626 !important; color:white !important">
                                             Eliminar
                                         </flux:button>
                                 </form>
@@ -227,32 +287,32 @@
         </div>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchInput');
-        let searchTimer;
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimer;
 
-        searchInput.addEventListener('input', function () {
-            clearTimeout(searchTimer);
+            searchInput.addEventListener('input', function () {
+                clearTimeout(searchTimer);
 
-            searchTimer = setTimeout(function () {
-                const searchValue = searchInput.value;
+                searchTimer = setTimeout(function () {
+                    const searchValue = searchInput.value;
 
-                fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const newTable = doc.querySelector('tbody');
-                        const newPagination = doc.querySelector('.pagination');
+                    fetch(`{{ route('herramientas.index') }}?search=${encodeURIComponent(searchValue)}`)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(html, 'text/html');
+                            const newTable = doc.querySelector('tbody');
+                            const newPagination = doc.querySelector('.pagination');
 
-                        document.querySelector('tbody').innerHTML = newTable.innerHTML;
-                        if (newPagination) {
-                            document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
-                        }
-                    });
-            }, 500);
+                            document.querySelector('tbody').innerHTML = newTable.innerHTML;
+                            if (newPagination) {
+                                document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                            }
+                        });
+                }, 500);
+            });
         });
-    });
-</script>
+    </script>
 @endsection
