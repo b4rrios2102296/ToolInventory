@@ -1,60 +1,99 @@
 @extends('layouts.app')
 @fluxAppearance
 @section('content')
-    @if(session('success') || session('error'))
-        <div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
+    <!-- Sistema de Toast unificado -->
+    @if(session('success') || session('error') || $errors->any())
+        <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2 w-80">
             @if(session('success'))
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
-                    {{ session('success') }}
+                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-lg toast-message transform transition-all duration-500 ease-in-out hover:shadow-xl">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span>{{ session('success') }}</span>
+                    </div>
                 </div>
             @endif
+
             @if(session('error'))
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
-                    {{ session('error') }}
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg toast-message transform transition-all duration-500 ease-in-out hover:shadow-xl">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span>{{ session('error') }}</span>
+                    </div>
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-lg toast-message transform transition-all duration-500 ease-in-out hover:shadow-xl">
+                    <div class="flex flex-col">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                            </svg>
+                            <span class="font-semibold">Errores de validación:</span>
+                        </div>
+                        <ul class="list-disc list-inside text-sm">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             @endif
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const toastContainer = document.getElementById('toast-container');
                 const toastMessages = document.querySelectorAll('.toast-message');
-
+                
                 // Animación de entrada
-                toastContainer.style.opacity = '0';
-                toastContainer.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    toastContainer.style.opacity = '1';
-                    toastContainer.style.transform = 'translateX(0)';
-                }, 100);
+                toastMessages.forEach((message, index) => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        message.style.opacity = '1';
+                        message.style.transform = 'translateX(0)';
+                    }, 100 + (index * 100)); // Efecto escalonado
+                });
 
                 // Auto-cierre después de 5 segundos
                 setTimeout(() => {
                     toastMessages.forEach(message => {
                         message.style.opacity = '0';
                         message.style.transform = 'translateX(100%)';
-                        message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        setTimeout(() => message.remove(), 500);
                     });
-                    setTimeout(() => toastContainer.remove(), 500);
+                    
+                    // Eliminar contenedor si no hay más mensajes
+                    setTimeout(() => {
+                        if (toastContainer.querySelectorAll('.toast-message').length === 0) {
+                            toastContainer.remove();
+                        }
+                    }, 500);
                 }, 5000);
 
                 // Cierre manual al hacer clic
                 toastMessages.forEach(message => {
-                    message.addEventListener('click', function () {
+                    message.addEventListener('click', function() {
                         this.style.opacity = '0';
                         this.style.transform = 'translateX(100%)';
                         setTimeout(() => {
-                            if (toastContainer.querySelectorAll('.toast-message').length === 1) {
+                            this.remove();
+                            // Eliminar contenedor si no hay más mensajes
+                            if (toastContainer.querySelectorAll('.toast-message').length === 0) {
                                 toastContainer.remove();
-                            } else {
-                                this.remove();
                             }
                         }, 500);
                     });
                 });
             });
         </script>
-    @endif  
+    @endif
+
     <div class="container mx-auto px-4 py-1">
         <div class="flex items-center mb-4">
             <div class="ml-4 mt-2">
@@ -63,78 +102,6 @@
 
             <h1 class="text-2xl font-bold flex-1 text-center">Registro de Resguardo</h1>
         </div>
-
-        <!-- Toast Notifications -->
-        <!-- Toast Notifications -->
-        @if(session('success') || session('error'))
-            <div id="toast-container" class="fixed top-4 right-4 z-50 transition-all duration-500 ease-in-out">
-                @if(session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 shadow-lg toast-message">
-                        {{ session('error') }}
-                    </div>
-                @endif
-            </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const toastContainer = document.getElementById('toast-container');
-                    const toastMessages = document.querySelectorAll('.toast-message');
-
-                    // Mostrar animación de entrada
-                    toastContainer.style.opacity = '0';
-                    toastContainer.style.transform = 'translateX(100%)';
-                    setTimeout(() => {
-                        toastContainer.style.opacity = '1';
-                        toastContainer.style.transform = 'translateX(0)';
-                    }, 100);
-
-                    // Ocultar después de 5 segundos
-                    setTimeout(() => {
-                        toastMessages.forEach(message => {
-                            message.style.opacity = '0';
-                            message.style.transform = 'translateX(100%)';
-                            message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                        });
-
-                        // Eliminar el contenedor después de la animación
-                        setTimeout(() => {
-                            toastContainer.remove();
-                        }, 500);
-                    }, 5000); // 5000ms = 5 segundos
-
-                    // Opcional: Cerrar al hacer click
-                    toastMessages.forEach(message => {
-                        message.addEventListener('click', function () {
-                            this.style.opacity = '0';
-                            this.style.transform = 'translateX(100%)';
-                            setTimeout(() => {
-                                if (toastContainer.querySelectorAll('.toast-message').length === 1) {
-                                    toastContainer.remove();
-                                } else {
-                                    this.remove();
-                                }
-                            }, 500);
-                        });
-                    });
-                });
-            </script>
-        @endif
-
-        @if($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
         <div class="rounded-lg shadow-md p-6">
             <form id="resguardo-form" method="POST" action="{{ route('resguardos.store') }}">
@@ -204,7 +171,6 @@
                             </flux:input>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="mb-6">
@@ -225,6 +191,7 @@
             </form>
         </div>
     </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Colaborador
@@ -307,14 +274,14 @@
                         if (data.error) throw new Error(data.error);
 
                         resultDiv.innerHTML = `
-                                <div class="p-4 border rounded">
-                                    <strong>ID:</strong> ${data.id}<br>
-                                    <strong>Modelo:</strong> ${data.modelo}<br>
-                                    <strong>Número de Serie:</strong> ${data.num_serie}<br>
-                                    <strong>Artículo:</strong> ${data.articulo}<br>
-                                    <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) + ' MXN' : 'N/A'}<br>
-                                </div>
-                            `;
+                            <div class="p-4 border rounded">
+                                <strong>ID:</strong> ${data.id}<br>
+                                <strong>Modelo:</strong> ${data.modelo}<br>
+                                <strong>Número de Serie:</strong> ${data.num_serie}<br>
+                                <strong>Artículo:</strong> ${data.articulo}<br>
+                                <strong>Costo:</strong> ${data.costo ? '$' + Number(data.costo).toFixed(2) + ' MXN' : 'N/A'}<br>
+                            </div>
+                        `;
                         document.getElementById('herramienta_id').value = data.id;
                     })
                     .catch(error => {
