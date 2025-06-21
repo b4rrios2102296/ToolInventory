@@ -93,8 +93,6 @@
 
             @if (Auth::user() && Auth::user()->hasPermission('user_audit'))
                 <flux:navlist.group expandable :expanded="false" heading="Admin">
-                    <flux:navlist.item class="navlist-item" href="{{ route('register') }}">Crear Usuario
-                    </flux:navlist.item>
                     <flux:navlist.item class="navlist-item" href="{{ route('acciones') }}"> Auditoría de Usuarios
                     </flux:navlist.item>
                     <flux:navlist.item class="navlist-item" href="{{ route('admin.user-editor') }}">Usuarios

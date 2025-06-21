@@ -75,7 +75,7 @@
                 Registrar
             </flux:button>
             <div class="mt-4 text-center">
-                <a href="{{ route('dashboard') }}" class="text-zinc-500 hover:underline">Regresar </a>
+                <a href="{{ route('admin.user-editor') }}" class="text-zinc-500 hover:underline">Regresar </a>
             </div>
         </div>
     </form>
