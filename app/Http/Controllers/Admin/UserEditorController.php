@@ -23,13 +23,18 @@ class UserEditorController extends Controller
         $query = Usuario::with('role');
 
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('numero_colaborador', 'like', "%{$search}%")
-                    ->orWhere('nombre', 'like', "%{$search}%")
-                    ->orWhere('apellidos', 'like', "%{$search}%")
-                    ->orWhere('nombre_usuario', 'like', "%{$search}%");
-            });
+            $query->join('roles', 'usuarios.rol_id', '=', 'roles.id')
+                ->select('usuarios.*') // Solo selecciona columnas de usuarios
+                ->where(function ($q) use ($search) {
+                    $q->where('usuarios.numero_colaborador', 'like', "%{$search}%")
+                        ->orWhere('usuarios.nombre', 'like', "%{$search}%")
+                        ->orWhere('usuarios.apellidos', 'like', "%{$search}%")
+                        ->orWhere('usuarios.nombre_usuario', 'like', "%{$search}%")
+                        ->orWhere('roles.nombre', 'like', "%{$search}%"); // Búsqueda por nombre del rol
+                });
         }
+
+
 
         $users = $query->paginate(10)->appends(['search' => $search]);
         $roles = Role::all();
