@@ -55,18 +55,19 @@ class UserEditorController extends Controller
                 'apellidos' => 'required|string|max:100',
                 'nombre_usuario' => 'required|string|max:50|unique:usuarios,nombre_usuario,' . $usuario->id,
                 'password' => 'nullable|string|min:8|confirmed',
-                'rol_id' => 'required|exists:roles,id',
+                'rol_id' => 'nullable|exists:roles,id',
             ], [
                 'password.confirmed' => 'Las contraseñas no coinciden'
             ]);
+
 
             $usuario->numero_colaborador = $validated['numero_colaborador'];
             $usuario->nombre = $validated['nombre'];
             $usuario->apellidos = $validated['apellidos'];
             $usuario->nombre_usuario = $validated['nombre_usuario'];
-            $usuario->rol_id = $validated['rol_id'];
+            $usuario->rol_id = $validated['rol_id'] ?? $usuario->rol_id;
 
-            $isAuditUser = auth()->user()->role->nombre === 'Auditor';
+            $isAuditUser = auth()->user()->role->nombre === 'God';
             $isEditingSelf = auth()->id() == $usuario->id;
 
             if ($isAuditUser && $isEditingSelf) {
